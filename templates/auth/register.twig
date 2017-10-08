@@ -7,13 +7,50 @@
 {% block content %}
     <div class="holder">
         <h1 class="title">Register</h1>
-        <form action="" method="post">
-            <input name="name" title="Full Name">
-            <input name="username" title="Username">
-            <input name="email" title="Email Address">
-            <input name="password" type="password" title="Password">
-            <input name="password-confirm" type="password" title="Confirm Password">
-            <input name="submit" type="submit" class="button">
+        <form action="" method="post" class="pa4 black-80">
+            <div class="measure">
+                <label for="username" class="f6 b db mb2">Username</label>
+                <input name="username"
+                       id="username"
+                       class="input-reset ba pa2 mb2 db w-100 {{ errors.username ? 'b--red-50' : 'b--black-20' }}"
+                >
+                {% for message in errors.username %}
+                    <small id="name-desc" class="f6 red db mb2">{{ message }}</small>
+                {% endfor %}
+            </div>
+            <div class="measure">
+                <label for="email" class="f6 b db mb2">Email</label>
+                <input name="email"
+                       id="email"
+                       class="input-reset ba pa2 mb2 db w-100 {{ errors.email ? 'b--red-50' : 'b--black-20' }}"
+                >
+                {% for message in errors.email %}
+                    <small id="name-desc" class="f6 red db mb2">{{ message }}</small>
+                {% endfor %}
+            </div>
+            <div class="measure">
+                <label for="password" class="f6 b db mb2">Password</label>
+                <input type="password"
+                       name="password"
+                       id="password"
+                       class="input-reset ba pa2 mb2 db w-100 {{ errors.password ? 'b--red-50' : 'b--black-20' }}"
+                >
+                {% for message in errors.password %}
+                    <small id="name-desc" class="f6 red db mb2">{{ message }}</small>
+                {% endfor %}
+            </div>
+            <div class="measure">
+                <label for="password-confirm" class="f6 b db mb2">Password Confirm</label>
+                <input type="password"
+                       name="password-confirm"
+                       id="password-confirm"
+                       class="input-reset ba pa2 mb2 db w-100 {{ errors.password_confirm ? 'b--red-50' : 'b--black-20' }}"
+                >
+                {% for message in errors.password_confirm %}
+                    <small id="name-desc" class="f6 red db mb2">{{ message }}</small>
+                {% endfor %}
+            </div>
+            <input name="submit" type="submit" class="input-reset b ph3 pv2 ba b--black-20 bg-transparent pointer f6 dib">
         </form>
     </div>
 {% endblock %}

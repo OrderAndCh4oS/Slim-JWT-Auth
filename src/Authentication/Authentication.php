@@ -34,6 +34,10 @@ class Authentication
 
     }
 
+    /**
+     * @param Request $request
+     * @return bool|User
+     */
     public function register(Request $request) {
         /** @var EntityManager $em */
         $em = $this->container->em;
@@ -45,10 +49,8 @@ class Authentication
             $em->persist($user);
             $em->flush();
         } catch (ValidationException $e) {
-            // ToDo: render form with provided data and display errors
-            echo $e->getMessage();die;
+            return false;
         }
-        // ToDo: User added handle it, login or send activation or something
         return $user;
     }
 

@@ -27,7 +27,9 @@ class AuthController extends Controller
     public function registerAction(Request $request, Response $response, $args = []) {
         if ($request->isPost()) {
             $user = $this->auth->register($request);
-            var_dump($user);
+            if (!$user) {
+                return $response->withRedirect($this->router->pathFor('register'));
+            }
         }
         return $this->view->render($response, 'auth/register.twig');
     }
