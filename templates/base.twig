@@ -7,13 +7,19 @@
         <link rel="stylesheet" href="https://unpkg.com/tachyons@4.8.1/css/tachyons.min.css"/>
     {% endblock %}
 </head>
-<body>
-{% block nav %}
-    <a href="{{ path_for('login') }}">Login</a>
-    <a href="{{ path_for('register') }}">Register</a>
-{% endblock %}
-{% block content %}
-{% endblock %}
+<body class="sans-serif">
+<div class="page-wrapper pa4">
+    <nav class="container pv1">
+        {% block nav %}
+            <a href="{{ path_for('login') }}" class="link f6 mb2 black hover-red">Login</a>
+            <a href="{{ path_for('register') }}" class="link f6 mb2 black hover-red">Register</a>
+        {% endblock %}
+    </nav>
+    <section class="container ">
+        {% block content %}
+        {% endblock %}
+    </section>
+</div>
 {% block javascripts %}
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

@@ -23,7 +23,7 @@ class UserValidation implements EventSubscriber
         if (empty($user->getEmailAddress())) {
             Error::setError('email', 'Please enter an email address');
         }
-        if (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL) && !empty($user->getEmailAddress())) {
             Error::setError('email', 'Please enter a valid email address');
         }
         if (empty($user->getPlainPassword())) {
