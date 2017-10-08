@@ -1,0 +1,16 @@
+{% extends 'base.twig' %}
+
+{% block title_tag %}
+    {{ parent() }} Menu
+{% endblock %}
+
+{% block content %}
+    <div class="holder">
+        <h1 class="title">Login</h1>
+        <form action="" method="post">
+            <input name="username" title="Username">
+            <input name="password" type="password" title="Password">
+            <input name="submit" type="submit" class="button">
+        </form>
+    </div>
+{% endblock %}

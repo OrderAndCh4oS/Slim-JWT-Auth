@@ -1,0 +1,28 @@
+{
+  "name": "oacc/mejuicer",
+  "description": "Blog using slim, doctrine, twig",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Sean Cooper",
+      "email": "sean@orderandchaoscreative.com",
+      "homepage": "https://orderandchaoscreative.com/"
+    }
+  ],
+  "require": {
+    "slim/slim": "^3.0",
+    "slim/twig-view": "^2.3",
+    "slim/csrf": "^0.8.1",
+    "monolog/monolog": "^1.17",
+    "doctrine/orm": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Oacc\\": "src/"
+    }
+  },
+  "scripts": {
+    "start": "php -S 0.0.0.0:8080 -t public public/index.php"
+  }
+}
