@@ -16,6 +16,7 @@ class AuthController extends Controller
             ];
             $user = $this->auth->authenticate($credentials);
             if ($user) {
+                $this->auth->login($user);
                 return $response->withRedirect($this->router->pathFor('dashboard'));
             } else {
                 echo "Nope";die;

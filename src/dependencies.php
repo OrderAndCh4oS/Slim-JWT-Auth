@@ -1,6 +1,6 @@
 <?php
 // DIC configuration
-
+use RKA\Session;
 use Slim\Container;
 use Slim\Csrf\Guard;
 
@@ -53,6 +53,10 @@ $container['em'] = function (Container $container) {
 
 $container['csrf'] = function () {
     return new Guard;
+};
+
+$container['session'] = function () {
+    return new Session();
 };
 
 $container['auth'] = function (Container $container) {

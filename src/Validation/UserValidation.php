@@ -11,25 +11,26 @@ class UserValidation implements EventSubscriber
 {
     public function validate(User $user)
     {
+        $error = new Error();
         if (empty($user->getUsername())) {
-            Error::setError('username', 'Please enter a username');
+            $error->setError('username', 'Please enter a username');
         }
         if (strlen($user->getUsername()) > 80) {
-            Error::setError('username', 'Username is too long');
+            $error->setError('username', 'Username is too long');
         }
         if (preg_match('/[^A-Za-z0-9_-]/', $user->getUsername()) && !empty($user->getUsername())) {
-            Error::setError('username', 'Username can only contain letters, numbers, underscores and hyphens');
+            $error->setError('username', 'Username can only contain letters, numbers, underscores and hyphens');
         }
         if (empty($user->getEmailAddress())) {
-            Error::setError('email', 'Please enter an email address');
+            $error->setError('email', 'Please enter an email address');
         }
         if (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL) && !empty($user->getEmailAddress())) {
-            Error::setError('email', 'Please enter a valid email address');
+            $error->setError('email', 'Please enter a valid email address');
         }
         if (empty($user->getPlainPassword())) {
-            Error::setError('password', 'Please enter a password');
+            $error->setError('password', 'Please enter a password');
         }
-        if (Error::hasErrors()) {
+        if ($error->hasErrors()) {
             throw new ValidationException();
         }
     }

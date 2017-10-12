@@ -2,16 +2,29 @@
 
 namespace Oacc\Error;
 
+
+use RKA\Session;
+
 class Error
 {
-    public static function setError($name, $message) {
-        if (!self::hasErrors()) {
-            $_SESSION['errors'] = [];
-        }
-        $_SESSION['errors'][$name][] = $message;
+    /**
+     * Session
+     */
+    private $session;
+    public function __construct()
+    {
+        $this->session = new Session();
     }
 
-    public static function hasErrors() {
-        return array_key_exists('errors', $_SESSION);
+    public function setError($name, $message)
+    {
+        $errors = $this->session->errors;
+        $errors[$name][] = $message;
+        $this->session->errors = $errors;
+    }
+
+    public function hasErrors()
+    {
+        return isset($this->session->errors);
     }
 }

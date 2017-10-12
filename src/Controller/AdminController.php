@@ -15,6 +15,7 @@ use Respect\Validation\Validator as v;
 class AdminController extends Controller
 {
     public function indexAction(Request $request, Response $response, $args = []) {
+        echo $this->session->user;die;
         return $this->view->render($response, 'index.twig');
     }
 }

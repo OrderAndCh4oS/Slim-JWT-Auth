@@ -2,11 +2,24 @@
 
 namespace Oacc\Middleware;
 
+use RKA\Session;
+use Slim\Container;
+use Slim\Views\Twig;
+
 class Middleware
 {
-    protected $container;
+    /**
+     * @var Twig
+     */
+    protected $view;
+
+    /**
+     * @var Session
+     */
+    protected $session;
     public function __construct($container)
     {
-        $this->container = $container;
+        $this->view = $container->view;
+        $this->session = $container->session;
     }
 }

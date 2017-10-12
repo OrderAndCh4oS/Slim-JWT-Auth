@@ -4,6 +4,7 @@ namespace Oacc\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Authentication;
+use RKA\Session;
 use Slim\Router;
 use Slim\Views\Twig;
 
@@ -29,6 +30,11 @@ class Controller
     protected $router;
 
     /**
+     * @var Session $session
+     */
+    protected $session;
+
+    /**
      * Controller constructor.
      * @param $container
      */
@@ -37,5 +43,6 @@ class Controller
         $this->view = $container->view;
         $this->auth = $container->auth;
         $this->router = $container->router;
+        $this->session = $container->session;
     }
 }
