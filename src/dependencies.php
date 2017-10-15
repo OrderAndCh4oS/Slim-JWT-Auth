@@ -45,9 +45,6 @@ $container['em'] = function (Container $container) {
         false
     );
     $em = \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
-    // ToDo: See if the is a better way to add this listener. This will fire on every persist currently
-    $evm = $em->getEventManager();
-    $evm->addEventListener(['prePersist', 'preUpdate'], new \Oacc\Security\HashPasswordListener(new \Oacc\Security\UserPasswordEncoder()));
     return $em;
 };
 

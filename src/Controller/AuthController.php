@@ -32,6 +32,8 @@ class AuthController extends Controller
                 return $response->withRedirect($this->router->pathFor('register'));
             }
         }
+        // ToDo: Flash message that sign up has been successful
+        // ToDo: Send email with registration code to authenticate user
         return $this->view->render($response, 'auth/register.twig');
     }
 

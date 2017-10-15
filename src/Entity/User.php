@@ -10,7 +10,6 @@ use Oacc\Authentication\UserInterface;
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="user")
  * @ORM\Entity
- * @ORM\EntityListeners({"\Oacc\Validation\UserValidation"})
  */
 class User implements UserInterface
 {

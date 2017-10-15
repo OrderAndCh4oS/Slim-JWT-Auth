@@ -2,9 +2,13 @@
 
 namespace Oacc\Authentication;
 
-use Oacc\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Oacc\Entity\User;
+use Oacc\Error\Error;
+use Oacc\Security\HashPasswordListener;
+use Oacc\Security\UserPasswordEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
+use Oacc\Validation\UserValidationListener;
 use RKA\Session;
 use Slim\Http\Request;
 
@@ -28,7 +32,7 @@ class Authentication
      */
     public function authenticate($credentials)
     {
-        if(!array_key_exists('username', $credentials) || !array_key_exists('password', $credentials)) {
+        if (!array_key_exists('username', $credentials) || !array_key_exists('password', $credentials)) {
             return false;
         }
         /** @var EntityManager $em */
@@ -36,11 +40,10 @@ class Authentication
         $userRepository = $em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
-        if(!$user) {
+        if (!$user) {
             return false;
         }
-
-        if(!password_verify($credentials['password'], $user->getPassword())) {
+        if (!password_verify($credentials['password'], $user->getPassword())) {
             return false;
         }
 
@@ -53,11 +56,13 @@ class Authentication
     public function login(User $user)
     {
         Session::regenerate();
+        // ToDo: set other authentication details: role etc.
         $this->session->user = $user->getUsername();
     }
 
     public function logout()
     {
+        // ToDo: handle logging out
     }
 
     /**
@@ -68,6 +73,9 @@ class Authentication
     {
         /** @var EntityManager $em */
         $em = $this->container->em;
+        $evm = $em->getEventManager();
+        $evm->addEventListener(['prePersist', 'preUpdate'], new UserValidationListener($em, new Error()));
+        $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
         $user = new User();
         $user->setUsername($request->getParam('username'));
         $user->setEmailAddress($request->getParam('email'));
