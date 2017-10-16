@@ -38,6 +38,7 @@ class UserValidationListener implements EventSubscriber
      */
     public function validate(User $user)
     {
+        // ToDo: Check username and email do not already exist
         if (empty($user->getUsername())) {
             $this->error->setError('username', 'Please enter a username');
         }

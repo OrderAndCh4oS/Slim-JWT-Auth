@@ -3,7 +3,6 @@
 namespace Oacc\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oacc\Authentication\UserInterface;
 
 /**
  * User
@@ -228,6 +227,22 @@ class User implements UserInterface
             $this->username,
             $this->emailAddress,
             ) = unserialize($serialized);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastLogin(): \DateTime
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param \DateTime $lastLogin
+     */
+    public function setLastLogin(\DateTime $lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
     }
 
 }

@@ -13,6 +13,7 @@ class Error
     private $session;
     public function __construct()
     {
+        // ToDo: Should session be injected?
         $this->session = new Session();
     }
 

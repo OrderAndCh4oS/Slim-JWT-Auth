@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Authentication;
+namespace Oacc\Entity;
 
 interface UserInterface
 {
