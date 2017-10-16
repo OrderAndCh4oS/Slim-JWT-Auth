@@ -38,6 +38,7 @@ class AuthController extends Controller
     }
 
     public function logoutAction(Request $request, Response $response, $args = []) {
+        $this->auth->logout();
         return $this->view->render($response, 'index.twig');
     }
 }

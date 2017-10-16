@@ -9,4 +9,4 @@ $app->group(
     function () {
         $this->get('', 'Oacc\Controller\AdminController:indexAction')->setName('dashboard');
     }
-);
+)->add(new Oacc\Middleware\AuthMiddleware($container));

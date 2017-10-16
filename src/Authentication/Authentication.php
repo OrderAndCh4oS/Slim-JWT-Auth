@@ -56,13 +56,14 @@ class Authentication
     public function login(User $user)
     {
         Session::regenerate();
-        // ToDo: set other authentication details: role etc.
+        // ToDo: set any other authentication details.
         $this->session->user = $user->getUsername();
+        $this->session->roles = $user->getRoles();
     }
 
     public function logout()
     {
-        // ToDo: handle logging out
+        Session::destroy();
     }
 
     /**
