@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title_tag %}Drone Squadron:{% endblock %}</title>
+    <title>{% block title_tag %}Mejuicer:{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="https://unpkg.com/tachyons@4.8.1/css/tachyons.min.css"/>
     {% endblock %}
@@ -10,10 +10,14 @@
 <body class="sans-serif">
 <div class="page-wrapper pa4">
     <nav class="container pv1">
-        {% block nav %}
-            <a href="{{ path_for('login') }}" class="link f6 mb2 black hover-red">Login</a>
-            <a href="{{ path_for('register') }}" class="link f6 mb2 black hover-red">Register</a>
-        {% endblock %}
+        {% if(roles is not defined) %}
+            {% block nav %}
+                <a href="{{ path_for('login') }}" class="link f6 mb2 black hover-red">Login</a>
+                <a href="{{ path_for('register') }}" class="link f6 mb2 black hover-red">Register</a>
+            {% endblock %}
+        {% else %}
+            <a href="{{ path_for('logout') }}" class="link f6 mb2 black hover-red">Logout</a>
+        {% endif %}
     </nav>
     <section class="container ">
         {% block content %}
