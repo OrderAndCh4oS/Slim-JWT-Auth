@@ -38,12 +38,14 @@ class UserValidationListener implements EventSubscriber
      */
     public function validate(User $user)
     {
-        // ToDo: Check username and email do not already exist
         if (empty($user->getUsername())) {
             $this->error->setError('username', 'Please enter a username');
         }
         if (strlen($user->getUsername()) > 80) {
             $this->error->setError('username', 'Username is too long');
+        }
+        if (!$this->fieldIsAvailable(['username' => $user->getUsername()], 'Oacc\Entity\User')) {
+            $this->error->setError('username', 'Username is not available');
         }
         if (preg_match('/[^A-Za-z0-9_-]/', $user->getUsername()) && !empty($user->getUsername())) {
             $this->error->setError('username', 'Username can only contain letters, numbers, underscores and hyphens');
@@ -54,12 +56,23 @@ class UserValidationListener implements EventSubscriber
         if (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL) && !empty($user->getEmailAddress())) {
             $this->error->setError('email', 'Please enter a valid email address');
         }
+        if (!$this->fieldIsAvailable(['emailAddress' => $user->getEmailAddress()], 'Oacc\Entity\User')) {
+            $this->error->setError('email', 'An account has already been registered');
+        }
         if (empty($user->getPlainPassword())) {
             $this->error->setError('password', 'Please enter a password');
         }
         if ($this->error->hasErrors()) {
             throw new ValidationException();
         }
+    }
+
+    private function fieldIsAvailable($criteria, $entityName)
+    {
+        $entityRepository = $this->em->getRepository($entityName);
+        $entity = $entityRepository->findOneBy($criteria);
+
+        return !$entity;
     }
 
     public function prePersist(LifecycleEventArgs $args)
