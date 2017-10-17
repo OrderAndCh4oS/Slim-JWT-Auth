@@ -14,6 +14,7 @@ class AuthController extends Controller
                 'username' => $request->getParam('username'),
                 'password' => $request->getParam('password')
             ];
+            /** @var User $user */
             $user = $this->auth->authenticate($credentials);
             if ($user) {
                 $this->auth->login($user);
