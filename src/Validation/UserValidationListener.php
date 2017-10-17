@@ -2,41 +2,46 @@
 
 namespace Oacc\Validation;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
-class UserValidationListener implements EventSubscriber
+class UserValidationListener extends ValidationListener
 {
+
     /**
-     * @var EntityRepository
+     * @var EntityManager
      */
     private $em;
-    /**
-     * @var Error
-     */
-    private $error;
 
     /**
      * UserValidationListener constructor.
-     * @param EntityManager $em
      * @param Error $error
+     * @param EntityManager $em
      */
     public function __construct(EntityManager $em, Error $error)
     {
+        parent::__construct($error);
         $this->em = $em;
-        $this->error = $error;
+    }
+
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        if (!$entity instanceof User) {
+            return;
+        }
+        $this->validation($entity);
+        $this->checkErrors();
     }
 
     /**
      * @param User $user
      * @throws ValidationException
      */
-    public function validate(User $user)
+    public function validation(User $user)
     {
         if (empty($user->getUsername())) {
             $this->error->setError('username', 'Please enter a username');
@@ -62,9 +67,6 @@ class UserValidationListener implements EventSubscriber
         if (empty($user->getPlainPassword())) {
             $this->error->setError('password', 'Please enter a password');
         }
-        if ($this->error->hasErrors()) {
-            throw new ValidationException();
-        }
     }
 
     private function fieldIsAvailable($criteria, $entityName)
@@ -75,22 +77,14 @@ class UserValidationListener implements EventSubscriber
         return !$entity;
     }
 
-    public function prePersist(LifecycleEventArgs $args)
-    {
-        $entity = $args->getEntity();
-        if (!$entity instanceof User) {
-            return;
-        }
-        $this->validate($entity);
-    }
-
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
         if (!$entity instanceof User) {
             return;
         }
-        $this->validate($entity);
+        $this->validation($entity);
+        $this->checkErrors();
     }
 
     /**
