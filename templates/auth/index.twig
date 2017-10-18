@@ -13,11 +13,12 @@
                     <div class="measure">
                         <label for="username" class="f6 b db mb2">Username</label>
                         <input name="username"
+                               value="{{ usernmae }}"
                                id="username"
                                class="input-reset ba pv2 mb2 db w-100 {{ errors.username ? 'b--red' : 'b--black-40' }}"
                         >
                         {% for message in errors.username %}
-                            <small id="name-desc" class="f6 red db mb2">{{ message }}</small>
+                            <small class="f6 red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
                     <div class="measure">
@@ -28,7 +29,12 @@
                                class="input-reset ba pv2 mb2 db w-100 {{ errors.password ? 'b--red' : 'b--black-40' }}"
                         >
                         {% for message in errors.password %}
-                            <small id="name-desc" class="f6 red db mb2">{{ message }}</small>
+                            <small class="f6 red db mb2">{{ message }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="measure">
+                        {% for message in errors.auth %}
+                            <small class="f6 red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
                     <input type="submit"

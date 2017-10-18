@@ -3,6 +3,7 @@
 namespace Oacc\Controller;
 
 use Oacc\Authentication\Authentication;
+use Oacc\Error\Error;
 use RKA\Session;
 use Slim\Container;
 use Slim\Router;
@@ -35,6 +36,11 @@ class Controller
     protected $session;
 
     /**
+     * @var Error
+     */
+    protected $error;
+
+    /**
      * Controller constructor.
      * @param $container
      */
@@ -44,5 +50,6 @@ class Controller
         $this->auth = $container->auth;
         $this->router = $container->router;
         $this->session = $container->session;
+        $this->error = $container->error;
     }
 }

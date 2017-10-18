@@ -15,6 +15,12 @@ class AuthController extends Controller
                 'username' => $request->getParam('username'),
                 'password' => $request->getParam('password'),
             ];
+            if (empty($credentials['username'])) {
+                $this->error->setError('username', 'Enter your username');
+            }
+            if (empty($credentials['password'])) {
+                $this->error->setError('password', 'Enter your password');
+            }
             /** @var User $user */
             $user = $this->auth->authenticate($credentials);
             if ($user) {
@@ -22,8 +28,9 @@ class AuthController extends Controller
 
                 return $response->withRedirect($this->router->pathFor('dashboard'));
             } else {
-                // ToDo: handle failed login
-                echo "Nope";
+                $this->error->setError('auth', 'Invalid login details');
+
+                return $response->withRedirect($this->router->pathFor('login'));
             }
         }
 
@@ -38,8 +45,8 @@ class AuthController extends Controller
                 return $response->withRedirect($this->router->pathFor('register'));
             }
         }
+
         // ToDo: Flash message that sign up has been successful
-        // ToDo: Send email with registration code to authenticate user
         return $this->view->render($response, 'auth/register.twig');
     }
 

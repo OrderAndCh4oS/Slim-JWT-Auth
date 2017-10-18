@@ -3,6 +3,7 @@
 use RKA\Session;
 use Slim\Container;
 use Slim\Csrf\Guard;
+use Oacc\Error\Error;
 
 $container = $app->getContainer();
 $container['logger'] = function (Container $container) {
@@ -49,7 +50,10 @@ $container['csrf'] = function () {
     return new Guard;
 };
 $container['session'] = function () {
-    return new Session();
+    return new Session;
+};
+$container['error'] = function () {
+    return new Error;
 };
 $container['auth'] = function (Container $container) {
     return new Oacc\Authentication\Authentication($container);

@@ -15,15 +15,24 @@ use Slim\Http\Request;
 
 class Authentication
 {
-    protected $container;
+    /**
+     * @var EntityManager
+     */
+    protected $em;
     /**
      * @var Session $session
      */
     protected $session;
 
+    /**
+     * @var Error
+     */
+    protected $error;
+
     public function __construct(Container $container)
     {
-        $this->container = $container;
+        $this->em = $container->em;
+        $this->error = $container->error;
         $this->session = $container->session;
     }
 
@@ -37,8 +46,7 @@ class Authentication
             return false;
         }
         /** @var EntityManager $em */
-        $em = $this->container->em;
-        $userRepository = $em->getRepository('\Oacc\Entity\User');
+        $userRepository = $this->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
         if (!$user) {
@@ -73,17 +81,16 @@ class Authentication
     public function register(Request $request)
     {
         /** @var EntityManager $em */
-        $em = $this->container->em;
-        $evm = $em->getEventManager();
-        $evm->addEventListener(['prePersist', 'preUpdate'], new UserValidationListener($em, new Error()));
+        $evm = $this->em->getEventManager();
+        $evm->addEventListener(['prePersist', 'preUpdate'], new UserValidationListener($this->em, $this->error));
         $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
         $user = new User();
         $user->setUsername($request->getParam('username'));
         $user->setEmailAddress($request->getParam('email'));
         $user->setPlainPassword($request->getParam('password'));
         try {
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
         } catch (ValidationException $e) {
             return false;
         }
