@@ -7,6 +7,9 @@
 {% block content %}
     <div class="holder">
         <h1 class="title">Register</h1>
+        {% for message in flash('success') %}
+            <div class="f6 green db mb2">{{ message }}</div>
+        {% endfor %}
         <form action="" method="post" class="black-80">
             <div class="measure">
                 <label for="username" class="f6 b db mb2">Username</label>
@@ -53,7 +56,8 @@
             <input type="submit"
                    name="submit"
                    value="Sign Up"
-                   class="input-reset b ph3 pv2 mt3 ba b--black-40 hover-red bg-transparent pointer f6 dib">
+                   class="input-reset b ph3 pv2 mt3 ba b--black-40 hover-red bg-transparent pointer f6 dib"
+            >
         </form>
     </div>
 {% endblock %}

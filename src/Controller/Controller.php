@@ -6,6 +6,7 @@ use Oacc\Authentication\Authentication;
 use Oacc\Error\Error;
 use RKA\Session;
 use Slim\Container;
+use Slim\Flash\Messages;
 use Slim\Router;
 use Slim\Views\Twig;
 
@@ -41,6 +42,11 @@ class Controller
     protected $error;
 
     /**
+     * @var Messages
+     */
+    protected $flash;
+
+    /**
      * Controller constructor.
      * @param $container
      */
@@ -50,6 +56,7 @@ class Controller
         $this->auth = $container->auth;
         $this->router = $container->router;
         $this->session = $container->session;
+        $this->flash = $container->flash;
         $this->error = $container->error;
     }
 }

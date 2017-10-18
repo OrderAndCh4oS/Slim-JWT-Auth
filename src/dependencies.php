@@ -1,9 +1,9 @@
 <?php
 // DIC configuration
+use Oacc\Error\Error;
 use RKA\Session;
 use Slim\Container;
 use Slim\Csrf\Guard;
-use Oacc\Error\Error;
 
 $container = $app->getContainer();
 $container['logger'] = function (Container $container) {
@@ -13,6 +13,9 @@ $container['logger'] = function (Container $container) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
 
     return $logger;
+};
+$container['flash'] = function () {
+    return new \Slim\Flash\Messages();
 };
 // Register component on container
 $container['view'] = function (Container $container) {
@@ -30,6 +33,7 @@ $container['view'] = function (Container $container) {
     $view = new \Slim\Views\Twig($settings["template_path"], $viewOptions);
     $view->addExtension(new Twig_Extension_Debug());
     $view->addExtension(new Slim\Views\TwigExtension($container->router, $container->request->getUri()));
+    $view->addExtension(new \Knlv\Slim\Views\TwigMessages($container->flash));
 
     return $view;
 };
