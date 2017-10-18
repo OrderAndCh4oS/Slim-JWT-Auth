@@ -10,6 +10,7 @@ use Oacc\Security\UserPasswordEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use RKA\Session;
+use Slim\Container;
 use Slim\Http\Request;
 
 class Authentication
@@ -20,7 +21,7 @@ class Authentication
      */
     protected $session;
 
-    public function __construct($container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
         $this->session = $container->session;

@@ -25,7 +25,6 @@ class AuthMiddleware extends Middleware
         }
         $this->view->getEnvironment()->addGlobal('user', $this->session->get('user'));
         $this->view->getEnvironment()->addGlobal('roles', $this->session->get('roles'));
-
         $response = $next($request, $response);
 
         return $response;

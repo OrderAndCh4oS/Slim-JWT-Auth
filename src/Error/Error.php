@@ -2,7 +2,6 @@
 
 namespace Oacc\Error;
 
-
 use RKA\Session;
 
 class Error
@@ -11,6 +10,7 @@ class Error
      * Session
      */
     private $session;
+
     public function __construct()
     {
         $this->session = new Session();

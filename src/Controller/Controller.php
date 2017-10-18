@@ -2,7 +2,6 @@
 
 namespace Oacc\Controller;
 
-use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Authentication;
 use RKA\Session;
 use Slim\Router;

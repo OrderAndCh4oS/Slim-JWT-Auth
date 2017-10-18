@@ -20,32 +20,13 @@ class HashPasswordListener implements EventSubscriber
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function prePersist(LifecycleEventArgs $args) {
-        $entity = $args->getEntity();
-        if(!$entity instanceof User) {
-            return;
-        }
-        $this->encodePassword($entity);
-
-    }
-
-    public function preUpdate(LifecycleEventArgs $args) {
-        $entity = $args->getEntity();
-        if(!$entity instanceof User) {
-            return;
-        }
-
-        $this->encodePassword($entity);
-
-        // necessary to force the update to see the change
-        $em = $args->getEntityManager();
-        $meta = $em->getClassMetadata(get_class($entity));
-        $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
-    }
-
-    public function getSubscribedEvents()
+    public function prePersist(LifecycleEventArgs $args)
     {
-        return ['prePersist', 'preUpdate'];
+        $entity = $args->getEntity();
+        if (!$entity instanceof User) {
+            return;
+        }
+        $this->encodePassword($entity);
     }
 
     /**
@@ -56,5 +37,23 @@ class HashPasswordListener implements EventSubscriber
         $encoded = $this->passwordEncoder->encodePassword($entity);
         $entity->setPassword($encoded);
         $entity->eraseCredentials();
+    }
+
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        if (!$entity instanceof User) {
+            return;
+        }
+        $this->encodePassword($entity);
+        // necessary to force the update to see the change
+        $em = $args->getEntityManager();
+        $meta = $em->getClassMetadata(get_class($entity));
+        $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
+    }
+
+    public function getSubscribedEvents()
+    {
+        return ['prePersist', 'preUpdate'];
     }
 }

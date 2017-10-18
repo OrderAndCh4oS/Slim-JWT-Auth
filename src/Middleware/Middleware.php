@@ -4,7 +4,6 @@ namespace Oacc\Middleware;
 
 use RKA\Session;
 use Slim\Container;
-use Slim\Route;
 use Slim\Router;
 use Slim\Views\Twig;
 
@@ -25,7 +24,7 @@ class Middleware
      */
     protected $router;
 
-    public function __construct($container)
+    public function __construct(Container $container)
     {
         $this->view = $container->view;
         $this->session = $container->session;

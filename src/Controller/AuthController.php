@@ -8,25 +8,30 @@ use Slim\Http\Response;
 
 class AuthController extends Controller
 {
-    public function indexAction(Request $request, Response $response, $args = []) {
+    public function indexAction(Request $request, Response $response, $args = [])
+    {
         if ($request->isPost()) {
             $credentials = [
                 'username' => $request->getParam('username'),
-                'password' => $request->getParam('password')
+                'password' => $request->getParam('password'),
             ];
             /** @var User $user */
             $user = $this->auth->authenticate($credentials);
             if ($user) {
                 $this->auth->login($user);
+
                 return $response->withRedirect($this->router->pathFor('dashboard'));
             } else {
-                echo "Nope";die;
+                // ToDo: handle failed login
+                echo "Nope";
             }
         }
+
         return $this->view->render($response, 'auth/index.twig');
     }
 
-    public function registerAction(Request $request, Response $response, $args = []) {
+    public function registerAction(Request $request, Response $response, $args = [])
+    {
         if ($request->isPost()) {
             $user = $this->auth->register($request);
             if (!$user) {
@@ -38,8 +43,10 @@ class AuthController extends Controller
         return $this->view->render($response, 'auth/register.twig');
     }
 
-    public function logoutAction(Request $request, Response $response, $args = []) {
+    public function logoutAction(Request $request, Response $response, $args = [])
+    {
         $this->auth->logout();
+
         return $this->view->render($response, 'index.twig');
     }
 }

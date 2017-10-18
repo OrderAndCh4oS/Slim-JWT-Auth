@@ -13,7 +13,8 @@ use Slim\Http\Response;
 
 class PageController extends Controller
 {
-    public function indexAction(Request $request, Response $response, $args = []) {
+    public function indexAction(Request $request, Response $response, $args = [])
+    {
         return $this->view->render($response, 'index.twig');
     }
 }
