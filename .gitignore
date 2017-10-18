@@ -19,7 +19,12 @@
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
-.idea/
+.idea/**/deployment.xml
+.idea/**/modules.xml
+.idea/**/php.xml
+.idea/**/mejuicer.iml
+.idea/**/vagrant.xml
+.idea/**/vcs.xml
 
 # Gradle:
 .idea/**/gradle.xml
