@@ -57,7 +57,6 @@ class Authentication
     public function login(User $user)
     {
         Session::regenerate();
-        // ToDo: set any other authentication details.
         $this->session->user = $user->getUsername();
         $this->session->roles = $user->getRoles();
     }
