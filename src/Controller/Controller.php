@@ -4,6 +4,7 @@ namespace Oacc\Controller;
 
 use Oacc\Authentication\Authentication;
 use RKA\Session;
+use Slim\Container;
 use Slim\Router;
 use Slim\Views\Twig;
 
@@ -37,7 +38,7 @@ class Controller
      * Controller constructor.
      * @param $container
      */
-    public function __construct($container)
+    public function __construct(Container $container)
     {
         $this->view = $container->view;
         $this->auth = $container->auth;
