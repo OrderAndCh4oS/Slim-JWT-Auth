@@ -2,8 +2,6 @@
 
 namespace Oacc\Middleware;
 
-use Oacc\Message\Message;
-
 class MessageMiddleware extends Middleware
 {
     public function __invoke($request, $response, $next)
