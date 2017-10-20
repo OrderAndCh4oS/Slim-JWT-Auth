@@ -3,10 +3,10 @@
 namespace Oacc\Controller;
 
 use Oacc\Authentication\Authentication;
-use Oacc\Error\Error;
+use Oacc\Message\Error;
+use Oacc\Message\Message;
 use RKA\Session;
 use Slim\Container;
-use Slim\Flash\Messages;
 use Slim\Router;
 use Slim\Views\Twig;
 
@@ -37,14 +37,14 @@ class Controller
     protected $session;
 
     /**
-     * @var Error
+     * @var Error $error
      */
     protected $error;
 
     /**
-     * @var Messages
+     * @var Message $message
      */
-    protected $flash;
+    protected $message;
 
     /**
      * Controller constructor.
@@ -56,7 +56,7 @@ class Controller
         $this->auth = $container->auth;
         $this->router = $container->router;
         $this->session = $container->session;
-        $this->flash = $container->flash;
         $this->error = $container->error;
+        $this->message = $container->message;
     }
 }

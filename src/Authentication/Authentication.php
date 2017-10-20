@@ -4,7 +4,7 @@ namespace Oacc\Authentication;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
-use Oacc\Error\Error;
+use Oacc\Message\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
 use Oacc\Validation\Exceptions\ValidationException;

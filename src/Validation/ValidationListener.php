@@ -3,7 +3,7 @@
 namespace Oacc\Validation;
 
 use Doctrine\Common\EventSubscriber;
-use Oacc\Error\Error;
+use Oacc\Message\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
 abstract class ValidationListener implements EventSubscriber

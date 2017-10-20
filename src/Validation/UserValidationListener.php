@@ -5,7 +5,7 @@ namespace Oacc\Validation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
-use Oacc\Error\Error;
+use Oacc\Message\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
 class UserValidationListener extends ValidationListener

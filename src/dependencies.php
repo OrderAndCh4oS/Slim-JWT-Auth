@@ -1,6 +1,7 @@
 <?php
 // DIC configuration
-use Oacc\Error\Error;
+use Oacc\Message\Error;
+use Oacc\Message\Message;
 use RKA\Session;
 use Slim\Container;
 use Slim\Csrf\Guard;
@@ -56,8 +57,11 @@ $container['csrf'] = function () {
 $container['session'] = function () {
     return new Session;
 };
+$container['message'] = function () {
+    return new Message();
+};
 $container['error'] = function () {
-    return new Error;
+    return new Error();
 };
 $container['auth'] = function (Container $container) {
     return new Oacc\Authentication\Authentication($container);
