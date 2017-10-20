@@ -25,6 +25,7 @@
 .idea/**/mejuicer.iml
 .idea/**/vagrant.xml
 .idea/**/vcs.xml
+.idea/**/symfony2.xml
 
 # Gradle:
 .idea/**/gradle.xml
