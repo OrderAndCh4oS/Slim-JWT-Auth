@@ -56,6 +56,6 @@ class AuthController extends Controller
     {
         $this->auth->logout();
 
-        return $this->view->render($response, 'index.twig');
+        return $response->withRedirect($this->router->pathFor('login'));
     }
 }

@@ -49,10 +49,7 @@ class Authentication
         $userRepository = $this->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
-        if (!$user) {
-            return false;
-        }
-        if (!password_verify($credentials['password'], $user->getPassword())) {
+        if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
             return false;
         }
 
