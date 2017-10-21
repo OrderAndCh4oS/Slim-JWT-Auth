@@ -44,16 +44,6 @@ class HashPasswordListener implements EventSubscriber
     }
 
     /**
-     * @param $entity
-     */
-    public function encodePassword(User $entity)
-    {
-        $encoded = $this->passwordEncoder->encodePassword($entity);
-        $entity->setPassword($encoded);
-        $entity->eraseCredentials();
-    }
-
-    /**
      * @param LifecycleEventArgs $args
      */
     public function preUpdate(LifecycleEventArgs $args)
@@ -66,6 +56,16 @@ class HashPasswordListener implements EventSubscriber
         $em = $args->getEntityManager();
         $meta = $em->getClassMetadata(get_class($entity));
         $em->getUnitOfWork()->recomputeSingleEntityChangeSet($meta, $entity);
+    }
+
+    /**
+     * @param $entity
+     */
+    public function encodePassword(User $entity)
+    {
+        $encoded = $this->passwordEncoder->encodePassword($entity);
+        $entity->setPassword($encoded);
+        $entity->eraseCredentials();
     }
 
     /**

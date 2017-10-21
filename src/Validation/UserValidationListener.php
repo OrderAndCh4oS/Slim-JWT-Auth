@@ -48,6 +48,26 @@ class UserValidationListener extends ValidationListener
         $this->checkErrors();
     }
 
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        if (!$entity instanceof User) {
+            return;
+        }
+        $this->validation($entity);
+        $this->checkErrors();
+    }
+
+    /**
+     * Returns an array of events this subscriber wants to listen to.
+     *
+     * @return array
+     */
+    public function getSubscribedEvents()
+    {
+        return ['prePersist', 'preUpdate'];
+    }
+
     /**
      * @param User $user
      * @throws ValidationException
@@ -110,26 +130,5 @@ class UserValidationListener extends ValidationListener
         } elseif ($user->getPlainPassword() != $this->confirmPassword) {
             $this->error->setError('password_confirm', 'Passwords do not match');
         }
-    }
-
-    public function preUpdate(LifecycleEventArgs $args)
-    {
-        $entity = $args->getEntity();
-        if (!$entity instanceof User) {
-            return;
-        }
-        $this->validation($entity);
-        $this->checkErrors();
-    }
-
-    /**
-     * Returns an array of events this subscriber wants to listen to.
-     *
-     * @return array
-     */
-    public
-    function getSubscribedEvents()
-    {
-        return ['prePersist', 'preUpdate'];
     }
 }
