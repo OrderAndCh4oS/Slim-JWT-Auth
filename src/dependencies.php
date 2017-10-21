@@ -15,9 +15,6 @@ $container['logger'] = function (Container $container) {
 
     return $logger;
 };
-$container['flash'] = function () {
-    return new \Slim\Flash\Messages();
-};
 // Register component on container
 $container['view'] = function (Container $container) {
     $settings = $container->get('settings')['view'];
@@ -34,7 +31,6 @@ $container['view'] = function (Container $container) {
     $view = new \Slim\Views\Twig($settings["template_path"], $viewOptions);
     $view->addExtension(new Twig_Extension_Debug());
     $view->addExtension(new Slim\Views\TwigExtension($container->router, $container->request->getUri()));
-    $view->addExtension(new \Knlv\Slim\Views\TwigMessages($container->flash));
 
     return $view;
 };

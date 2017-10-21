@@ -20,17 +20,15 @@ class Message
 
     public function setMessage($name, $message)
     {
-        $type = $this->type;
         $messages = $this->session->messageBag;
-        $messages[$type][$name][] = $message;
+        $messages[$this->type][$name][] = $message;
         $this->session->messageBag = $messages;
     }
 
     public function hasMessage()
     {
-        $type = $this->type;
         $messages = $this->session->messageBag;
 
-        return isset($messages[$type]);
+        return isset($messages[$this->type]);
     }
 }

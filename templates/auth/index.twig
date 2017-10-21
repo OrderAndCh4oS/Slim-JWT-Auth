@@ -16,9 +16,9 @@
                         <input name="username"
                                value="{{ usernmae }}"
                                id="username"
-                               class="input-reset ba pv2 mb2 db w-100 {{ errors.username ? 'b--red' : 'b--black-40' }}"
+                               class="input-reset ba pv2 mb2 db w-100 {{ error.username ? 'b--red' : 'b--black-40' }}"
                         >
-                        {% for message in errors.username %}
+                        {% for message in error.username %}
                             <small class="f6 red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
@@ -27,14 +27,14 @@
                         <input type="password"
                                name="password"
                                id="password"
-                               class="input-reset ba pv2 mb2 db w-100 {{ errors.password ? 'b--red' : 'b--black-40' }}"
+                               class="input-reset ba pv2 mb2 db w-100 {{ error.password ? 'b--red' : 'b--black-40' }}"
                         >
-                        {% for message in errors.password %}
+                        {% for message in error.password %}
                             <small class="f6 red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
                     <div class="measure">
-                        {% for message in errors.auth %}
+                        {% for message in error.auth %}
                             <small class="f6 red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>

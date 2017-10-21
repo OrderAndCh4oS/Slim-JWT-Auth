@@ -4,6 +4,7 @@ namespace Oacc\Authentication;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
+use Oacc\Entity\UserInterface;
 use Oacc\Message\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
@@ -49,10 +50,7 @@ class Authentication
         $userRepository = $this->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
-        if (!$user) {
-            return false;
-        }
-        if (!password_verify($credentials['password'], $user->getPassword())) {
+        if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
             return false;
         }
 
@@ -60,9 +58,9 @@ class Authentication
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      */
-    public function login(User $user)
+    public function login(UserInterface $user)
     {
         Session::regenerate();
         $this->session->user = $user->getUsername();
@@ -96,18 +94,5 @@ class Authentication
         }
 
         return $user;
-    }
-
-    public function hasRole($role = "ROLE_USER")
-    {
-        return in_array($role, $this->getUser()->getRoles());
-    }
-
-    /**
-     * @return User|false
-     */
-    public function getUser()
-    {
-        return false;
     }
 }
