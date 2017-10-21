@@ -169,6 +169,9 @@ class User implements UserInterface
         $this->password = null;
     }
 
+    /**
+     * @return array
+     */
     public function getRoles()
     {
         return $this->roles;
@@ -204,30 +207,6 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         return $this->plainPassword = null;
-    }
-
-    /** @see \Serializable::serialize() */
-    public function serialize()
-    {
-        return serialize(
-            array(
-                $this->id,
-                $this->username,
-                $this->emailAddress,
-            )
-        );
-    }
-
-    /** @see \Serializable::unserialize()
-     * @param $serialized
-     */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->username,
-            $this->emailAddress,
-            ) = unserialize($serialized);
     }
 
     /**

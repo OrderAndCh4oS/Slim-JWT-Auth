@@ -2,8 +2,18 @@
 
 namespace Oacc\Middleware;
 
+/**
+ * Class MessageMiddleware
+ * @package Oacc\Middleware
+ */
 class MessageMiddleware extends Middleware
 {
+    /**
+     * @param $request
+     * @param $response
+     * @param $next
+     * @return mixed
+     */
     public function __invoke($request, $response, $next)
     {
         if (isset($this->session->messageBag)) {

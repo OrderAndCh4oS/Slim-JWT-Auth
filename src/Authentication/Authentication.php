@@ -3,7 +3,9 @@
 namespace Oacc\Authentication;
 
 use Doctrine\ORM\EntityManager;
+use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
+use Oacc\Entity\UserInterface;
 use Oacc\Message\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
@@ -13,6 +15,10 @@ use RKA\Session;
 use Slim\Container;
 use Slim\Http\Request;
 
+/**
+ * Class Authentication
+ * @package Oacc\Authentication
+ */
 class Authentication
 {
     /**
@@ -29,6 +35,10 @@ class Authentication
      */
     protected $error;
 
+    /**
+     * Authentication constructor.
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->em = $container->em;
@@ -38,34 +48,44 @@ class Authentication
 
     /**
      * @param $credentials
-     * @return User|false
+     * @return User
+     * @throws AuthenticationException
      */
-    public function authenticate($credentials)
+    public function authenticate($credentials): User
     {
-        if (!array_key_exists('username', $credentials) || !array_key_exists('password', $credentials)) {
-            return false;
+        if (empty($credentials['username'])) {
+            $this->error->setError('username', 'Missing username');
+        }
+        if (empty($credentials['password'])) {
+            $this->error->setError('password', 'Missing password');
+        }
+        if ($this->error->hasErrors()) {
+            throw new AuthenticationException("Please enter your login details");
         }
         /** @var EntityManager $em */
         $userRepository = $this->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
         if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
-            return false;
+            throw new AuthenticationException("Invalid login details");
         }
 
         return $user;
     }
 
     /**
-     * @param User $user
+     * @param UserInterface $user
      */
-    public function login(User $user)
+    public function login(UserInterface $user)
     {
         Session::regenerate();
         $this->session->user = $user->getUsername();
         $this->session->roles = $user->getRoles();
     }
 
+    /**
+     *
+     */
     public function logout()
     {
         Session::destroy();
@@ -73,13 +93,16 @@ class Authentication
 
     /**
      * @param Request $request
-     * @return bool|User
+     * @return bool
      */
     public function register(Request $request)
     {
         /** @var EntityManager $em */
         $evm = $this->em->getEventManager();
-        $evm->addEventListener(['prePersist', 'preUpdate'], new UserValidationListener($this->em, $this->error));
+        $evm->addEventListener(
+            ['prePersist', 'preUpdate'],
+            new UserValidationListener($request->getParam('password-confirm'), $this->em, $this->error)
+        );
         $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
         $user = new User();
         $user->setUsername($request->getParam('username'));
@@ -92,19 +115,6 @@ class Authentication
             return false;
         }
 
-        return $user;
-    }
-
-    public function hasRole($role = "ROLE_USER")
-    {
-        return in_array($role, $this->getUser()->getRoles());
-    }
-
-    /**
-     * @return User|false
-     */
-    public function getUser()
-    {
-        return false;
+        return true;
     }
 }

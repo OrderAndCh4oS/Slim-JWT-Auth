@@ -2,12 +2,22 @@
 
 namespace Oacc\Controller;
 
-use Oacc\Entity\User;
+use Oacc\Authentication\Exceptions\AuthenticationException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class AuthController
+ * @package Oacc\Controller
+ */
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return \Psr\Http\Message\ResponseInterface|static
+     */
     public function indexAction(Request $request, Response $response, $args = [])
     {
         if ($request->isPost()) {
@@ -15,33 +25,32 @@ class AuthController extends Controller
                 'username' => $request->getParam('username'),
                 'password' => $request->getParam('password'),
             ];
-            if (empty($credentials['username'])) {
-                $this->error->setError('username', 'Enter your username');
-            }
-            if (empty($credentials['password'])) {
-                $this->error->setError('password', 'Enter your password');
-            }
-            /** @var User $user */
-            $user = $this->auth->authenticate($credentials);
-            if ($user) {
+            try {
+                $user = $this->auth->authenticate($credentials);
                 $this->auth->login($user);
-
-                return $response->withRedirect($this->router->pathFor('dashboard'));
-            } else {
-                $this->error->setError('auth', 'Invalid login details');
+            } catch (AuthenticationException $exception) {
+                $this->error->setError('auth', $exception->getMessage());
 
                 return $response->withRedirect($this->router->pathFor('login'));
             }
+
+            return $response->withRedirect($this->router->pathFor('dashboard'));
         }
 
         return $this->view->render($response, 'auth/index.twig');
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return \Psr\Http\Message\ResponseInterface|static
+     */
     public function registerAction(Request $request, Response $response, $args = [])
     {
         if ($request->isPost()) {
-            $user = $this->auth->register($request);
-            if (!$user) {
+            $this->auth->register($request);
+            if ($this->error->hasErrors()) {
                 return $response->withRedirect($this->router->pathFor('register'));
             }
             $this->message->setMessage('success', 'You have successfully registered');
@@ -52,6 +61,12 @@ class AuthController extends Controller
         return $this->view->render($response, 'auth/register.twig');
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return Response
+     */
     public function logoutAction(Request $request, Response $response, $args = [])
     {
         $this->auth->logout();

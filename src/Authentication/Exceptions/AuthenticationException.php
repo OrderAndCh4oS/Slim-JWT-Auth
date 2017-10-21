@@ -1,15 +1,15 @@
 <?php
 
-namespace Oacc\Validation\Exceptions;
+namespace Oacc\Authentication\Exceptions;
 
 /**
- * Class ValidationException
- * @package Oacc\Validation\Exceptions
+ * Class AuthenticationException
+ * @package Oacc\Authentication\Exceptions
  */
-class ValidationException extends \Exception
+class AuthenticationException extends \Exception
 {
     /**
-     * ValidationException constructor.
+     * AuthenticationException constructor.
      * @param string $message
      * @param int $code
      * @param \Exception|null $previous
