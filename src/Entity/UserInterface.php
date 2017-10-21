@@ -2,6 +2,10 @@
 
 namespace Oacc\Entity;
 
+/**
+ * Interface UserInterface
+ * @package Oacc\Entity
+ */
 interface UserInterface
 {
     /**

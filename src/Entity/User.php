@@ -169,6 +169,9 @@ class User implements UserInterface
         $this->password = null;
     }
 
+    /**
+     * @return array
+     */
     public function getRoles()
     {
         return $this->roles;

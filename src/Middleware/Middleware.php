@@ -7,6 +7,10 @@ use Slim\Container;
 use Slim\Router;
 use Slim\Views\Twig;
 
+/**
+ * Class Middleware
+ * @package Oacc\Middleware
+ */
 class Middleware
 {
     /**
@@ -24,6 +28,10 @@ class Middleware
      */
     protected $router;
 
+    /**
+     * Middleware constructor.
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->view = $container->view;

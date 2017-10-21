@@ -6,6 +6,10 @@ use Doctrine\Common\EventSubscriber;
 use Oacc\Message\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
+/**
+ * Class ValidationListener
+ * @package Oacc\Validation
+ */
 abstract class ValidationListener implements EventSubscriber
 {
 
@@ -23,6 +27,9 @@ abstract class ValidationListener implements EventSubscriber
         $this->error = $error;
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function checkErrors()
     {
         if ($this->error->hasErrors()) {

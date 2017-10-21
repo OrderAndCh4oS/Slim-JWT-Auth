@@ -14,6 +14,10 @@ use RKA\Session;
 use Slim\Container;
 use Slim\Http\Request;
 
+/**
+ * Class Authentication
+ * @package Oacc\Authentication
+ */
 class Authentication
 {
     /**
@@ -30,6 +34,10 @@ class Authentication
      */
     protected $error;
 
+    /**
+     * Authentication constructor.
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->em = $container->em;
@@ -42,7 +50,7 @@ class Authentication
      * @return User
      * @throws AuthenticationException
      */
-    public function authenticate($credentials)
+    public function authenticate($credentials): User
     {
         if (empty($credentials['username'])) {
             $this->error->setError('username', 'Missing username');
@@ -74,6 +82,9 @@ class Authentication
         $this->session->roles = $user->getRoles();
     }
 
+    /**
+     *
+     */
     public function logout()
     {
         Session::destroy();
@@ -81,9 +92,9 @@ class Authentication
 
     /**
      * @param Request $request
-     * @return bool|User
+     * @return User
      */
-    public function register(Request $request)
+    public function register(Request $request): User
     {
         /** @var EntityManager $em */
         $evm = $this->em->getEventManager();

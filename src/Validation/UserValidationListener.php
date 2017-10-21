@@ -9,6 +9,10 @@ use Oacc\Message\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 
+/**
+ * Class UserValidationListener
+ * @package Oacc\Validation
+ */
 class UserValidationListener extends ValidationListener
 {
 

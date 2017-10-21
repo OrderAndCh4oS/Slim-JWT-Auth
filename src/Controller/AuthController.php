@@ -6,8 +6,18 @@ use Oacc\Authentication\Exceptions\AuthenticationException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+/**
+ * Class AuthController
+ * @package Oacc\Controller
+ */
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return \Psr\Http\Message\ResponseInterface|static
+     */
     public function indexAction(Request $request, Response $response, $args = [])
     {
         if ($request->isPost()) {
@@ -30,6 +40,12 @@ class AuthController extends Controller
         return $this->view->render($response, 'auth/index.twig');
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return \Psr\Http\Message\ResponseInterface|static
+     */
     public function registerAction(Request $request, Response $response, $args = [])
     {
         if ($request->isPost()) {
@@ -45,6 +61,12 @@ class AuthController extends Controller
         return $this->view->render($response, 'auth/register.twig');
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return static
+     */
     public function logoutAction(Request $request, Response $response, $args = [])
     {
         $this->auth->logout();
