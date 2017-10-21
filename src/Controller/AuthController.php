@@ -49,7 +49,7 @@ class AuthController extends Controller
     public function registerAction(Request $request, Response $response, $args = [])
     {
         if ($request->isPost()) {
-            $user = $this->auth->register($request);
+            $this->auth->register($request);
             if ($this->error->hasErrors()) {
                 return $response->withRedirect($this->router->pathFor('register'));
             }
@@ -65,7 +65,7 @@ class AuthController extends Controller
      * @param Request $request
      * @param Response $response
      * @param array $args
-     * @return static
+     * @return Response
      */
     public function logoutAction(Request $request, Response $response, $args = [])
     {

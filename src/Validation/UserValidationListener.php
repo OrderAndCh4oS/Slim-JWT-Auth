@@ -7,7 +7,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
 use Oacc\Message\Error;
 use Oacc\Validation\Exceptions\ValidationException;
-use Slim\Http\Request;
 
 /**
  * Class UserValidationListener
@@ -20,10 +19,7 @@ class UserValidationListener extends ValidationListener
      * @var EntityManager
      */
     private $em;
-    /**
-     * @var Request
-     */
-    private $request;
+
     /**
      * @var string $confirmPassword
      */

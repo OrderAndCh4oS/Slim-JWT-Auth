@@ -9,6 +9,7 @@ use Oacc\Entity\UserInterface;
 use Oacc\Message\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
+use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use RKA\Session;
 use Slim\Container;
@@ -92,9 +93,9 @@ class Authentication
 
     /**
      * @param Request $request
-     * @return User
+     * @return bool
      */
-    public function register(Request $request): User
+    public function register(Request $request)
     {
         /** @var EntityManager $em */
         $evm = $this->em->getEventManager();
@@ -110,8 +111,10 @@ class Authentication
         try {
             $this->em->persist($user);
             $this->em->flush();
-        } finally {
-            return $user;
+        } catch (ValidationException $e) {
+            return false;
         }
+
+        return true;
     }
 }
