@@ -2,7 +2,7 @@
 
 namespace Oacc\Controller;
 
-use Oacc\Entity\User;
+use Oacc\Authentication\Exceptions\AuthenticationException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -15,23 +15,16 @@ class AuthController extends Controller
                 'username' => $request->getParam('username'),
                 'password' => $request->getParam('password'),
             ];
-            if (empty($credentials['username'])) {
-                $this->error->setError('username', 'Enter your username');
-            }
-            if (empty($credentials['password'])) {
-                $this->error->setError('password', 'Enter your password');
-            }
-            /** @var User $user */
-            $user = $this->auth->authenticate($credentials);
-            if ($user) {
+            try {
+                $user = $this->auth->authenticate($credentials);
                 $this->auth->login($user);
-
-                return $response->withRedirect($this->router->pathFor('dashboard'));
-            } else {
-                $this->error->setError('auth', 'Invalid login details');
+            } catch (AuthenticationException $exception) {
+                $this->error->setError('auth', $exception->getMessage());
 
                 return $response->withRedirect($this->router->pathFor('login'));
             }
+
+            return $response->withRedirect($this->router->pathFor('dashboard'));
         }
 
         return $this->view->render($response, 'auth/index.twig');
@@ -41,7 +34,7 @@ class AuthController extends Controller
     {
         if ($request->isPost()) {
             $user = $this->auth->register($request);
-            if (!$user) {
+            if ($this->error->hasErrors()) {
                 return $response->withRedirect($this->router->pathFor('register'));
             }
             $this->message->setMessage('success', 'You have successfully registered');
