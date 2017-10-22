@@ -1,12 +1,12 @@
 <?php
 
-namespace Oacc\Message;
+namespace Oacc\Session;
 
 /**
  * Class Error
  * @package Oacc\Message
  */
-class Error extends Message
+class Error extends Data
 {
     /**
      * @param $name
@@ -14,7 +14,7 @@ class Error extends Message
      */
     public function setError($name, $message)
     {
-        $this->setMessage($name, $message);
+        $this->addData($name, $message);
     }
 
     /**
@@ -22,6 +22,6 @@ class Error extends Message
      */
     public function hasErrors()
     {
-        return $this->hasMessage();
+        return $this->hasData();
     }
 }

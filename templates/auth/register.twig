@@ -12,6 +12,7 @@
                 <label for="username" class="f6 b db mb2">Username</label>
                 <input name="username"
                        id="username"
+                       value="{{ form.username }}"
                        class="input-reset ba pv2 mb2 db w-100 {{ error.username ? 'b--red' : 'b--black-40' }}"
                 >
                 {% for message in error.username %}
@@ -22,6 +23,7 @@
                 <label for="email" class="f6 b db mb2">Email</label>
                 <input name="email"
                        id="email"
+                       value="{{ form.email }}"
                        class="input-reset ba pv2 mb2 db w-100 {{ error.email ? 'b--red' : 'b--black-40' }}"
                 >
                 {% for message in error.email %}

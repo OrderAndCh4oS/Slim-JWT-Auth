@@ -5,7 +5,7 @@ namespace Oacc\Validation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
-use Oacc\Message\Error;
+use Oacc\Session\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
 /**
@@ -116,7 +116,7 @@ class UserValidationListener extends ValidationListener
         } elseif (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL)) {
             $this->error->setError('email', 'Please enter a valid email address');
         } elseif (!$this->fieldIsAvailable(['emailAddress' => $user->getEmailAddress()], 'Oacc\Entity\User')) {
-            $this->error->setError('email', 'An account has already been registered');
+            $this->error->setError('email', 'An account has already been registered for this address');
         }
     }
 

@@ -3,8 +3,8 @@
 namespace Oacc\Controller;
 
 use Oacc\Authentication\Authentication;
-use Oacc\Message\Error;
-use Oacc\Message\Message;
+use Oacc\Session\Error;
+use Oacc\Session\Message;
 use RKA\Session;
 use Slim\Container;
 use Slim\Router;
@@ -58,5 +58,6 @@ class Controller
         $this->session = $container->session;
         $this->error = $container->error;
         $this->message = $container->message;
+        $this->form = $container->form;
     }
 }
