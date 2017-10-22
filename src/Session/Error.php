@@ -14,7 +14,7 @@ class Error extends Data
      */
     public function setError($name, $message)
     {
-        $this->setData($name, $message);
+        $this->addData($name, $message);
     }
 
     /**

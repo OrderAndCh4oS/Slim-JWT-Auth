@@ -32,6 +32,17 @@ class Data
     public function setData($name, $data)
     {
         $dataBag = $this->session->dataBag;
+        $dataBag[$this->type][$name] = $data;
+        $this->session->dataBag = $dataBag;
+    }
+
+    /**
+     * @param $name
+     * @param $data
+     */
+    public function addData($name, $data)
+    {
+        $dataBag = $this->session->dataBag;
         $dataBag[$this->type][$name][] = $data;
         $this->session->dataBag = $dataBag;
     }
