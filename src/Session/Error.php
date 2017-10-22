@@ -12,7 +12,7 @@ class Error extends Data
      * @param $name
      * @param $message
      */
-    public function setError($name, $message)
+    public function addError($name, $message)
     {
         $this->addData($name, $message);
     }

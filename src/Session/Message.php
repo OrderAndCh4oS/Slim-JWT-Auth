@@ -13,7 +13,7 @@ class Message extends Data
      * @param $name
      * @param $message
      */
-    public function setMessage($name, $message)
+    public function addMessage($name, $message)
     {
         $this->addData($name, $message);
     }

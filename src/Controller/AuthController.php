@@ -30,7 +30,7 @@ class AuthController extends Controller
                 $this->auth->login($user);
             } catch (AuthenticationException $exception) {
                 $this->form->setData('username', $request->getParam('username'));
-                $this->error->setError('auth', $exception->getMessage());
+                $this->error->addError('auth', $exception->getMessage());
 
                 return $response->withRedirect($this->router->pathFor('login'));
             }
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
                 return $response->withRedirect($this->router->pathFor('register'));
             }
-            $this->message->setMessage('success', 'You have successfully registered');
+            $this->message->addMessage('success', 'You have successfully registered');
 
             return $response->withRedirect($this->router->pathFor('login'));
         }
