@@ -16,7 +16,6 @@ class Message extends Data
     public function setMessage($name, $message)
     {
         $this->addData($name, $message);
-
     }
 
     /**
