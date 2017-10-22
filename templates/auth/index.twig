@@ -16,10 +16,10 @@
                         <input name="username"
                                value="{{ form.username }}"
                                id="username"
-                               class="input-reset ba pv2 mb2 db w-100 {{ error.username ? 'b--red' : 'b--black-40' }}"
+                               class="input-reset ba pv2 mb2 db w-100 {{ error.username ? 'b--dark-red' : 'b--black-40' }}"
                         >
                         {% for message in error.username %}
-                            <small class="f6 red db mb2">{{ message }}</small>
+                            <small class="f6 b dark-red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
                     <div class="measure">
@@ -27,21 +27,21 @@
                         <input type="password"
                                name="password"
                                id="password"
-                               class="input-reset ba pv2 mb2 db w-100 {{ error.password ? 'b--red' : 'b--black-40' }}"
+                               class="input-reset ba pv2 mb2 db w-100 {{ error.password ? 'b--dark-red' : 'b--black-40' }}"
                         >
                         {% for message in error.password %}
-                            <small class="f6 red db mb2">{{ message }}</small>
+                            <small class="f6 b dark-red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
                     <div class="measure">
                         {% for message in error.auth %}
-                            <small class="f6 red db mb2">{{ message }}</small>
+                            <small class="f6 b dark-red db mb2">{{ message }}</small>
                         {% endfor %}
                     </div>
                     <input type="submit"
                            name="submit"
                            value="Login"
-                           class="input-reset b ph3 pv2 mt3 ba b--black-40 hover-red bg-transparent pointer f6 dib"
+                           class="input-reset b ph3 pv2 mt3 bn white bg-black hover-bg-blue pointer f6 dib"
                     >
                 </div>
             </form>
