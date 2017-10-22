@@ -2,6 +2,7 @@
 
 namespace Oacc\Middleware;
 
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -18,10 +19,10 @@ class AuthMiddleware extends Middleware
 
     /**
      * AuthMiddleware constructor.
-     * @param \Slim\Container $container
+     * @param Container $container
      * @param array $allowedRoles
      */
-    public function __construct($container, $allowedRoles = ['ROLE_USER'])
+    public function __construct(Container $container, $allowedRoles = ['ROLE_USER'])
     {
         parent::__construct($container);
         $this->allowedRoles = $allowedRoles;

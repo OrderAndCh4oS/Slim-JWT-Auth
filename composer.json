@@ -12,11 +12,8 @@
   ],
   "require": {
     "slim/slim": "^3.0",
-    "slim/twig-view": "^2.3",
-    "slim/csrf": "^0.8.1",
     "monolog/monolog": "^1.17",
     "doctrine/orm": "^2.5",
-    "akrabat/rka-slim-session-middleware": "^2.0",
     "lcobucci/jwt": "^3.2",
     "kanellov/slim-twig-flash": "^0.2.0"
   },

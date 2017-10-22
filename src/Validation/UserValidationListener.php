@@ -29,11 +29,10 @@ class UserValidationListener extends ValidationListener
      * UserValidationListener constructor.
      * @param string $confirmPassword
      * @param EntityManager $em
-     * @param Error $error
      */
-    public function __construct($confirmPassword, EntityManager $em, Error $error)
+    public function __construct($confirmPassword, EntityManager $em)
     {
-        parent::__construct($error);
+        parent::__construct();
         $this->em = $em;
         $this->confirmPassword = $confirmPassword;
     }
@@ -85,16 +84,16 @@ class UserValidationListener extends ValidationListener
     private function checkUsername(User $user)
     {
         if (empty($user->getUsername())) {
-            $this->error->setError('username', 'Please enter a username');
+            $this->error->addError('username', 'Please enter a username');
         } elseif (strlen($user->getUsername()) > 80) {
-            $this->error->setError('username', 'Username is too long');
+            $this->error->addError('username', 'Username is too long');
         } elseif (preg_match('/[^A-Za-z0-9_-]/', $user->getUsername())) {
-            $this->error->setError(
+            $this->error->addError(
                 'username',
                 'Username can only contain letters, numbers, underscores and hyphens'
             );
         } elseif (!$this->fieldIsAvailable(['username' => $user->getUsername()], 'Oacc\Entity\User')) {
-            $this->error->setError('username', 'Username is not available');
+            $this->error->addError('username', 'Username is not available');
         }
     }
 
@@ -112,11 +111,11 @@ class UserValidationListener extends ValidationListener
     private function checkEmail(User $user)
     {
         if (empty($user->getEmailAddress())) {
-            $this->error->setError('email', 'Please enter an email address');
+            $this->error->addError('email', 'Please enter an email address');
         } elseif (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL)) {
-            $this->error->setError('email', 'Please enter a valid email address');
+            $this->error->addError('email', 'Please enter a valid email address');
         } elseif (!$this->fieldIsAvailable(['emailAddress' => $user->getEmailAddress()], 'Oacc\Entity\User')) {
-            $this->error->setError('email', 'An account has already been registered for this address');
+            $this->error->addError('email', 'An account has already been registered for this address');
         }
     }
 
@@ -126,9 +125,9 @@ class UserValidationListener extends ValidationListener
     private function checkPassword(User $user)
     {
         if (empty($user->getPlainPassword())) {
-            $this->error->setError('password', 'Please enter a password');
+            $this->error->addError('password', 'Please enter a password');
         } elseif ($user->getPlainPassword() != $this->confirmPassword) {
-            $this->error->setError('password_confirm', 'Passwords do not match');
+            $this->error->addError('password_confirm', 'Passwords do not match');
         }
     }
 }

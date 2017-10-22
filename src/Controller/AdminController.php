@@ -25,6 +25,12 @@ class AdminController extends Controller
      */
     public function indexAction(Request $request, Response $response, $args = [])
     {
-        return $this->view->render($response, 'admin/index.twig');
+        return $this->setSuccessJson(
+            $response,
+            [
+                'title' => 'JWT Auth Dashboard',
+                'text' => '<p>Welcome...</p>',
+            ]
+        );
     }
 }

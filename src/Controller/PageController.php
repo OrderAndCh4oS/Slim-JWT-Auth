@@ -17,14 +17,14 @@ use Slim\Http\Response;
  */
 class PageController extends Controller
 {
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return \Psr\Http\Message\ResponseInterface
-     */
     public function indexAction(Request $request, Response $response, $args = [])
     {
-        return $this->view->render($response, 'index.twig');
+        return $this->setSuccessJson(
+            $response,
+            [
+                'title' => 'JWT Auth',
+                'text' => '<p>Register and login</p>',
+            ]
+        );
     }
 }

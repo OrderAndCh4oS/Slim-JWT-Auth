@@ -1,11 +1,6 @@
 <?php
 // DIC configuration
-use Oacc\Session\Error;
-use Oacc\Session\Form;
-use Oacc\Session\Message;
-use RKA\Session;
 use Slim\Container;
-use Slim\Csrf\Guard;
 
 $container = $app->getContainer();
 $container['logger'] = function (Container $container) {
@@ -15,25 +10,6 @@ $container['logger'] = function (Container $container) {
     $logger->pushHandler(new Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
 
     return $logger;
-};
-// Register component on container
-$container['view'] = function (Container $container) {
-    $settings = $container->get('settings')['view'];
-    if ($settings['debug'] === true) {
-        $viewOptions = [
-            'cache' => false,
-            'debug' => true,
-        ];
-    } else {
-        $viewOptions = [
-            'cache' => __DIR__.'/../cache',
-        ];
-    }
-    $view = new \Slim\Views\Twig($settings["template_path"], $viewOptions);
-    $view->addExtension(new Twig_Extension_Debug());
-    $view->addExtension(new Slim\Views\TwigExtension($container->router, $container->request->getUri()));
-
-    return $view;
 };
 $container['em'] = function (Container $container) {
     $settings = $container->get('settings')['doctrine'];
@@ -47,21 +23,6 @@ $container['em'] = function (Container $container) {
     $em = \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
 
     return $em;
-};
-$container['csrf'] = function () {
-    return new Guard;
-};
-$container['session'] = function () {
-    return new Session;
-};
-$container['message'] = function () {
-    return new Message();
-};
-$container['error'] = function () {
-    return new Error();
-};
-$container['form'] = function () {
-    return new Form();
 };
 $container['auth'] = function (Container $container) {
     return new Oacc\Authentication\Authentication($container);
