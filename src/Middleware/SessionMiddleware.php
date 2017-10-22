@@ -6,7 +6,7 @@ namespace Oacc\Middleware;
  * Class MessageMiddleware
  * @package Oacc\Middleware
  */
-class MessageMiddleware extends Middleware
+class SessionMiddleware extends Middleware
 {
     /**
      * @param $request
@@ -16,11 +16,11 @@ class MessageMiddleware extends Middleware
      */
     public function __invoke($request, $response, $next)
     {
-        if (isset($this->session->messageBag)) {
-            foreach ($this->session->messageBag as $type => $messages) {
-                $this->view->getEnvironment()->addGlobal($type, $messages);
+        if (isset($this->session->dataBag)) {
+            foreach ($this->session->dataBag as $type => $data) {
+                $this->view->getEnvironment()->addGlobal($type, $data);
             }
-            unset($this->session->messageBag);
+            unset($this->session->dataBag);
         }
         $response = $next($request, $response);
 

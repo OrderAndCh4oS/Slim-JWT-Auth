@@ -5,7 +5,7 @@ namespace Oacc\Validation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
-use Oacc\Message\Error;
+use Oacc\Session\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
 /**

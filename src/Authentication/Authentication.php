@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
 use Oacc\Entity\UserInterface;
-use Oacc\Message\Error;
+use Oacc\Session\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
 use Oacc\Validation\Exceptions\ValidationException;

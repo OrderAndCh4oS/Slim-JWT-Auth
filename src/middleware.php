@@ -1,4 +1,4 @@
 <?php
 // Application middleware
 $app->add(new \RKA\SessionMiddleware(['name' => 'MejuicerSessionStorage']));
-$app->add(new \Oacc\Middleware\MessageMiddleware($container));
+$app->add(new \Oacc\Middleware\SessionMiddleware($container));

@@ -1,14 +1,10 @@
 <?php
 
-namespace Oacc\Message;
+namespace Oacc\Session;
 
 use RKA\Session;
 
-/**
- * Class Message
- * @package Oacc\Message
- */
-class Message
+class Data
 {
     /**
      * Session
@@ -20,7 +16,7 @@ class Message
     protected $type;
 
     /**
-     * Message constructor.
+     * Data constructor.
      * @param Session|null $session
      */
     public function __construct(Session $session = null)
@@ -31,22 +27,22 @@ class Message
 
     /**
      * @param $name
-     * @param $message
+     * @param $data
      */
-    public function setMessage($name, $message)
+    public function setData($name, $data)
     {
-        $messages = $this->session->messageBag;
-        $messages[$this->type][$name][] = $message;
-        $this->session->messageBag = $messages;
+        $dataBag = $this->session->dataBag;
+        $dataBag[$this->type][$name][] = $data;
+        $this->session->dataBag = $dataBag;
     }
 
     /**
      * @return bool
      */
-    public function hasMessage()
+    public function hasData()
     {
-        $messages = $this->session->messageBag;
+        $dataBag = $this->session->dataBag;
 
-        return isset($messages[$this->type]);
+        return isset($dataBag[$this->type]);
     }
 }
