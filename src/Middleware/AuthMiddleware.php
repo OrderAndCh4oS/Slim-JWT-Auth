@@ -2,6 +2,10 @@
 
 namespace Oacc\Middleware;
 
+use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Token;
+use Oacc\Service\JsonEncoder;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -36,29 +40,36 @@ class AuthMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        if (!$this->hasAuthData() || !$this->hasAllowedRoles()) {
-            return $response->withRedirect($this->router->pathFor('register'));
+        $bearer = $request->getHeader('Authorization');
+        $re = '/^Bearer\s/';
+        $tokenHash = preg_replace($re, '', $bearer);
+        $token = (new Parser())->parse((string)$tokenHash);
+        $signer = new Sha256();
+        $isValidToken = $token->verify($signer, '**06-russia-STAY-dollar-95**');
+        if (!$isValidToken) {
+            return JsonEncoder::setErrorJson($response, ['Not Authorised'], 401);
         }
-        $this->view->getEnvironment()->addGlobal('user', $this->session->get('user'));
-        $this->view->getEnvironment()->addGlobal('roles', $this->session->get('roles'));
+        // ToDo: check user role, find user by uid;
         $response = $next($request, $response);
 
         return $response;
     }
 
     /**
+     * @param Token $token
      * @return bool
      */
-    private function hasAuthData()
+    private function hasAuthData(Token $token)
     {
-        return isset($this->session->user) && isset($this->session->roles);
+        return $token->hasClaim('username') && $token->hasClaim('roles');
     }
 
     /**
+     * @param Token $token
      * @return bool
      */
-    private function hasAllowedRoles()
+    private function hasAllowedRoles(Token $token)
     {
-        return !empty(array_intersect($this->allowedRoles, $this->session->roles));
+        return !empty(array_intersect($this->allowedRoles, $token->getClaim('roles')));
     }
 }

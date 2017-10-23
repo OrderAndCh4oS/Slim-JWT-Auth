@@ -8,6 +8,7 @@
 
 namespace Oacc\Controller;
 
+use Oacc\Service\JsonEncoder;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -25,7 +26,7 @@ class AdminController extends Controller
      */
     public function indexAction(Request $request, Response $response, $args = [])
     {
-        return $this->setSuccessJson(
+        return JsonEncoder::setSuccessJson(
             $response,
             [
                 'title' => 'JWT Auth Dashboard',

@@ -3,6 +3,7 @@
 namespace Oacc\Controller;
 
 use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -24,10 +25,10 @@ class AuthController extends Controller
             $user = $this->auth->authenticate($credentials);
             $this->auth->login($user);
         } catch (AuthenticationException $e) {
-            return $this->setErrorJson($response, $e->getErrors());
+            return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
 
-        return $this->setSuccessJson(
+        return JsonEncoder::setSuccessJson(
             $response,
             'Logged in',
             [
@@ -41,10 +42,10 @@ class AuthController extends Controller
         try {
             $this->auth->register($request);
         } catch (ValidationException $e) {
-            return $this->setErrorJson($response, $e->getErrors());
+            return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
 
-        return $this->setSuccessJson(
+        return JsonEncoder::setSuccessJson(
             $response,
             'Registered successfully'
         );
@@ -54,7 +55,7 @@ class AuthController extends Controller
     {
         $this->auth->logout();
 
-        return $this->setSuccessJson(
+        return JsonEncoder::setSuccessJson(
             $response,
             'Logged out'
         );
