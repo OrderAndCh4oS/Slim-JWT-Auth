@@ -3,6 +3,7 @@
 namespace Oacc\Controller;
 
 use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
@@ -32,7 +33,7 @@ class AuthController extends Controller
             $response,
             'Logged in',
             [
-                'token' => 'nafpnmasf',
+                'token' => Jwt::create(1),
             ]
         );
     }

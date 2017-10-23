@@ -9,6 +9,7 @@ use Oacc\Entity\UserInterface;
 use Oacc\Error\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
+use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use Slim\Container;
@@ -61,14 +62,6 @@ class Authentication
         }
 
         return $user;
-    }
-
-    /**
-     * @param UserInterface $user
-     */
-    public function login(UserInterface $user)
-    {
-        // ToDo: Generate token
     }
 
     /**
