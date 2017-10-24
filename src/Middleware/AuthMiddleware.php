@@ -2,9 +2,8 @@
 
 namespace Oacc\Middleware;
 
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
+use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
 use Slim\Container;
 use Slim\Http\Request;
@@ -40,16 +39,10 @@ class AuthMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        $bearer = $request->getHeader('Authorization');
-        $re = '/^Bearer\s/';
-        $tokenHash = preg_replace($re, '', $bearer);
-        $token = (new Parser())->parse((string)$tokenHash);
-        $signer = new Sha256();
-        $isValidToken = $token->verify($signer, '**06-russia-STAY-dollar-95**');
-        if (!$isValidToken) {
+        $token = Jwt::get($request);
+        if (!Jwt::check($token) || !$this->hasAuthData($token) || !$this->hasAllowedRoles($token)) {
             return JsonEncoder::setErrorJson($response, ['Not Authorised'], 401);
         }
-        // ToDo: check user role, find user by uid;
         $response = $next($request, $response);
 
         return $response;

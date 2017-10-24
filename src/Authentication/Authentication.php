@@ -5,11 +5,9 @@ namespace Oacc\Authentication;
 use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
-use Oacc\Entity\UserInterface;
 use Oacc\Error\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
-use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use Slim\Container;
@@ -42,7 +40,7 @@ class Authentication
      */
     public function authenticate($credentials): User
     {
-        $errors = Error::create();
+        $errors = new Error();
         if (empty($credentials['username'])) {
             $errors->addError('username', 'Missing username');
         }
@@ -65,11 +63,11 @@ class Authentication
     }
 
     /**
-     *
+     * @param Request $request
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        // ToDo: Invalidate Token
+        // ToDo: add token to some kind of blacklist cache
     }
 
     /**
@@ -79,17 +77,18 @@ class Authentication
     public function register(Request $request)
     {
         $data = $request->getParsedBody();
+
         /** @var EntityManager $em */
         $evm = $this->em->getEventManager();
         $evm->addEventListener(
             ['prePersist', 'preUpdate'],
-            new UserValidationListener($request->getParam('password-confirm'), $this->em)
+            new UserValidationListener($data['password_confirm'], $this->em)
         );
         $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
         $user = new User();
-        $user->setUsername($data->username);
-        $user->setEmailAddress($data->email);
-        $user->setPlainPassword($data->password);
+        $user->setUsername($data['username']);
+        $user->setEmailAddress($data['email']);
+        $user->setPlainPassword($data['password']);
         $this->em->persist($user);
         $this->em->flush();
     }

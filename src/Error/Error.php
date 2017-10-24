@@ -5,12 +5,7 @@ namespace Oacc\Error;
 class Error
 {
 
-    private static $errors = [];
-
-    public static function create()
-    {
-        return new Error();
-    }
+    private $errors = [];
 
     /**
      * @param $name
@@ -18,7 +13,7 @@ class Error
      */
     public function addError($name, $message)
     {
-        self::$errors[$name][] = $message;
+        $this->errors[$name][] = $message;
     }
 
     /**
@@ -26,7 +21,7 @@ class Error
      */
     public function hasErrors()
     {
-        return !empty(self::$errors);
+        return !empty($this->errors);
     }
 
     /**

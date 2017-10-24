@@ -3,11 +3,14 @@
 namespace Oacc\Authentication;
 
 use Lcobucci\JWT\Builder;
+use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Lcobucci\JWT\Token;
+use Slim\Http\Request;
 
 class Jwt
 {
-    public static function create($uid = 1)
+    public static function create($username, $roles)
     {
         $signer = new Sha256();
         $token = (new Builder())->setIssuer('http://slim-jwt-auth.dev')// Configures the issuer (iss claim)
@@ -16,10 +19,27 @@ class Jwt
         ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
         ->setNotBefore(time())// Configures the time that the token can be used (nbf claim)
         ->setExpiration(time() + 3600)// Configures the expiration time of the token (exp claim)
-        ->set('uid', $uid)// Configures a new claim, called "uid"
+        ->set('username', $username)// Configures a new claim, called "username"
+        ->set('roles', $roles)// Configures a new claim, called "roles"
         ->sign($signer, '**06-russia-STAY-dollar-95**')// creates a signature using "testing" as key
         ->getToken(); // Retrieves the generated token
 
-        return $token;
+        return (string)$token;
+    }
+
+    public static function get(Request $request)
+    {
+        $bearer = $request->getHeader('Authorization');
+        $re = '/^Bearer\s+?/';
+        $tokenHash = preg_replace($re, '', $bearer);
+
+        return (new Parser())->parse($tokenHash[0]);
+    }
+
+    public static function check(Token $token)
+    {
+        $signer = new Sha256();
+
+        return $token->verify($signer, '**06-russia-STAY-dollar-95**');
     }
 }

@@ -23,7 +23,7 @@ abstract class ValidationListener implements EventSubscriber
      */
     public function __construct()
     {
-        $this->error = Error::create();
+        $this->error = new Error();
     }
 
     /**

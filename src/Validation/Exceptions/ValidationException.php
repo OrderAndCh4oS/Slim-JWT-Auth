@@ -29,10 +29,10 @@ class ValidationException extends \Exception
     }
 
     /**
-     * @return Error
+     * @return array
      */
-    public function getErrors(): Error
+    public function getErrors()
     {
-        return $this->errors;
+        return $this->errors->getErrors();
     }
 }
