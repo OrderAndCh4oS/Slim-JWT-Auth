@@ -4,7 +4,6 @@ namespace Oacc\Controller;
 
 use Oacc\Authentication\Authentication;
 use Slim\Container;
-use Slim\Http\Response;
 use Slim\Router;
 
 /**

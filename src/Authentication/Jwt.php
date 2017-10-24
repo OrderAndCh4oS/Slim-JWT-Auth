@@ -21,7 +21,7 @@ class Jwt
         ->setExpiration(time() + 3600)// Configures the expiration time of the token (exp claim)
         ->set('username', $username)// Configures a new claim, called "username"
         ->set('roles', $roles)// Configures a new claim, called "roles"
-        ->sign($signer, '**06-russia-STAY-dollar-95**')// creates a signature using "testing" as key
+        ->sign($signer, '**06-russia-STAY-dollar-95**')// creates a signature using key
         ->getToken(); // Retrieves the generated token
 
         return (string)$token;
