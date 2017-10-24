@@ -76,6 +76,7 @@ class Authentication
      */
     public function register(Request $request)
     {
+        // ToDo: Decide where to put this, doesn't feel as though it belongs here
         $data = $request->getParsedBody();
         /** @var EntityManager $em */
         $evm = $this->em->getEventManager();

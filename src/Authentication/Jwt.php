@@ -10,6 +10,8 @@ use Slim\Http\Request;
 
 class Jwt
 {
+    // ToDo: Decide whether this should be static or DI
+
     public static function create($username, $roles)
     {
         $signer = new Sha256();
@@ -27,13 +29,21 @@ class Jwt
         return (string)$token;
     }
 
+    /**
+     * @param Request $request
+     * @return Token
+     * @throws \InvalidArgumentException
+     */
     public static function get(Request $request)
     {
         $bearer = $request->getHeader('Authorization');
-        $re = '/^Bearer\s+?/';
+        $re = '/^Bearer\s/';
         $tokenHash = preg_replace($re, '', $bearer);
-
-        return (new Parser())->parse($tokenHash[0]);
+        if (!empty($tokenHash)) {
+            return (new Parser())->parse($tokenHash[0]);
+        } else {
+            throw new \InvalidArgumentException('Token not found');
+        }
     }
 
     public static function check(Token $token)

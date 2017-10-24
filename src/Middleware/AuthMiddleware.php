@@ -2,6 +2,7 @@
 
 namespace Oacc\Middleware;
 
+use InvalidArgumentException;
 use Lcobucci\JWT\Token;
 use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
@@ -39,7 +40,11 @@ class AuthMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        $token = Jwt::get($request);
+        try {
+            $token = Jwt::get($request);
+        } catch (InvalidArgumentException $e) {
+            return JsonEncoder::setErrorJson($response, [$e->getMessage()], 403);
+        }
         if (!Jwt::check($token) || !$this->hasAuthData($token) || !$this->hasAllowedRoles($token)) {
             return JsonEncoder::setErrorJson($response, ['Not Authorised'], 401);
         }
