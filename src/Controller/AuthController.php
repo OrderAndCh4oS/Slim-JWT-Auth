@@ -17,49 +17,32 @@ class AuthController extends Controller
 {
     public function loginAction(Request $request, Response $response, $args = [])
     {
-
-        $data = $request->getParsedBody();
-        $credentials = [
-            'username' => $data['username'],
-            'password' => $data['password'],
-        ];
+        $credentials = $request->getParsedBody();
         try {
             $user = $this->auth->authenticate($credentials);
         } catch (AuthenticationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
+        $token = Jwt::create($user->getUsername(), $user->getRoles());
 
-        return JsonEncoder::setSuccessJson(
-            $response,
-            'Logged in',
-            [
-                'token' => Jwt::create($user->getUsername(), $user->getRoles()),
-            ]
-        );
+        return JsonEncoder::setSuccessJson($response, 'Logged in', ['token' => $token]);
     }
 
     public function registerAction(Request $request, Response $response, $args = [])
     {
         try {
             $this->auth->register($request);
-
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
 
-        return JsonEncoder::setSuccessJson(
-            $response,
-            'Registered successfully'
-        );
+        return JsonEncoder::setSuccessJson($response, 'Registered successfully');
     }
 
     public function logoutAction(Request $request, Response $response, $args = [])
     {
         $this->auth->logout($request);
 
-        return JsonEncoder::setSuccessJson(
-            $response,
-            'Logged out'
-        );
+        return JsonEncoder::setSuccessJson($response, 'Logged out');
     }
 }
