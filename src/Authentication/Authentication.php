@@ -54,10 +54,10 @@ class Authentication
     public function authenticate($credentials): User
     {
         if (empty($credentials['username'])) {
-            $this->error->setError('username', 'Missing username');
+            $this->error->addError('username', 'Missing username');
         }
         if (empty($credentials['password'])) {
-            $this->error->setError('password', 'Missing password');
+            $this->error->addError('password', 'Missing password');
         }
         if ($this->error->hasErrors()) {
             throw new AuthenticationException("Please enter your login details");
