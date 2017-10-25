@@ -29,11 +29,10 @@ class UserValidationListener extends ValidationListener
      * UserValidationListener constructor.
      * @param string $confirmPassword
      * @param EntityManager $em
-     * @param Error $error
      */
-    public function __construct($confirmPassword, EntityManager $em, Error $error)
+    public function __construct($confirmPassword, EntityManager $em)
     {
-        parent::__construct($error);
+        parent::__construct();
         $this->em = $em;
         $this->confirmPassword = $confirmPassword;
     }

@@ -2,6 +2,11 @@
 
 namespace Oacc\Middleware;
 
+use InvalidArgumentException;
+use Lcobucci\JWT\Token;
+use Oacc\Authentication\Jwt;
+use Oacc\Service\JsonEncoder;
+use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -18,10 +23,10 @@ class AuthMiddleware extends Middleware
 
     /**
      * AuthMiddleware constructor.
-     * @param \Slim\Container $container
+     * @param Container $container
      * @param array $allowedRoles
      */
-    public function __construct($container, $allowedRoles = ['ROLE_USER'])
+    public function __construct(Container $container, $allowedRoles = ['ROLE_USER'])
     {
         parent::__construct($container);
         $this->allowedRoles = $allowedRoles;
@@ -35,29 +40,34 @@ class AuthMiddleware extends Middleware
      */
     public function __invoke(Request $request, Response $response, $next)
     {
-        if (!$this->hasAuthData() || !$this->hasAllowedRoles()) {
-            return $response->withRedirect($this->router->pathFor('register'));
+        try {
+            $token = Jwt::get($request);
+        } catch (InvalidArgumentException $e) {
+            return JsonEncoder::setErrorJson($response, [$e->getMessage()], 403);
         }
-        $this->view->getEnvironment()->addGlobal('user', $this->session->get('user'));
-        $this->view->getEnvironment()->addGlobal('roles', $this->session->get('roles'));
+        if (!Jwt::check($token) || !$this->hasAuthData($token) || !$this->hasAllowedRoles($token)) {
+            return JsonEncoder::setErrorJson($response, ['Not Authorised'], 401);
+        }
         $response = $next($request, $response);
 
         return $response;
     }
 
     /**
+     * @param Token $token
      * @return bool
      */
-    private function hasAuthData()
+    private function hasAuthData(Token $token)
     {
-        return isset($this->session->user) && isset($this->session->roles);
+        return $token->hasClaim('username') && $token->hasClaim('roles');
     }
 
     /**
+     * @param Token $token
      * @return bool
      */
-    private function hasAllowedRoles()
+    private function hasAllowedRoles(Token $token)
     {
-        return !empty(array_intersect($this->allowedRoles, $this->session->roles));
+        return !empty(array_intersect($this->allowedRoles, $token->getClaim('roles')));
     }
 }

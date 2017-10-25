@@ -5,13 +5,11 @@ namespace Oacc\Authentication;
 use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
-use Oacc\Entity\UserInterface;
-use Oacc\Session\Error;
+use Oacc\Error\Error;
 use Oacc\Security\HashPasswordListener;
 use Oacc\Security\UserPasswordEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
-use RKA\Session;
 use Slim\Container;
 use Slim\Http\Request;
 
@@ -25,15 +23,6 @@ class Authentication
      * @var EntityManager
      */
     protected $em;
-    /**
-     * @var Session $session
-     */
-    protected $session;
-
-    /**
-     * @var Error
-     */
-    protected $error;
 
     /**
      * Authentication constructor.
@@ -42,8 +31,6 @@ class Authentication
     public function __construct(Container $container)
     {
         $this->em = $container->em;
-        $this->error = $container->error;
-        $this->session = $container->session;
     }
 
     /**
@@ -53,68 +40,57 @@ class Authentication
      */
     public function authenticate($credentials): User
     {
+        $errors = new Error();
         if (empty($credentials['username'])) {
-            $this->error->addError('username', 'Missing username');
+
+            $errors->addError('username', 'Missing username');
         }
         if (empty($credentials['password'])) {
-            $this->error->addError('password', 'Missing password');
+            $errors->addError('password', 'Missing password');
         }
-        if ($this->error->hasErrors()) {
-            throw new AuthenticationException("Please enter your login details");
+        if ($errors->hasErrors()) {
+            throw new AuthenticationException($errors, "Login Failed");
         }
         /** @var EntityManager $em */
         $userRepository = $this->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
         if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
-            throw new AuthenticationException("Invalid login details");
+            $errors->addError('auth', 'Please enter your login details');
+            throw new AuthenticationException($errors, "Login Failed");
         }
 
         return $user;
     }
 
     /**
-     * @param UserInterface $user
+     * @param Request $request
      */
-    public function login(UserInterface $user)
+    public function logout(Request $request)
     {
-        Session::regenerate();
-        $this->session->user = $user->getUsername();
-        $this->session->roles = $user->getRoles();
-    }
-
-    /**
-     *
-     */
-    public function logout()
-    {
-        Session::destroy();
+        // ToDo: add token to some kind of blacklist cache
     }
 
     /**
      * @param Request $request
-     * @return bool
+     * @throws ValidationException
      */
     public function register(Request $request)
     {
+        // ToDo: Decide where to put this, doesn't feel as though it belongs here
+        $data = $request->getParsedBody();
         /** @var EntityManager $em */
         $evm = $this->em->getEventManager();
         $evm->addEventListener(
             ['prePersist', 'preUpdate'],
-            new UserValidationListener($request->getParam('password-confirm'), $this->em, $this->error)
+            new UserValidationListener($data['password_confirm'], $this->em)
         );
         $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
         $user = new User();
-        $user->setUsername($request->getParam('username'));
-        $user->setEmailAddress($request->getParam('email'));
-        $user->setPlainPassword($request->getParam('password'));
-        try {
-            $this->em->persist($user);
-            $this->em->flush();
-        } catch (ValidationException $e) {
-            return false;
-        }
-
-        return true;
+        $user->setUsername($data['username']);
+        $user->setEmailAddress($data['email']);
+        $user->setPlainPassword($data['password']);
+        $this->em->persist($user);
+        $this->em->flush();
     }
 }

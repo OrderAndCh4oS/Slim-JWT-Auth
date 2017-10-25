@@ -3,6 +3,9 @@
 namespace Oacc\Controller;
 
 use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Authentication\Jwt;
+use Oacc\Service\JsonEncoder;
+use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -12,69 +15,51 @@ use Slim\Http\Response;
  */
 class AuthController extends Controller
 {
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return \Psr\Http\Message\ResponseInterface|static
-     */
-    public function indexAction(Request $request, Response $response, $args = [])
+    public function loginAction(Request $request, Response $response, $args = [])
     {
-        if ($request->isPost()) {
-            $credentials = [
-                'username' => $request->getParam('username'),
-                'password' => $request->getParam('password'),
-            ];
-            try {
-                $user = $this->auth->authenticate($credentials);
-                $this->auth->login($user);
-            } catch (AuthenticationException $exception) {
-                $this->form->setData('username', $request->getParam('username'));
-                $this->error->addError('auth', $exception->getMessage());
 
-                return $response->withRedirect($this->router->pathFor('login'));
-            }
-
-            return $response->withRedirect($this->router->pathFor('dashboard'));
+        $data = $request->getParsedBody();
+        $credentials = [
+            'username' => $data['username'],
+            'password' => $data['password'],
+        ];
+        try {
+            $user = $this->auth->authenticate($credentials);
+        } catch (AuthenticationException $e) {
+            return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
 
-        return $this->view->render($response, 'auth/index.twig');
+        return JsonEncoder::setSuccessJson(
+            $response,
+            'Logged in',
+            [
+                'token' => Jwt::create($user->getUsername(), $user->getRoles()),
+            ]
+        );
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return \Psr\Http\Message\ResponseInterface|static
-     */
     public function registerAction(Request $request, Response $response, $args = [])
     {
-        if ($request->isPost()) {
+        try {
             $this->auth->register($request);
-            if ($this->error->hasErrors()) {
-                $this->form->setData('username', $request->getParam('username'));
-                $this->form->setData('email', $request->getParam('email'));
 
-                return $response->withRedirect($this->router->pathFor('register'));
-            }
-            $this->message->addMessage('success', 'You have successfully registered');
-
-            return $response->withRedirect($this->router->pathFor('login'));
+        } catch (ValidationException $e) {
+            return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
 
-        return $this->view->render($response, 'auth/register.twig');
+        return JsonEncoder::setSuccessJson(
+            $response,
+            'Registered successfully'
+        );
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param array $args
-     * @return Response
-     */
     public function logoutAction(Request $request, Response $response, $args = [])
     {
-        $this->auth->logout();
+        $this->auth->logout($request);
 
-        return $response->withRedirect($this->router->pathFor('login'));
+        return JsonEncoder::setSuccessJson(
+            $response,
+            'Logged out'
+        );
     }
 }

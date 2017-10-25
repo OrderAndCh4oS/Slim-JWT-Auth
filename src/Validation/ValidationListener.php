@@ -3,7 +3,7 @@
 namespace Oacc\Validation;
 
 use Doctrine\Common\EventSubscriber;
-use Oacc\Session\Error;
+use Oacc\Error\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
 /**
@@ -20,11 +20,10 @@ abstract class ValidationListener implements EventSubscriber
 
     /**
      * UserValidationListener constructor.
-     * @param Error $error
      */
-    public function __construct(Error $error)
+    public function __construct()
     {
-        $this->error = $error;
+        $this->error = new Error();
     }
 
     /**
@@ -33,7 +32,7 @@ abstract class ValidationListener implements EventSubscriber
     public function checkErrors()
     {
         if ($this->error->hasErrors()) {
-            throw new ValidationException();
+            throw new ValidationException($this->error);
         }
     }
 }

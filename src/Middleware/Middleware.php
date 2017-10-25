@@ -2,10 +2,9 @@
 
 namespace Oacc\Middleware;
 
-use RKA\Session;
+use Doctrine\ORM\EntityManager;
 use Slim\Container;
 use Slim\Router;
-use Slim\Views\Twig;
 
 /**
  * Class Middleware
@@ -14,19 +13,14 @@ use Slim\Views\Twig;
 class Middleware
 {
     /**
-     * @var Twig
-     */
-    protected $view;
-
-    /**
-     * @var Session
-     */
-    protected $session;
-
-    /**
      * @var Router
      */
     protected $router;
+
+    /**
+     * @var EntityManager
+     */
+    protected $em;
 
     /**
      * Middleware constructor.
@@ -34,8 +28,7 @@ class Middleware
      */
     public function __construct(Container $container)
     {
-        $this->view = $container->view;
-        $this->session = $container->session;
         $this->router = $container->router;
+        $this->em = $container->em;
     }
 }
