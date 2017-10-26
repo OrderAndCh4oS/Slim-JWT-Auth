@@ -2,10 +2,11 @@
 
 namespace Oacc\Middleware;
 
-use InvalidArgumentException;
 use Lcobucci\JWT\Token;
+use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
+use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -42,12 +43,15 @@ class AuthMiddleware extends Middleware
     {
         try {
             $token = Jwt::get($request);
-        } catch (InvalidArgumentException $e) {
-            return JsonEncoder::setErrorJson($response, [$e->getMessage()], 403);
+            Jwt::check($token);
+            $this->hasAuthData($token);
+            $this->hasAllowedRoles($token);
+        } catch (ValidationException $e) {
+            return JsonEncoder::setErrorJson($response, $e->getErrors(), 400);
+        } catch (AuthenticationException $e) {
+            return JsonEncoder::setErrorJson($response, [$e->getMessage()], 401);
         }
-        if (!Jwt::check($token) || !$this->hasAuthData($token) || !$this->hasAllowedRoles($token)) {
-            return JsonEncoder::setErrorJson($response, ['Not Authorised'], 401);
-        }
+
         $response = $next($request, $response);
 
         return $response;
@@ -55,19 +59,23 @@ class AuthMiddleware extends Middleware
 
     /**
      * @param Token $token
-     * @return bool
+     * @throws AuthenticationException
      */
     private function hasAuthData(Token $token)
     {
-        return $token->hasClaim('username') && $token->hasClaim('roles');
+        if (!$token->hasClaim('username') && $token->hasClaim('roles')) {
+            throw new AuthenticationException('Invalid credentials, login failed');
+        }
     }
 
     /**
      * @param Token $token
-     * @return bool
+     * @throws AuthenticationException
      */
     private function hasAllowedRoles(Token $token)
     {
-        return !empty(array_intersect($this->allowedRoles, $token->getClaim('roles')));
+        if (empty(array_intersect($this->allowedRoles, $token->getClaim('roles')))) {
+            throw new AuthenticationException('Invalid credentials, login failed');
+        }
     }
 }

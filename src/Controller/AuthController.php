@@ -24,8 +24,10 @@ class AuthController extends Controller
         ];
         try {
             $user = $this->auth->authenticate($credentials);
-        } catch (AuthenticationException $e) {
+        } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
+        } catch (AuthenticationException $e) {
+            return JsonEncoder::setErrorJson($response, [$e->getMessage()]);
         }
 
         return JsonEncoder::setSuccessJson(
