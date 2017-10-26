@@ -20,9 +20,9 @@ use Slim\Http\Request;
 class Authentication
 {
     /**
-     * @var EntityManager
+     * @var Container
      */
-    protected $em;
+    protected $container;
 
     /**
      * Authentication constructor.
@@ -30,13 +30,14 @@ class Authentication
      */
     public function __construct(Container $container)
     {
-        $this->em = $container->em;
+        $this->container = $container;
     }
 
     /**
      * @param $credentials
      * @return User
      * @throws AuthenticationException
+     * @throws ValidationException
      */
     public function authenticate($credentials): User
     {
@@ -49,15 +50,15 @@ class Authentication
             $errors->addError('password', 'Missing password');
         }
         if ($errors->hasErrors()) {
-            throw new AuthenticationException($errors, "Login Failed");
+            throw new ValidationException($errors, "Login Failed");
         }
         /** @var EntityManager $em */
-        $userRepository = $this->em->getRepository('\Oacc\Entity\User');
+        $userRepository = $this->container->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
         if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
             $errors->addError('auth', 'Please enter your login details');
-            throw new AuthenticationException($errors, "Login Failed");
+            throw new AuthenticationException("Invalid credentials, login failed");
         }
 
         return $user;
@@ -80,17 +81,17 @@ class Authentication
         // ToDo: Decide where to put this, doesn't feel as though it belongs here
         $data = $request->getParsedBody();
         /** @var EntityManager $em */
-        $evm = $this->em->getEventManager();
+        $evm = $this->container->em->getEventManager();
         $evm->addEventListener(
             ['prePersist', 'preUpdate'],
-            new UserValidationListener($data['password_confirm'], $this->em)
+            new UserValidationListener($data['password_confirm'], $this->container->em)
         );
         $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
         $user = new User();
         $user->setUsername($data['username']);
         $user->setEmailAddress($data['email']);
         $user->setPlainPassword($data['password']);
-        $this->em->persist($user);
-        $this->em->flush();
+        $this->container->em->persist($user);
+        $this->container->em->flush();
     }
 }

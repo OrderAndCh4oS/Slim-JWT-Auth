@@ -24,14 +24,17 @@ $container['em'] = function (Container $container) {
 
     return $em;
 };
+$container['fractal'] = function (Container $container) {
+    return new \League\Fractal\Manager();
+};
 $container['auth'] = function (Container $container) {
     return new Oacc\Authentication\Authentication($container);
 };
 $container['Oacc\Controller\AuthController'] = function (Container $container) {
     return new Oacc\Controller\AuthController($container);
 };
-$container['Oacc\Controller\AdminController'] = function (Container $container) {
-    return new Oacc\Controller\AdminController($container);
+$container['Oacc\Controller\UserController'] = function (Container $container) {
+    return new Oacc\Controller\UserController($container);
 };
 $container['Oacc\Controller\PageController'] = function (Container $container) {
     return new Oacc\Controller\PageController($container);

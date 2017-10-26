@@ -6,6 +6,6 @@ $app->post('/logout', 'Oacc\Controller\AuthController:logoutAction')->setName('l
 $app->group(
     '/admin',
     function () {
-        $this->post('', 'Oacc\Controller\AdminController:indexAction')->setName('dashboard');
+        $this->post('', 'Oacc\Controller\UserController:indexAction')->setName('dashboard');
     }
 )->add(new Oacc\Middleware\AuthMiddleware($container));

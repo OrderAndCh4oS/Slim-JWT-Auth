@@ -13,22 +13,11 @@ use Slim\Router;
 class Middleware
 {
     /**
-     * @var Router
-     */
-    protected $router;
-
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
      * Middleware constructor.
      * @param Container $container
      */
     public function __construct(Container $container)
     {
-        $this->router = $container->router;
-        $this->em = $container->em;
+        $this->container = $container;
     }
 }

@@ -19,9 +19,11 @@ class AuthController extends Controller
     {
         $credentials = $request->getParsedBody();
         try {
-            $user = $this->auth->authenticate($credentials);
-        } catch (AuthenticationException $e) {
+            $user = $this->container->auth->authenticate($credentials);
+        } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
+        } catch (AuthenticationException $e) {
+            return JsonEncoder::setErrorJson($response, [$e->getMessage()]);
         }
         $token = Jwt::create($user->getUsername(), $user->getRoles());
 
@@ -31,7 +33,7 @@ class AuthController extends Controller
     public function registerAction(Request $request, Response $response, $args = [])
     {
         try {
-            $this->auth->register($request);
+            $this->container->auth->register($request);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
@@ -41,7 +43,7 @@ class AuthController extends Controller
 
     public function logoutAction(Request $request, Response $response, $args = [])
     {
-        $this->auth->logout($request);
+        $this->container->auth->logout($request);
 
         return JsonEncoder::setSuccessJson($response, 'Logged out');
     }

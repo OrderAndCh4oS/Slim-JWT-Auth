@@ -15,7 +15,8 @@
     "monolog/monolog": "^1.17",
     "doctrine/orm": "^2.5",
     "lcobucci/jwt": "^3.2",
-    "kanellov/slim-twig-flash": "^0.2.0"
+    "kanellov/slim-twig-flash": "^0.2.0",
+    "league/fractal": "^0.17.0"
   },
   "autoload": {
     "psr-4": {

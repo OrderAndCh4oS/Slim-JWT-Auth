@@ -8,6 +8,17 @@ class Error
     private $errors = [];
 
     /**
+     * Error constructor.
+     * @param array $errors
+     */
+    public function __construct($errors = null)
+    {
+        if ($errors) {
+            $this->errors = $errors;
+        }
+    }
+
+    /**
      * @param $name
      * @param $message
      */

@@ -6,6 +6,9 @@ use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
+use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Error\Error;
+use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 
 class Jwt
@@ -32,7 +35,7 @@ class Jwt
     /**
      * @param Request $request
      * @return Token
-     * @throws \InvalidArgumentException
+     * @throws ValidationException
      */
     public static function get(Request $request)
     {
@@ -42,13 +45,16 @@ class Jwt
         if (!empty($tokenHash)) {
             return (new Parser())->parse($tokenHash[0]);
         } else {
-            throw new \InvalidArgumentException('Token not found');
+            throw new ValidationException(new Error(['Token not found']));
         }
     }
 
     public static function check(Token $token)
     {
         $signer = new Sha256();
+        if (!$token->verify($signer, '**06-russia-STAY-dollar-95**')) {
+            throw new \InvalidArgumentException();
+        }
 
         return $token->verify($signer, '**06-russia-STAY-dollar-95**');
     }
