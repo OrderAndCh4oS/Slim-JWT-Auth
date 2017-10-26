@@ -2,6 +2,7 @@
 
 namespace Oacc\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Authentication;
 use Slim\Container;
 use Slim\Router;
@@ -14,14 +15,9 @@ class Controller
 {
 
     /**
-     * @var Authentication $auth
+     * @var Container $container
      */
-    protected $auth;
-
-    /**
-     * @var Router $router
-     */
-    protected $router;
+    protected $container;
 
     /**
      * Controller constructor.
@@ -29,7 +25,6 @@ class Controller
      */
     public function __construct(Container $container)
     {
-        $this->auth = $container->auth;
-        $this->router = $container->router;
+        $this->container = $container;
     }
 }

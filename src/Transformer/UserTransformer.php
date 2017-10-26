@@ -3,8 +3,9 @@
 namespace Oacc\Transformer;
 
 use Oacc\Entity\User;
+use League\Fractal;
 
-class UserTransformer
+class UserTransformer extends Fractal\TransformerAbstract
 {
     public function transform(User $user)
     {

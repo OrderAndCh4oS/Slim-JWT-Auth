@@ -23,7 +23,7 @@ class AuthController extends Controller
             'password' => $data['password'],
         ];
         try {
-            $user = $this->auth->authenticate($credentials);
+            $user = $this->container->auth->authenticate($credentials);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         } catch (AuthenticationException $e) {
@@ -42,7 +42,7 @@ class AuthController extends Controller
     public function registerAction(Request $request, Response $response, $args = [])
     {
         try {
-            $this->auth->register($request);
+            $this->container->auth->register($request);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
@@ -55,7 +55,7 @@ class AuthController extends Controller
 
     public function logoutAction(Request $request, Response $response, $args = [])
     {
-        $this->auth->logout($request);
+        $this->container->auth->logout($request);
 
         return JsonEncoder::setSuccessJson(
             $response,
