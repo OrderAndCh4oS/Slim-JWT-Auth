@@ -11,7 +11,7 @@ namespace Oacc\Controller;
 use Doctrine\ORM\EntityRepository;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
-use Oacc\Authentication\Jwt;
+use Oacc\Security\Authentication\Jwt;
 use Oacc\Entity\User;
 use Oacc\Service\JsonEncoder;
 use Oacc\Transformer\UserTransformer;

@@ -28,7 +28,7 @@ $container['fractal'] = function (Container $container) {
     return new \League\Fractal\Manager();
 };
 $container['auth'] = function (Container $container) {
-    return new Oacc\Authentication\Authentication($container);
+    return new Oacc\Security\Authentication\Authentication($container);
 };
 $container['Oacc\Controller\AuthController'] = function (Container $container) {
     return new Oacc\Controller\AuthController($container);

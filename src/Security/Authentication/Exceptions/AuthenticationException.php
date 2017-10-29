@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Authentication\Exceptions;
+namespace Oacc\Security\Authentication\Exceptions;
 
 use Oacc\Error\Error;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Authentication;
+namespace Oacc\Security\Authentication;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;

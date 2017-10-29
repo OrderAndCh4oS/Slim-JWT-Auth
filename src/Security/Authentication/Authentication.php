@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Authentication;
+namespace Oacc\Security\Authentication;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Authentication\Exceptions\AuthenticationException;

@@ -2,8 +2,8 @@
 
 namespace Oacc\Controller;
 
-use Oacc\Authentication\Exceptions\AuthenticationException;
-use Oacc\Authentication\Jwt;
+use Oacc\Security\Authentication\Exceptions\AuthenticationException;
+use Oacc\Security\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
