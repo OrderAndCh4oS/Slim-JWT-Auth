@@ -3,7 +3,7 @@
 namespace Oacc\Security\Authentication;
 
 use Doctrine\ORM\EntityManager;
-use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Security\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
 use Oacc\Security\HashPasswordListener;
