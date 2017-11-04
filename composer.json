@@ -1,5 +1,5 @@
 {
-  "name": "oacc/mejuicer",
+  "name": "oacc/slim-jwt-auth",
   "description": "Blog using slim, doctrine, twig",
   "minimum-stability": "stable",
   "license": "proprietary",
