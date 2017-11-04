@@ -1,13 +1,12 @@
 <?php
 
-namespace Oacc\Security\Authentication;
+namespace Oacc\Authentication;
 
-use Doctrine\ORM\EntityManager;
-use Oacc\Security\Authentication\Exceptions\AuthenticationException;
+use Doctrine\Common\EventManager;
+use Doctrine\ORM\EntityRepository;
+use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
-use Oacc\Security\HashPasswordListener;
-use Oacc\Security\UserPasswordEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use Slim\Container;
@@ -52,7 +51,7 @@ class Authentication
         if ($errors->hasErrors()) {
             throw new ValidationException($errors, "Login Failed");
         }
-        /** @var EntityManager $em */
+        /** @var EntityRepository $userRepository */
         $userRepository = $this->container->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
@@ -66,21 +65,12 @@ class Authentication
 
     /**
      * @param Request $request
-     */
-    public function logout(Request $request)
-    {
-        // ToDo: add token to some kind of blacklist cache
-    }
-
-    /**
-     * @param Request $request
      * @throws ValidationException
      */
     public function register(Request $request)
     {
-        // ToDo: Decide where to put this, doesn't feel as though it belongs here
         $data = $request->getParsedBody();
-        /** @var EntityManager $em */
+        /** @var EventManager $evm */
         $evm = $this->container->em->getEventManager();
         $evm->addEventListener(
             ['prePersist', 'preUpdate'],

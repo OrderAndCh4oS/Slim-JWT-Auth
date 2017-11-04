@@ -5,7 +5,7 @@
  * Time: 20:32
  */
 
-namespace Oacc\Security;
+namespace Oacc\Authentication;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -13,7 +13,7 @@ use Oacc\Entity\User;
 
 /**
  * Class HashPasswordListener
- * @package Oacc\Security
+ * @package Oacc\Authentication
  */
 class HashPasswordListener implements EventSubscriber
 {

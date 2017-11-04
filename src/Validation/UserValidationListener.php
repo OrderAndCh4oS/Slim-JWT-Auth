@@ -33,7 +33,7 @@ class UserValidationListener extends ValidationListener
     public function __construct($confirmPassword, EntityManager $em)
     {
         parent::__construct();
-        $this->container->em = $em;
+        $this->em = $em;
         $this->confirmPassword = $confirmPassword;
     }
 
@@ -99,7 +99,7 @@ class UserValidationListener extends ValidationListener
 
     private function fieldIsAvailable($criteria, $entityName)
     {
-        $entityRepository = $this->container->em->getRepository($entityName);
+        $entityRepository = $this->em->getRepository($entityName);
         $entity = $entityRepository->findOneBy($criteria);
 
         return !$entity;

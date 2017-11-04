@@ -1,20 +1,17 @@
 <?php
 
-namespace Oacc\Security\Authentication;
+namespace Oacc\Authentication;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
-use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Error\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 
 class Jwt
 {
-    // ToDo: Decide whether this should be static or DI
-
     public static function create($username, $roles)
     {
         $signer = new Sha256();

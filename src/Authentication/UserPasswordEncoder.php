@@ -1,12 +1,12 @@
 <?php
 
-namespace Oacc\Security;
+namespace Oacc\Authentication;
 
 use Oacc\Entity\User;
 
 /**
  * Class UserPasswordEncoder
- * @package Oacc\Security
+ * @package Oacc\Authentication
  */
 class UserPasswordEncoder
 {

@@ -2,8 +2,9 @@
 
 namespace Oacc\Controller;
 
-use Oacc\Security\Authentication\Exceptions\AuthenticationException;
-use Oacc\Security\Authentication\Jwt;
+use Oacc\Entity\User;
+use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
@@ -19,6 +20,7 @@ class AuthController extends Controller
     {
         $credentials = $request->getParsedBody();
         try {
+            /** @var User $user */
             $user = $this->container->auth->authenticate($credentials);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());

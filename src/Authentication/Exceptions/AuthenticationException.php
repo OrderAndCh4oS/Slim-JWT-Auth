@@ -1,8 +1,6 @@
 <?php
 
-namespace Oacc\Security\Authentication\Exceptions;
-
-use Oacc\Error\Error;
+namespace Oacc\Authentication\Exceptions;
 
 /**
  * Class AuthenticationException
