@@ -70,6 +70,11 @@ class Authentication
     public function register(Request $request)
     {
         $data = $request->getParsedBody();
+        if (empty($data)) {
+            throw new ValidationException(
+                new Error(['No valid data. Post username, email, password and password_confirm as json'])
+            );
+        }
         /** @var EventManager $evm */
         $evm = $this->container->em->getEventManager();
         $evm->addEventListener(

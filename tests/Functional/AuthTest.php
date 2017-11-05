@@ -6,9 +6,6 @@ use Oacc\Authentication\Jwt;
 
 class AuthTest extends BaseTestCase
 {
-    /**
-     * Test that the index route returns a rendered response containing the text 'SlimFramework' but not a greeting
-     */
     public function testPostRegisterWithValidData()
     {
         $data = [
@@ -17,50 +14,41 @@ class AuthTest extends BaseTestCase
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
-        $response = $this->client->request(
-            'post',
-            'register',
-            [
-                'json' => $data,
-            ]
-        );
+        $response = $this->client->request('post', 'register', ['json' => $data]);
+        $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', $data->status);
     }
 
-    /**
-     * Test that the index route returns a rendered response containing the text 'SlimFramework' but not a greeting
-     */
+    public function testPostRegisterWithInvalidData()
+    {
+        $data = [];
+        $response = $this->client->request('post', 'register', ['json' => $data]);
+        $data = $this->getData($response);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals('error', $data->status);
+    }
+
     public function testPostLoginWithValidData()
     {
         $data = [
             "username" => "TestName",
             "password" => "aaaaaaaa",
         ];
-        $response = $this->client->request(
-            'post',
-            'login',
-            [
-                'json' => $data,
-            ]
-        );
+        $response = $this->client->request('post', 'login', ['json' => $data]);
+        $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', $data->status);
     }
 
-    /**
-     * Test that the index route returns a rendered response containing the text 'SlimFramework' but not a greeting
-     */
     public function testGetAdminWithValidData()
     {
         $token = Jwt::create('TestName', ['ROLE_USER']);
-        $response = $this->client->request(
-            'get',
-            'admin',
-            [
-                'headers' => [
-                    'Authorization' => "Bearer ".$token,
-                ],
-            ]
-        );
+        $headers = ['Authorization' => "Bearer ".$token];
+        $response = $this->client->request('get', 'admin', ['headers' => $headers]);
+        $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', $data->status);
     }
+
 }

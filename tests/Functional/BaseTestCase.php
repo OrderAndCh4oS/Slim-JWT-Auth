@@ -3,6 +3,7 @@
 namespace Tests\Functional;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 class BaseTestCase extends TestCase
@@ -16,8 +17,20 @@ class BaseTestCase extends TestCase
         $this->client = new Client(
             [
                 'base_uri' => 'http://slim-jwt-auth.dev',
-                'timeout' => 0.5,
+                'timeout' => 2,
+                'http_errors' => false,
             ]
         );
+    }
+
+    /**
+     * @param $response
+     * @return mixed
+     */
+    protected function getData(Response $response)
+    {
+        $data = \GuzzleHttp\json_decode((string)$response->getBody());
+
+        return $data;
     }
 }
