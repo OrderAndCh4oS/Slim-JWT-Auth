@@ -24,7 +24,7 @@ $container['em'] = function (Container $container) {
 
     return $em;
 };
-$container['fractal'] = function (Container $container) {
+$container['fractal'] = function () {
     return new \League\Fractal\Manager();
 };
 $container['auth'] = function (Container $container) {
@@ -35,9 +35,6 @@ $container['Oacc\Controller\AuthController'] = function (Container $container) {
 };
 $container['Oacc\Controller\UserController'] = function (Container $container) {
     return new Oacc\Controller\UserController($container);
-};
-$container['Oacc\Controller\PageController'] = function (Container $container) {
-    return new Oacc\Controller\PageController($container);
 };
 $container['Oacc\Middleware\AuthMiddleware'] = function (Container $container) {
     return new Oacc\Middleware\AuthMiddleware($container);

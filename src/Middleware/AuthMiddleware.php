@@ -7,6 +7,7 @@ use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
+use Psr\Container\ContainerInterface;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -24,7 +25,7 @@ class AuthMiddleware extends Middleware
 
     /**
      * AuthMiddleware constructor.
-     * @param Container $container
+     * @param Container|ContainerInterface $container
      * @param array $allowedRoles
      */
     public function __construct(Container $container, $allowedRoles = ['ROLE_USER'])
