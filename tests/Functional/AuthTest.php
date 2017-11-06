@@ -18,15 +18,34 @@ class AuthTest extends BaseTestCase
         $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', $data->status);
+        $this->assertObjectHasAttribute('messages', $data);
     }
 
-    public function testPostRegisterWithInvalidData()
+    public function testPostRegisterWithNoData()
     {
         $data = [];
         $response = $this->client->request('post', 'register', ['json' => $data]);
         $data = $this->getData($response);
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals('error', $data->status);
+        $this->assertObjectHasAttribute('errors', $data);
+    }
+
+    public function testPostRegisterWithInvalidData()
+    {
+        $data = [
+            "username" => "TestName",
+            "email" => "testemail@.com",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "aaaaaaaa",
+        ];
+        $response = $this->client->request('post', 'register', ['json' => $data]);
+        $data = $this->getData($response);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertEquals('error', $data->status);
+        $this->assertObjectHasAttribute('errors', $data);
+        $this->assertObjectHasAttribute('username', $data->errors);
+        $this->assertObjectHasAttribute('email', $data->errors);
     }
 
     public function testPostLoginWithValidData()
@@ -39,6 +58,7 @@ class AuthTest extends BaseTestCase
         $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', $data->status);
+        $this->assertObjectHasAttribute('messages', $data);
     }
 
     public function testGetAdminWithValidData()
@@ -49,6 +69,8 @@ class AuthTest extends BaseTestCase
         $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', $data->status);
+        $this->assertObjectHasAttribute('data', $data);
+        $this->assertObjectHasAttribute('user', $data->data);
     }
 
 }
