@@ -9,8 +9,8 @@ class AuthTest extends BaseTestCase
     public function testPostRegisterWithValidData()
     {
         $data = [
-            "username" => "TestName_".uniqid(),
-            "email" => "testemail@".uniqid().".com",
+            "username" => "TestName",
+            "email" => "testemail@test.com",
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
@@ -35,7 +35,7 @@ class AuthTest extends BaseTestCase
     {
         $data = [
             "username" => "TestName",
-            "email" => "testemail@.com",
+            "email" => "testemail@test.com",
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
@@ -72,5 +72,4 @@ class AuthTest extends BaseTestCase
         $this->assertObjectHasAttribute('data', $data);
         $this->assertObjectHasAttribute('user', $data->data);
     }
-
 }

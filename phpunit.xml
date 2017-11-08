@@ -4,4 +4,7 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <listeners>
+        <listener class="SetupTearDownListener" file="./tests/setupTearDownListener.php"></listener>
+    </listeners>
 </phpunit>
