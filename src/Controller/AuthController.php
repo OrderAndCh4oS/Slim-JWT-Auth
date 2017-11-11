@@ -16,7 +16,7 @@ use Slim\Http\Response;
  */
 class AuthController extends Controller
 {
-    public function loginAction(Request $request, Response $response, $args = [])
+    public function loginAction(Request $request, Response $response)
     {
         $credentials = $request->getParsedBody();
         try {
@@ -32,7 +32,12 @@ class AuthController extends Controller
         return JsonEncoder::setSuccessJson($response, 'Logged in', ['token' => $token]);
     }
 
-    public function registerAction(Request $request, Response $response, $args = [])
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
+    public function registerAction(Request $request, Response $response)
     {
         try {
             $this->container->auth->register($request);
@@ -41,12 +46,5 @@ class AuthController extends Controller
         }
 
         return JsonEncoder::setSuccessJson($response, 'Registered successfully');
-    }
-
-    public function logoutAction(Request $request, Response $response, $args = [])
-    {
-        $this->container->auth->logout($request);
-
-        return JsonEncoder::setSuccessJson($response, 'Logged out');
     }
 }

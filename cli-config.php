@@ -13,6 +13,5 @@ $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
     $doctrine['meta']['cache'],
     false
 );
-
-$em = \Doctrine\ORM\EntityManager::create($doctrine['connection'], $config);
-return ConsoleRunner::createHelperSet($em);
+$entityManager = \Doctrine\ORM\EntityManager::create($doctrine['connection'], $config);
+return ConsoleRunner::createHelperSet($entityManager);

@@ -42,7 +42,6 @@ class Authentication
     {
         $errors = new Error();
         if (empty($credentials['username'])) {
-
             $errors->addError('username', 'Missing username');
         }
         if (empty($credentials['password'])) {
@@ -75,13 +74,16 @@ class Authentication
                 new Error(['No valid data. Post username, email, password and password_confirm as json'])
             );
         }
-        /** @var EventManager $evm */
-        $evm = $this->container->em->getEventManager();
-        $evm->addEventListener(
+        /** @var EventManager $eventManager */
+        $eventManager = $this->container->em->getEventManager();
+        $eventManager->addEventListener(
             ['prePersist', 'preUpdate'],
             new UserValidationListener($data['password_confirm'], $this->container->em)
         );
-        $evm->addEventListener(['prePersist', 'preUpdate'], new HashPasswordListener(new UserPasswordEncoder()));
+        $eventManager->addEventListener(
+            ['prePersist', 'preUpdate'],
+            new HashPasswordListener(new UserPasswordEncoder())
+        );
         $user = new User();
         $user->setUsername($data['username']);
         $user->setEmailAddress($data['email']);

@@ -27,10 +27,9 @@ class UserController extends Controller
     /**
      * @param Request $request
      * @param Response $response
-     * @param array $args
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function indexAction(Request $request, Response $response, $args = [])
+    public function indexAction(Request $request, Response $response)
     {
         $token = Jwt::get($request);
         /** @var EntityRepository $userRepo */

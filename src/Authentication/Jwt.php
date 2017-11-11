@@ -37,8 +37,8 @@ class Jwt
     public static function get(Request $request)
     {
         $bearer = $request->getHeader('Authorization');
-        $re = '/^Bearer\s/';
-        $tokenHash = preg_replace($re, '', $bearer);
+        $regex = '/^Bearer\s/';
+        $tokenHash = preg_replace($regex, '', $bearer);
         if (!empty($tokenHash)) {
             return (new Parser())->parse($tokenHash[0]);
         } else {

@@ -20,9 +20,9 @@ $container['em'] = function (Container $container) {
         $settings['meta']['cache'],
         false
     );
-    $em = \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
+    $entityManager = \Doctrine\ORM\EntityManager::create($settings['connection'], $config);
 
-    return $em;
+    return $entityManager;
 };
 $container['fractal'] = function () {
     return new \League\Fractal\Manager();

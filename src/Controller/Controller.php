@@ -21,7 +21,7 @@ class Controller
 
     /**
      * Controller constructor.
-     * @param $container
+     * @param Container $container
      */
     public function __construct(Container $container)
     {
