@@ -7,4 +7,9 @@
     <listeners>
         <listener class="SetupTearDownListener" file="./tests/setupTearDownListener.php"></listener>
     </listeners>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
 </phpunit>

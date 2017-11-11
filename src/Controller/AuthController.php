@@ -16,6 +16,11 @@ use Slim\Http\Response;
  */
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     */
     public function loginAction(Request $request, Response $response)
     {
         $credentials = $request->getParsedBody();
