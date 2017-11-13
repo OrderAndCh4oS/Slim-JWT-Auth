@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
-class BaseTestCase extends TestCase
+class BaseAPITestCase extends TestCase
 {
 
     protected $client;

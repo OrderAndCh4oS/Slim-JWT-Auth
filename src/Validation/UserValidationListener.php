@@ -5,7 +5,6 @@ namespace Oacc\Validation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
-use Oacc\Session\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 
 /**
@@ -44,7 +43,6 @@ class UserValidationListener extends ValidationListener
             return;
         }
         $this->validation($entity);
-        $this->checkErrors();
     }
 
     public function preUpdate(LifecycleEventArgs $args)
@@ -54,7 +52,6 @@ class UserValidationListener extends ValidationListener
             return;
         }
         $this->validation($entity);
-        $this->checkErrors();
     }
 
     /**
@@ -73,27 +70,30 @@ class UserValidationListener extends ValidationListener
      */
     public function validation(User $user)
     {
-        $this->checkUsername($user);
-        $this->checkEmail($user);
-        $this->checkPassword($user);
+        $this->checkUsername($user->getUsername());
+        $this->checkEmail($user->getEmailAddress());
+        $this->checkPassword($user->getPlainPassword());
+        $this->checkErrors();
     }
 
-    /**
-     * @param User $user
-     */
-    private function checkUsername(User $user)
+    private function checkUsername($username)
     {
-        if (empty($user->getUsername())) {
-            $this->error->addError('username', 'Please enter a username');
-        } elseif (strlen($user->getUsername()) > 80) {
-            $this->error->addError('username', 'Username is too long');
-        } elseif (preg_match('/[^A-Za-z0-9_-]/', $user->getUsername())) {
-            $this->error->addError(
-                'username',
-                'Username can only contain letters, numbers, underscores and hyphens'
-            );
-        } elseif (!$this->fieldIsAvailable(['username' => $user->getUsername()], 'Oacc\Entity\User')) {
-            $this->error->addError('username', 'Username is not available');
+        switch (true) {
+            case empty($username):
+                $this->error->addError('username', 'Please enter a username');
+                break;
+            case strlen($username) > 80:
+                $this->error->addError('username', 'Username is too long');
+                break;
+            case preg_match('/[^A-Za-z0-9_-]/', $username):
+                $this->error->addError(
+                    'username',
+                    'Username can only contain letters, numbers, underscores and hyphens'
+                );
+                break;
+            case !$this->fieldIsAvailable(['username' => $username], 'Oacc\Entity\User'):
+                $this->error->addError('username', 'Username is not available');
+                break;
         }
     }
 
@@ -105,28 +105,26 @@ class UserValidationListener extends ValidationListener
         return !$entity;
     }
 
-    /**
-     * @param User $user
-     */
-    private function checkEmail(User $user)
+    private function checkEmail($email)
     {
-        if (empty($user->getEmailAddress())) {
-            $this->error->addError('email', 'Please enter an email address');
-        } elseif (!filter_var($user->getEmailAddress(), FILTER_VALIDATE_EMAIL)) {
-            $this->error->addError('email', 'Please enter a valid email address');
-        } elseif (!$this->fieldIsAvailable(['emailAddress' => $user->getEmailAddress()], 'Oacc\Entity\User')) {
-            $this->error->addError('email', 'An account has already been registered for this address');
+        switch (true) {
+            case empty($email):
+                $this->error->addError('email', 'Please enter an email address');
+                break;
+            case !filter_var($email, FILTER_VALIDATE_EMAIL):
+                $this->error->addError('email', 'Please enter a valid email address');
+                break;
+            case !$this->fieldIsAvailable(['emailAddress' => $email], 'Oacc\Entity\User'):
+                $this->error->addError('email', 'An account has already been registered for this address');
+                break;
         }
     }
 
-    /**
-     * @param User $user
-     */
-    private function checkPassword(User $user)
+    private function checkPassword($password)
     {
-        if (empty($user->getPlainPassword())) {
+        if (empty($password)) {
             $this->error->addError('password', 'Please enter a password');
-        } elseif ($user->getPlainPassword() != $this->confirmPassword) {
+        } elseif ($password != $this->confirmPassword) {
             $this->error->addError('password_confirm', 'Passwords do not match');
         }
     }

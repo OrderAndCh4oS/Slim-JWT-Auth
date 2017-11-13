@@ -5,16 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 session_start();
 
 $settings = require __DIR__ . '/../src/settings.php';
-$app = new \Slim\App($settings);
-
-// Set up dependencies
-require __DIR__ . '/../src/dependencies.php';
-
-// Register middleware
-require __DIR__ . '/../src/middleware.php';
-
-// Register routes
-require __DIR__ . '/../src/routes.php';
+$app = (new Oacc\App($settings))->getApp();
 
 // Run app
 $app->run();

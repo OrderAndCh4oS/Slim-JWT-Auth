@@ -4,7 +4,7 @@ namespace Tests\Functional;
 
 use Oacc\Authentication\Jwt;
 
-class AuthTest extends BaseTestCase
+class AuthAPITest extends BaseAPITestCase
 {
     public function testPostRegisterWithValidData()
     {
@@ -35,9 +35,9 @@ class AuthTest extends BaseTestCase
     {
         $data = [
             "username" => "TestName",
-            "email" => "testemail@test.com",
+            "email" => "testemail",
             "password" => "aaaaaaaa",
-            "password_confirm" => "aaaaaaaa",
+            "password_confirm" => "bbbbbbbb",
         ];
         $response = $this->client->request('post', 'register', ['json' => $data]);
         $data = $this->getData($response);
@@ -46,6 +46,7 @@ class AuthTest extends BaseTestCase
         $this->assertObjectHasAttribute('errors', $data);
         $this->assertObjectHasAttribute('username', $data->errors);
         $this->assertObjectHasAttribute('email', $data->errors);
+        $this->assertObjectHasAttribute('password_confirm', $data->errors);
     }
 
     public function testPostLoginWithValidData()

@@ -63,12 +63,12 @@ class Authentication
     }
 
     /**
-     * @param Request $request
+     * @param $data
+     * @return User
      * @throws ValidationException
      */
-    public function register(Request $request)
+    public function register($data)
     {
-        $data = $request->getParsedBody();
         if (empty($data)) {
             throw new ValidationException(
                 new Error(['No valid data. Post username, email, password and password_confirm as json'])
@@ -90,5 +90,7 @@ class Authentication
         $user->setPlainPassword($data['password']);
         $this->container->em->persist($user);
         $this->container->em->flush();
+
+        return $user;
     }
 }

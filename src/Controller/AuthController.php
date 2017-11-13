@@ -45,11 +45,13 @@ class AuthController extends Controller
     public function registerAction(Request $request, Response $response)
     {
         try {
-            $this->container->auth->register($request);
+            $data = $request->getParsedBody();
+            /** @var User $user */
+            $user = $this->container->auth->register($data);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
 
-        return JsonEncoder::setSuccessJson($response, 'Registered successfully');
+        return JsonEncoder::setSuccessJson($response, $user->getUsername().' registered successfully');
     }
 }
