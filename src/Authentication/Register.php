@@ -3,21 +3,15 @@
 namespace Oacc\Authentication;
 
 use Doctrine\Common\EventManager;
-use Doctrine\ORM\EntityRepository;
-use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use Slim\Container;
-use Slim\Http\Request;
 
-/**
- * Class Authentication
- * @package Oacc\Authentication
- */
-class Authentication
+class Register
 {
+
     /**
      * @var Container
      */
@@ -33,47 +27,37 @@ class Authentication
     }
 
     /**
-     * @param $credentials
-     * @return User
-     * @throws AuthenticationException
-     * @throws ValidationException
-     */
-    public function authenticate($credentials): User
-    {
-        $errors = new Error();
-        if (empty($credentials['username'])) {
-            $errors->addError('username', 'Missing username');
-        }
-        if (empty($credentials['password'])) {
-            $errors->addError('password', 'Missing password');
-        }
-        if ($errors->hasErrors()) {
-            throw new ValidationException($errors, "Login Failed");
-        }
-        /** @var EntityRepository $userRepository */
-        $userRepository = $this->container->em->getRepository('\Oacc\Entity\User');
-        /** @var User $user */
-        $user = $userRepository->findOneBy(['username' => $credentials['username']]);
-        if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
-            $errors->addError('auth', 'Please enter your login details');
-            throw new AuthenticationException("Invalid credentials, login failed");
-        }
-
-        return $user;
-    }
-
-    /**
      * @param $data
      * @return User
      * @throws ValidationException
      */
     public function register($data)
     {
+        $this->checkDataIsNotEmpty($data);
+        $this->setListeners($data);
+        $user = $this->createUser($data);
+
+        return $user;
+    }
+
+    /**
+     * @param $data
+     * @throws ValidationException
+     */
+    private function checkDataIsNotEmpty($data)
+    {
         if (empty($data)) {
             throw new ValidationException(
                 new Error(['No valid data. Post username, email, password and password_confirm as json'])
             );
         }
+    }
+
+    /**
+     * @param $data
+     */
+    private function setListeners($data)
+    {
         /** @var EventManager $eventManager */
         $eventManager = $this->container->em->getEventManager();
         $eventManager->addEventListener(
@@ -84,6 +68,14 @@ class Authentication
             ['prePersist', 'preUpdate'],
             new HashPasswordListener(new UserPasswordEncoder())
         );
+    }
+
+    /**
+     * @param $data
+     * @return User
+     */
+    private function createUser($data): User
+    {
         $user = new User();
         $user->setUsername($data['username']);
         $user->setEmailAddress($data['email']);

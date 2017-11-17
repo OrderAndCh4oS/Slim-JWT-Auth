@@ -2,9 +2,11 @@
 
 namespace Oacc\Controller;
 
+use Oacc\Authentication\Authenticate;
+use Oacc\Authentication\Jwt;
+use Oacc\Authentication\Register;
 use Oacc\Entity\User;
 use Oacc\Authentication\Exceptions\AuthenticationException;
-use Oacc\Authentication\Jwt;
 use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
@@ -26,7 +28,7 @@ class AuthController extends Controller
         $credentials = $request->getParsedBody();
         try {
             /** @var User $user */
-            $user = $this->container->auth->authenticate($credentials);
+            $user = (new Authenticate($this->container))->authenticate($credentials);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         } catch (AuthenticationException $e) {
@@ -34,7 +36,7 @@ class AuthController extends Controller
         }
         $token = Jwt::create($user->getUsername(), $user->getRoles());
 
-        return JsonEncoder::setSuccessJson($response, 'Logged in', ['token' => $token]);
+        return JsonEncoder::setSuccessJson($response, 'Logged in', compact('token'));
     }
 
     /**
@@ -47,7 +49,7 @@ class AuthController extends Controller
         try {
             $data = $request->getParsedBody();
             /** @var User $user */
-            $user = $this->container->auth->register($data);
+            $user = (new Register($this->container))->register($data);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors());
         }
