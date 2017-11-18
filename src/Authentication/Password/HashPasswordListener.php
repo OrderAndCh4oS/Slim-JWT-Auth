@@ -5,7 +5,7 @@
  * Time: 20:32
  */
 
-namespace Oacc\Authentication;
+namespace Oacc\Authentication\Password;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -18,15 +18,15 @@ use Oacc\Entity\User;
 class HashPasswordListener implements EventSubscriber
 {
     /**
-     * @var UserPasswordEncoder
+     * @var PasswordEncoder
      */
     private $passwordEncoder;
 
     /**
      * HashPasswordListener constructor.
-     * @param UserPasswordEncoder $passwordEncoder
+     * @param PasswordEncoder $passwordEncoder
      */
-    public function __construct(UserPasswordEncoder $passwordEncoder)
+    public function __construct(PasswordEncoder $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
@@ -63,7 +63,7 @@ class HashPasswordListener implements EventSubscriber
      */
     public function encodePassword(User $entity)
     {
-        $encoded = $this->passwordEncoder->encodePassword($entity);
+        $encoded = $this->passwordEncoder->encodePassword($entity->getPlainPassword());
         $entity->setPassword($encoded);
         $entity->eraseCredentials();
     }

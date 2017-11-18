@@ -1,22 +1,20 @@
 <?php
 
-namespace Oacc\Authentication;
-
-use Oacc\Entity\User;
+namespace Oacc\Authentication\Password;
 
 /**
  * Class UserPasswordEncoder
  * @package Oacc\Authentication
  */
-class UserPasswordEncoder
+class PasswordEncoder
 {
     /**
-     * @param User $user
+     * @param $plainPassword
      * @return bool|string
      */
-    public function encodePassword(User $user)
+    public function encodePassword($plainPassword)
     {
-        return password_hash($user->getPlainPassword(), PASSWORD_BCRYPT);
+        return password_hash($plainPassword, PASSWORD_BCRYPT);
     }
 
     /**

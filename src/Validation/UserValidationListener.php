@@ -13,12 +13,6 @@ use Oacc\Validation\Exceptions\ValidationException;
  */
 class UserValidationListener extends ValidationListener
 {
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
     /**
      * @var string $confirmPassword
      */
@@ -31,8 +25,7 @@ class UserValidationListener extends ValidationListener
      */
     public function __construct($confirmPassword, EntityManager $entityManager)
     {
-        parent::__construct();
-        $this->entityManager = $entityManager;
+        parent::__construct($entityManager);
         $this->confirmPassword = $confirmPassword;
     }
 
@@ -95,14 +88,6 @@ class UserValidationListener extends ValidationListener
                 $this->error->addError('username', 'Username is not available');
                 break;
         }
-    }
-
-    private function fieldIsAvailable($criteria, $entityName)
-    {
-        $entityRepository = $this->entityManager->getRepository($entityName);
-        $entity = $entityRepository->findOneBy($criteria);
-
-        return !$entity;
     }
 
     private function checkEmail($email)

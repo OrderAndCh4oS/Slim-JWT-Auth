@@ -3,11 +3,16 @@
 namespace Oacc\Authentication;
 
 use Doctrine\Common\EventManager;
+use Oacc\Authentication\Password\HashPasswordListener;
+use Oacc\Authentication\Password\PasswordEncoder;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
+use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Oacc\Validation\UserValidationListener;
 use Slim\Container;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class Register
 {
@@ -27,17 +32,18 @@ class Register
     }
 
     /**
-     * @param $data
-     * @return User
-     * @throws ValidationException
+     * @param Request $request
+     * @param Response $response
+     * @return Response
      */
-    public function register($data)
+    public function register(Request $request, Response $response)
     {
+        $data = $request->getParsedBody();
         $this->checkDataIsNotEmpty($data);
-        $this->setListeners($data);
+        $this->setUserListeners($data);
         $user = $this->createUser($data);
 
-        return $user;
+        return JsonEncoder::setSuccessJson($response, $user->getUsername().' registered successfully');
     }
 
     /**
@@ -56,7 +62,7 @@ class Register
     /**
      * @param $data
      */
-    private function setListeners($data)
+    private function setUserListeners($data)
     {
         /** @var EventManager $eventManager */
         $eventManager = $this->container->em->getEventManager();
@@ -66,7 +72,7 @@ class Register
         );
         $eventManager->addEventListener(
             ['prePersist', 'preUpdate'],
-            new HashPasswordListener(new UserPasswordEncoder())
+            new HashPasswordListener(new PasswordEncoder())
         );
     }
 

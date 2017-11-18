@@ -6,8 +6,11 @@ use Doctrine\ORM\EntityRepository;
 use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
+use Oacc\Service\JsonEncoder;
 use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Container;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 /**
  * Class Authentication
@@ -30,17 +33,18 @@ class Authenticate
     }
 
     /**
-     * @param $credentials
-     * @return User
-     * @throws AuthenticationException
-     * @throws ValidationException
+     * @param Request $request
+     * @param Response $response
+     * @return Response
      */
-    public function authenticate($credentials): User
+    public function authenticate(Request $request, Response $response)
     {
+        $credentials = $request->getParsedBody();
         $this->checkCredentialsAreNotEmpty($credentials);
         $user = $this->checkCredentials($credentials);
+        $token = Jwt::create($user->getUsername(), $user->getRoles());
 
-        return $user;
+        return JsonEncoder::setSuccessJson($response, 'Logged in', compact('token'));
     }
 
     /**
