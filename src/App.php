@@ -6,8 +6,9 @@ class App
 {
     private $app;
 
-    public function __construct($settings)
+    public function __construct()
     {
+        $settings = require __DIR__.'/settings.php';
         $this->app = new \Slim\App($settings);
         $container = (new Dependencies($this->app->getContainer()))->getContainer();
         (new Routes($this->app, $container));

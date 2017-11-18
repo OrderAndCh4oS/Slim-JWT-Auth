@@ -27,26 +27,9 @@ class AuthController extends Controller
         try {
             $response = (new Authenticate($this->container))->authenticate($request, $response);
         } catch (ValidationException $e) {
-            return JsonEncoder::setErrorJson($response, $e->getErrors());
+            $response = JsonEncoder::setErrorJson($response, $e->getErrors());
         } catch (AuthenticationException $e) {
-            return JsonEncoder::setErrorJson($response, [$e->getMessage()]);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @return Response
-     */
-    public function registerAction(Request $request, Response $response)
-    {
-        try {
-            /** @var User $user */
-            $response = (new Register($this->container))->register($request, $response);
-        } catch (ValidationException $e) {
-            return JsonEncoder::setErrorJson($response, $e->getErrors());
+            $response = JsonEncoder::setErrorJson($response, [$e->getMessage()]);
         }
 
         return $response;

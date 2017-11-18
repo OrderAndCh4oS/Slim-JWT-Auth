@@ -14,7 +14,7 @@ class AuthAPITest extends BaseAPITestCase
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
-        $response = $this->client->request('post', 'register', ['json' => $data]);
+        $response = $this->client->request('post', 'user', ['json' => $data]);
         $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', $data->status);
@@ -24,7 +24,7 @@ class AuthAPITest extends BaseAPITestCase
     public function testPostRegisterWithNoData()
     {
         $data = [];
-        $response = $this->client->request('post', 'register', ['json' => $data]);
+        $response = $this->client->request('post', 'user', ['json' => $data]);
         $data = $this->getData($response);
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals('error', $data->status);
@@ -39,7 +39,7 @@ class AuthAPITest extends BaseAPITestCase
             "password" => "aaaaaaaa",
             "password_confirm" => "bbbbbbbb",
         ];
-        $response = $this->client->request('post', 'register', ['json' => $data]);
+        $response = $this->client->request('post', 'user', ['json' => $data]);
         $data = $this->getData($response);
         $this->assertEquals(400, $response->getStatusCode());
         $this->assertEquals('error', $data->status);
@@ -66,7 +66,7 @@ class AuthAPITest extends BaseAPITestCase
     {
         $token = Jwt::create('TestName', ['ROLE_USER']);
         $headers = ['Authorization' => "Bearer ".$token];
-        $response = $this->client->request('get', 'admin', ['headers' => $headers]);
+        $response = $this->client->request('get', 'user', ['headers' => $headers]);
         $data = $this->getData($response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', $data->status);

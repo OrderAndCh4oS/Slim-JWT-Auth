@@ -17,12 +17,13 @@ class Routes
      */
     public function __construct(App $app, ContainerInterface $container)
     {
-        $app->post('/register', AuthController::class.':registerAction')->setName('register');
-        $app->post('/login', AuthController::class.':loginAction')->setName('login');
+        $app->get('/test', UserController::class.':indexAction');
+        $app->post('/user', UserController::class.':postAction');
+        $app->post('/login', AuthController::class.':loginAction');
         $app->group(
-            '/admin',
+            '',
             function () use ($app) {
-                $app->get('', UserController::class.':indexAction')->setName('dashboard');
+                $app->get('/user', UserController::class.':getAction');
             }
         )->add(new AuthMiddleware($container));
     }
