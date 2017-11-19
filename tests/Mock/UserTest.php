@@ -2,37 +2,110 @@
 
 namespace Tests\Mock;
 
-use Oacc\App;
-use Slim\Http\Environment;
-use Slim\Http\Request;
-use PHPUnit\Framework\TestCase;
+use Oacc\Authentication\Jwt;
+use Slim\Http\Response;
 
-class UserTest extends TestCase
+class UserTest extends BaseEnvironmentTestCase
 {
-
-    /**
-     * @var \Slim\App
-     */
-    protected $app;
-
-    public function setUp()
+    public function testUserPostWithValidData()
     {
-        $this->app = (new App())->getApp();
+        $data = [
+            "username" => "TestNameTwo",
+            "email" => "testemailtwo@test.com",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "aaaaaaaa",
+        ];
+        $this->request('POST', '/user', $data);
+        $this->assertThatResponseHasStatus(200);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('messages', $this->responseData());
     }
 
-    public function testUserPost()
+    public function testPostUserWithNoData()
     {
-        $env = Environment::mock(
-            [
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => '/test',
-            ]
-        );
-        $req = Request::createFromEnvironment($env);
-        $this->app->getContainer()['request'] = $req;
-        $response = $this->app->run(true);
-        $this->assertSame($response->getStatusCode(), 200);
-        $this->assertSame((string)$response->getBody(), '{"status":"success","data":["hello"]}');
+        $data = [];
+        $this->request('POST', '/user', $data);
+        $this->assertThatResponseHasStatus(400);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('errors', $this->responseData());
+    }
+
+    public function testPostRegisterWithInvalidData()
+    {
+        $data = [
+            "username" => "TestName",
+            "email" => "testemail",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "bbbbbbbb",
+        ];
+        $this->request('POST', '/user', $data);
+        $this->assertThatResponseHasStatus(400);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('errors', $this->responseData());
+    }
+
+    public function testPostRegisterWithUsedData()
+    {
+        $data = [
+            "username" => "TestNameTwo",
+            "email" => "testemailtwo@test.com",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "aaaaaaaa",
+        ];
+        $this->request('POST', '/user', $data);
+        $this->assertThatResponseHasStatus(400);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('errors', $this->responseData());
+    }
+
+    public function testPostLoginWithValidData()
+    {
+        $data = [
+            "username" => "TestNameTwo",
+            "password" => "aaaaaaaa",
+        ];
+        $this->request('POST', '/login', $data);
+        $this->assertThatResponseHasStatus(200);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('messages', $this->responseData());
+    }
+
+    public function testPostLoginWithInvalidData()
+    {
+        $data = [
+            "username" => "TestNameNotReal",
+            "password" => "cccccccc",
+        ];
+        $this->request('POST', '/login', $data);
+        $this->assertThatResponseHasStatus(400);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('errors', $this->responseData());
+    }
+
+    public function testGetAdminWithValidData()
+    {
+        $token = Jwt::create('TestNameTwo', ['ROLE_USER']);
+        $headers = ['Authorization' => "Bearer ".$token];
+        $this->request('get', '/user', [], $headers);
+        $this->assertThatResponseHasStatus(200);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('data', $this->responseData());
+    }
+
+    public function testGetAdminWithNoToken()
+    {
+        $this->request('get', '/user', []);
+        $this->assertThatResponseHasStatus(400);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertArrayHasKey('status', $this->responseData());
+        $this->assertArrayHasKey('errors', $this->responseData());
     }
 
 }

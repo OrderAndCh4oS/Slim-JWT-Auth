@@ -17,7 +17,6 @@ class Routes
      */
     public function __construct(App $app, ContainerInterface $container)
     {
-        $app->get('/test', UserController::class.':indexAction');
         $app->post('/user', UserController::class.':postAction');
         $app->post('/login', AuthController::class.':loginAction');
         $app->group(

@@ -26,19 +26,6 @@ use Slim\Http\Response;
  */
 class UserController extends Controller
 {
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @return Response
-     */
-    public function indexAction(Request $request, Response $response)
-    {
-        return JsonEncoder::setSuccessJson(
-            $response,
-            null,
-            ['hello']
-        );
-    }
 
     /**
      * @param Request $request
