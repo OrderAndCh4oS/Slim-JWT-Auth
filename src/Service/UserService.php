@@ -105,6 +105,7 @@ class UserService
 
     /**
      * @param $data
+     * @param User $user
      * @return User
      */
     private function updateUser($data, User $user): User

@@ -20,6 +20,7 @@ class SetupTearDownListener implements TestListener
     public function endTestSuite(TestSuite $suite)
     {
         exec('./vendor/bin/doctrine orm:schema-tool:drop --force');
+        exec('./vendor/bin/doctrine orm:schema-tool:create');
         echo $suite->getName()." Completed\n";
     }
 

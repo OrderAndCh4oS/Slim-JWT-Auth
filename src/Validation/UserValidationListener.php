@@ -64,7 +64,7 @@ class UserValidationListener extends ValidationListener
     public function validation(User $user)
     {
         $this->checkUsername($user->getUsername(), $user->getId());
-        $this->checkEmail($user->getEmailAddress());
+        $this->checkEmail($user->getEmailAddress(), $user->getId());
         $this->checkPassword($user->getPlainPassword());
         $this->checkErrors();
     }
@@ -90,7 +90,7 @@ class UserValidationListener extends ValidationListener
         }
     }
 
-    private function checkEmail($email)
+    private function checkEmail($email, $id)
     {
         switch (true) {
             case empty($email):
@@ -99,7 +99,7 @@ class UserValidationListener extends ValidationListener
             case !filter_var($email, FILTER_VALIDATE_EMAIL):
                 $this->error->addError('email', 'Please enter a valid email address');
                 break;
-            case !$this->fieldIsAvailable(['emailAddress' => $email], 'Oacc\Entity\User'):
+            case !$this->fieldIsAvailable(['emailAddress' => $email], 'Oacc\Entity\User', $id):
                 $this->error->addError('email', 'An account has already been registered for this address');
                 break;
         }
