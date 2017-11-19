@@ -18,8 +18,8 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/user', $data);
         $this->assertThatResponseHasStatus(200);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('messages', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('messages', $this->responseData());
     }
 
     public function testPostUserWithNoData()
@@ -28,8 +28,8 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/user', $data);
         $this->assertThatResponseHasStatus(400);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('errors', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('errors', $this->responseData());
     }
 
     public function testPostRegisterWithInvalidData()
@@ -43,8 +43,8 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/user', $data);
         $this->assertThatResponseHasStatus(400);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('errors', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('errors', $this->responseData());
     }
 
     public function testPostRegisterWithUsedData()
@@ -58,8 +58,8 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/user', $data);
         $this->assertThatResponseHasStatus(400);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('errors', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('errors', $this->responseData());
     }
 
     public function testPostLoginWithValidData()
@@ -71,8 +71,8 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/login', $data);
         $this->assertThatResponseHasStatus(200);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('messages', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('messages', $this->responseData());
     }
 
     public function testPostLoginWithInvalidData()
@@ -84,19 +84,17 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/login', $data);
         $this->assertThatResponseHasStatus(400);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('errors', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('errors', $this->responseData());
     }
 
     public function testGetAdminWithValidData()
     {
-        $token = Jwt::create('TestNameTwo', ['ROLE_USER']);
-        $headers = ['Authorization' => "Bearer ".$token];
-        $this->request('get', '/user', [], $headers);
+        $this->request('get', '/user', [], $this->authHeader);
         $this->assertThatResponseHasStatus(200);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('data', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('data', $this->responseData());
     }
 
     public function testGetAdminWithNoToken()
@@ -104,8 +102,22 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('get', '/user', []);
         $this->assertThatResponseHasStatus(400);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
-        $this->assertArrayHasKey('status', $this->responseData());
-        $this->assertArrayHasKey('errors', $this->responseData());
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('errors', $this->responseData());
     }
 
+    public function testUserPutWithValidData()
+    {
+        $data = [
+            "username" => "TestNameThree",
+            "email" => "testemailthree@test.com",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "aaaaaaaa",
+        ];
+        $this->request('PUT', '/user', $data, $this->authHeader);
+        $this->assertThatResponseHasStatus(200);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('messages', $this->responseData());
+    }
 }

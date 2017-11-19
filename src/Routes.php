@@ -23,6 +23,7 @@ class Routes
             '',
             function () use ($app) {
                 $app->get('/user', UserController::class.':getAction');
+                $app->put('/user', UserController::class.':putAction');
             }
         )->add(new AuthMiddleware($container));
     }

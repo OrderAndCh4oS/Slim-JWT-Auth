@@ -3,6 +3,7 @@
 namespace Tests\Mock;
 
 use Oacc\App;
+use Oacc\Authentication\Jwt;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
@@ -24,9 +25,16 @@ class BaseEnvironmentTestCase extends TestCase
      */
     private $response;
 
+    /**
+     * @var string $authHeader
+     */
+    protected $authHeader;
+
     public function setUp()
     {
         $this->app = (new App())->getApp();
+        $token = Jwt::create('TestNameTwo', ['ROLE_USER']);
+        $this->authHeader = ['Authorization' => "Bearer ".$token];
     }
 
     protected function request($method, $url, array $requestParameters = [], $additionalHeaders = [])
@@ -49,7 +57,7 @@ class BaseEnvironmentTestCase extends TestCase
 
     protected function responseData()
     {
-        return json_decode((string)$this->response->getBody(), true);
+        return json_decode((string)$this->response->getBody());
     }
 
     private function prepareRequest($method, $url, array $requestParameters, array $additionalHeaders)
