@@ -43,11 +43,17 @@ abstract class ValidationListener implements EventSubscriber
         }
     }
 
-    protected function fieldIsAvailable($criteria, $entityName)
+    protected function fieldIsAvailable($criteria, $entityName, $entityId = null)
     {
         $entityRepository = $this->entityManager->getRepository($entityName);
         $entity = $entityRepository->findOneBy($criteria);
-
-        return !$entity;
+        switch ($entity) {
+            case null:
+                return true;
+            case $entity->getId() === $entityId:
+                return true;
+            default:
+                return !$entity;
+        }
     }
 }

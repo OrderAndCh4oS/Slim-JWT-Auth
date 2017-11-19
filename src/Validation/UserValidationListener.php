@@ -63,13 +63,13 @@ class UserValidationListener extends ValidationListener
      */
     public function validation(User $user)
     {
-        $this->checkUsername($user->getUsername());
+        $this->checkUsername($user->getUsername(), $user->getId());
         $this->checkEmail($user->getEmailAddress());
         $this->checkPassword($user->getPlainPassword());
         $this->checkErrors();
     }
 
-    private function checkUsername($username)
+    private function checkUsername($username, $id)
     {
         switch (true) {
             case empty($username):
@@ -84,7 +84,7 @@ class UserValidationListener extends ValidationListener
                     'Username can only contain letters, numbers, underscores and hyphens'
                 );
                 break;
-            case !$this->fieldIsAvailable(['username' => $username], 'Oacc\Entity\User'):
+            case !$this->fieldIsAvailable(compact('username'), 'Oacc\Entity\User', $id):
                 $this->error->addError('username', 'Username is not available');
                 break;
         }
