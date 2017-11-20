@@ -18,20 +18,6 @@ use Oacc\Entity\User;
 class HashPasswordListener implements EventSubscriber
 {
     /**
-     * @var PasswordEncoder
-     */
-    private $passwordEncoder;
-
-    /**
-     * HashPasswordListener constructor.
-     * @param PasswordEncoder $passwordEncoder
-     */
-    public function __construct(PasswordEncoder $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
-    /**
      * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
@@ -63,7 +49,7 @@ class HashPasswordListener implements EventSubscriber
      */
     public function encodePassword(User $entity)
     {
-        $encoded = $this->passwordEncoder->encodePassword($entity->getPlainPassword());
+        $encoded = PasswordEncoder::encodePassword($entity->getPlainPassword());
         $entity->setPassword($encoded);
         $entity->eraseCredentials();
     }

@@ -4,6 +4,7 @@ namespace Oacc\Authentication;
 
 use Doctrine\ORM\EntityRepository;
 use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Authentication\Password\PasswordEncoder;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
 use Oacc\Service\JsonEncoder;
@@ -76,7 +77,7 @@ class Authenticate
         $userRepository = $this->container->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
         $user = $userRepository->findOneBy(['username' => $credentials['username']]);
-        if (!$user || !password_verify($credentials['password'], $user->getPassword())) {
+        if (!$user || !PasswordEncoder::verifyPassword($credentials['password'], $user->getPassword())) {
             (new Error())->addError('auth', 'Please enter your login details');
             throw new AuthenticationException("Invalid credentials, login failed");
         }

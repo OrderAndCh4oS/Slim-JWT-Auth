@@ -12,7 +12,7 @@ class PasswordEncoder
      * @param $plainPassword
      * @return bool|string
      */
-    public function encodePassword($plainPassword)
+    public static function encodePassword($plainPassword)
     {
         return password_hash($plainPassword, PASSWORD_BCRYPT);
     }
@@ -22,7 +22,7 @@ class PasswordEncoder
      * @param $hash
      * @return bool
      */
-    public function verifyPassword($plainPassword, $hash)
+    public static function verifyPassword($plainPassword, $hash)
     {
         return password_verify($plainPassword, $hash);
     }
