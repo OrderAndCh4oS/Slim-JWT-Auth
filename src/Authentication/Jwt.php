@@ -42,7 +42,7 @@ class Jwt
         if (!empty($tokenHash)) {
             return (new Parser())->parse($tokenHash[0]);
         } else {
-            throw new ValidationException(new Error(['Token not found']));
+            throw new ValidationException(new Error(['auth' => 'Token not found']));
         }
     }
 

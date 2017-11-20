@@ -50,7 +50,7 @@ class AuthMiddleware extends Middleware
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors(), 400);
         } catch (AuthenticationException $e) {
-            return JsonEncoder::setErrorJson($response, [$e->getMessage()], 401);
+            return JsonEncoder::setErrorJson($response, $e->getMessage(), 401);
         }
         $response = $next($request, $response);
 

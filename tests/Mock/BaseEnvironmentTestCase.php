@@ -60,6 +60,22 @@ class BaseEnvironmentTestCase extends TestCase
         return json_decode((string)$this->response->getBody());
     }
 
+    protected function successfulResponse($statusCode = 200)
+    {
+        $this->assertThatResponseHasStatus($statusCode);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('messages', $this->responseData());
+    }
+
+    protected function errorResponse($statusCode = 400)
+    {
+        $this->assertThatResponseHasStatus($statusCode);
+        $this->assertThatResponseHasContentType('application/json;charset=utf-8');
+        $this->assertObjectHasAttribute('status', $this->responseData());
+        $this->assertObjectHasAttribute('errors', $this->responseData());
+    }
+
     private function prepareRequest($method, $url, array $requestParameters, array $additionalHeaders)
     {
         $env = Environment::mock(

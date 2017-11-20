@@ -44,7 +44,7 @@ class Authenticate
         $user = $this->checkCredentials($credentials);
         $token = Jwt::create($user->getUsername(), $user->getRoles());
 
-        return JsonEncoder::setSuccessJson($response, 'Logged in', compact('token'));
+        return JsonEncoder::setSuccessJson($response, ['Logged in'], compact('token'));
     }
 
     /**

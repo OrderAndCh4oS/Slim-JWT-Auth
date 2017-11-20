@@ -58,7 +58,7 @@ class UserService
         $this->addPasswordEncoderListener();
         $user = $this->createUser($data);
 
-        return JsonEncoder::setSuccessJson($response, $user->getUsername().' registered successfully');
+        return JsonEncoder::setSuccessJson($response, [$user->getUsername().' registered successfully']);
     }
 
     /**
@@ -75,7 +75,7 @@ class UserService
         $this->addPasswordEncoderListener();
         $user = $this->updateUser($data, $user);
 
-        return JsonEncoder::setSuccessJson($response, $user->getUsername().' updated successfully');
+        return JsonEncoder::setSuccessJson($response, [$user->getUsername().' updated successfully']);
     }
 
     /**
