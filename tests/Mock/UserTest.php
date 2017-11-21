@@ -156,6 +156,19 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['TestNameTwo updated successfully'], $this->responseData()->messages);
     }
 
+    public function testUserPutEmailWithIdenticalUsername()
+    {
+        $data = [
+            "username" => "TestNameTwo",
+            "email" => "testemailthree@test.com",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "aaaaaaaa",
+        ];
+        $this->request('PUT', '/user', $data, $this->getAuthHeader('TestNameTwo'));
+        $this->successfulResponse();
+        $this->assertEquals(['TestNameTwo updated successfully'], $this->responseData()->messages);
+    }
+
     public function testUserPutWithInvalidData()
     {
         $data = [
@@ -167,5 +180,4 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('PUT', '/user', $data, $this->getAuthHeader('TestNameTwo'));
         $this->errorResponse();
     }
-
 }
