@@ -38,13 +38,6 @@ class User implements UserInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_login", type="datetime", nullable=true)
-     */
-    private $lastLogin;
-
-    /**
-     * @var \DateTime
-     *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
@@ -178,14 +171,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param mixed $roles
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
-    }
-
-    /**
      * Returns the password used to authenticate the user.
      *
      * This should be the encoded password. On authentication, a plain-text
@@ -216,21 +201,4 @@ class User implements UserInterface
     {
         return $this->plainPassword = null;
     }
-
-    /**
-     * @return \DateTime
-     */
-    public function getLastLogin(): \DateTime
-    {
-        return $this->lastLogin;
-    }
-
-    /**
-     * @param \DateTime $lastLogin
-     */
-    public function setLastLogin(\DateTime $lastLogin)
-    {
-        $this->lastLogin = $lastLogin;
-    }
-
 }

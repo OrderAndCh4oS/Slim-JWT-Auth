@@ -19,22 +19,25 @@ class BaseEnvironmentTestCase extends TestCase
      * @var \Slim\App
      */
     protected $app;
-
+    /**
+     * @var string $authHeader
+     */
+    protected $authHeader;
     /**
      * @var Response
      */
     private $response;
 
-    /**
-     * @var string $authHeader
-     */
-    protected $authHeader;
-
     public function setUp()
     {
         $this->app = (new App())->getApp();
-        $token = Jwt::create('TestNameTwo', ['ROLE_USER']);
-        $this->authHeader = ['Authorization' => "Bearer ".$token];
+    }
+
+    protected function getAuthHeader($username = 'TestUsername', array $roles = ['ROLE_USER'])
+    {
+        $token = Jwt::create($username, $roles);
+
+        return ['Authorization' => "Bearer ".$token];
     }
 
     protected function request($method, $url, array $requestParameters = [], $additionalHeaders = [])

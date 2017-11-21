@@ -13,6 +13,8 @@ class UserTransformer extends Fractal\TransformerAbstract
             'id' => (int)$user->getId(),
             'username' => $user->getUsername(),
             'email' => $user->getEmailAddress(),
+            'created_at' => $user->getCreatedAt(),
+            'updated_at' => $user->getUpdatedAt(),
         ];
     }
 }

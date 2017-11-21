@@ -45,7 +45,6 @@ class AuthMiddleware extends Middleware
         try {
             $token = Jwt::get($request);
             Jwt::check($token);
-            $this->hasAuthData($token);
             $this->hasAllowedRoles($token);
         } catch (ValidationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getErrors(), 400);
@@ -55,17 +54,6 @@ class AuthMiddleware extends Middleware
         $response = $next($request, $response);
 
         return $response;
-    }
-
-    /**
-     * @param Token $token
-     * @throws AuthenticationException
-     */
-    private function hasAuthData(Token $token)
-    {
-        if (!$token->hasClaim('username') && $token->hasClaim('roles')) {
-            throw new AuthenticationException('Invalid credentials, login failed');
-        }
     }
 
     /**

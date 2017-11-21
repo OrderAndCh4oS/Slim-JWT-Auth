@@ -7,14 +7,14 @@ class UserTest extends BaseEnvironmentTestCase
     public function testUserPostWithValidData()
     {
         $data = [
-            "username" => "TestNameTwo",
-            "email" => "testemailtwo@test.com",
+            "username" => "TestName",
+            "email" => "testemail@test.com",
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
         $this->request('POST', '/user', $data);
         $this->successfulResponse();
-        $this->assertEquals(['TestNameTwo registered successfully'], $this->responseData()->messages);
+        $this->assertEquals(['TestName registered successfully'], $this->responseData()->messages);
     }
 
     public function testPostUserWithNoData()
@@ -62,8 +62,8 @@ class UserTest extends BaseEnvironmentTestCase
     public function testPostRegisterWithUsedData()
     {
         $data = [
-            "username" => "TestNameTwo",
-            "email" => "testemailtwo@test.com",
+            "username" => "TestName",
+            "email" => "testemail@test.com",
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
@@ -78,7 +78,7 @@ class UserTest extends BaseEnvironmentTestCase
     public function testPostLoginWithValidData()
     {
         $data = [
-            "username" => "TestNameTwo",
+            "username" => "TestName",
             "password" => "aaaaaaaa",
         ];
         $this->request('POST', '/login', $data);
@@ -86,6 +86,18 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertObjectHasAttribute('data', $this->responseData());
         $this->assertEquals(['Logged in'], $this->responseData()->messages);
         $this->assertObjectHasAttribute('token', $this->responseData()->data);
+    }
+
+    public function testPostLoginWithEmptyData()
+    {
+        $data = [
+            "username" => "",
+            "password" => "",
+        ];
+        $this->request('POST', '/login', $data);
+        $this->errorResponse();
+        $this->assertEquals(['Missing username'], $this->responseData()->errors->username);
+        $this->assertEquals(['Missing password'], $this->responseData()->errors->password);
     }
 
     public function testPostLoginWithInvalidData()
@@ -101,7 +113,7 @@ class UserTest extends BaseEnvironmentTestCase
 
     public function testGetUserWithValidData()
     {
-        $this->request('get', '/user', [], $this->authHeader);
+        $this->request('get', '/user', [], $this->getAuthHeader('TestName'));
         $this->assertThatResponseHasStatus(200);
         $this->assertThatResponseHasContentType('application/json;charset=utf-8');
         $this->assertObjectHasAttribute('status', $this->responseData());
@@ -121,17 +133,39 @@ class UserTest extends BaseEnvironmentTestCase
         );
     }
 
+    public function testGetAdminWithInvalidTokenData()
+    {
+        $this->request('get', '/user', [], $this->getAuthHeader('bad_username', ['ROLE_NONE']));
+        $this->errorResponse(401);
+        $this->assertEquals(
+            'Invalid credentials, login failed',
+            $this->responseData()->errors
+        );
+    }
+
     public function testUserPutWithValidData()
     {
         $data = [
-            "username" => "TestNameThree",
-            "email" => "testemailthree@test.com",
+            "username" => "TestNameTwo",
+            "email" => "testemailtwo@test.com",
             "password" => "aaaaaaaa",
             "password_confirm" => "aaaaaaaa",
         ];
-        $this->request('PUT', '/user', $data, $this->authHeader);
+        $this->request('PUT', '/user', $data, $this->getAuthHeader('TestName'));
         $this->successfulResponse();
-        $this->assertEquals(['TestNameThree updated successfully'], $this->responseData()->messages);
+        $this->assertEquals(['TestNameTwo updated successfully'], $this->responseData()->messages);
+    }
+
+    public function testUserPutWithInvalidData()
+    {
+        $data = [
+            "username" => "&*)$#**)(!&%@_*%",
+            "email" => "notvalid",
+            "password" => "aaaaaaaa",
+            "password_confirm" => "bbbbbbbb",
+        ];
+        $this->request('PUT', '/user', $data, $this->getAuthHeader('TestNameTwo'));
+        $this->errorResponse();
     }
 
 }
