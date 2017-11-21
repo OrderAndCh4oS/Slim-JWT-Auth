@@ -24,14 +24,6 @@ class AuthController extends Controller
      */
     public function loginAction(Request $request, Response $response)
     {
-        try {
-            $response = (new Authenticate($this->container))->authenticate($request, $response);
-        } catch (ValidationException $e) {
-            $response = JsonEncoder::setErrorJson($response, $e->getErrors());
-        } catch (AuthenticationException $e) {
-            $response = JsonEncoder::setErrorJson($response, [$e->getMessage()]);
-        }
-
-        return $response;
+        return (new Authenticate($this->container))->authenticate($request, $response);
     }
 }

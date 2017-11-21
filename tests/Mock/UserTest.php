@@ -108,7 +108,7 @@ class UserTest extends BaseEnvironmentTestCase
         ];
         $this->request('POST', '/login', $data);
         $this->errorResponse();
-        $this->assertEquals(['Invalid credentials, login failed'], $this->responseData()->errors);
+        $this->assertEquals(['Invalid credentials, login failed'], $this->responseData()->errors->auth);
     }
 
     public function testGetUserWithValidData()
@@ -156,13 +156,13 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['TestNameTwo updated successfully'], $this->responseData()->messages);
     }
 
-    public function testUserPutEmailWithIdenticalUsername()
+    public function testUserPutWithUnchangedUsernameAndPassword()
     {
         $data = [
             "username" => "TestNameTwo",
-            "email" => "testemailthree@test.com",
-            "password" => "aaaaaaaa",
-            "password_confirm" => "aaaaaaaa",
+            "email" => "testemailtwo@test.com",
+            "password" => "bbbbbbbb",
+            "password_confirm" => "bbbbbbbb",
         ];
         $this->request('PUT', '/user', $data, $this->getAuthHeader('TestNameTwo'));
         $this->successfulResponse();

@@ -3,12 +3,10 @@
 namespace Oacc\Authentication;
 
 use Doctrine\ORM\EntityRepository;
-use Oacc\Authentication\Exceptions\AuthenticationException;
 use Oacc\Authentication\Password\PasswordEncoder;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
 use Oacc\Service\JsonEncoder;
-use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -25,12 +23,23 @@ class Authenticate
     protected $container;
 
     /**
+     * @var Error
+     */
+    private $errors;
+
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * Authentication constructor.
      * @param Container $container
      */
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->errors = new Error();
     }
 
     /**
@@ -41,47 +50,44 @@ class Authenticate
     public function authenticate(Request $request, Response $response)
     {
         $credentials = $request->getParsedBody();
-        $this->checkCredentialsAreNotEmpty($credentials);
-        $user = $this->checkCredentials($credentials);
-        $token = Jwt::create($user->getUsername(), $user->getRoles());
+        if (!$this->checkCredentialsAreNotEmpty($credentials) || !$this->checkCredentials($credentials)) {
+            return JsonEncoder::setErrorJson($response, $this->errors->getErrors());
+        }
+        $token = Jwt::create($this->user->getUsername(), $this->user->getRoles());
 
         return JsonEncoder::setSuccessJson($response, ['Logged in'], compact('token'));
     }
 
     /**
      * @param $credentials
-     * @throws ValidationException
+     * @return bool
      */
     private function checkCredentialsAreNotEmpty($credentials)
     {
-        $errors = new Error();
         if (empty($credentials['username'])) {
-            $errors->addError('username', 'Missing username');
+            $this->errors->addError('username', 'Missing username');
         }
         if (empty($credentials['password'])) {
-            $errors->addError('password', 'Missing password');
+            $this->errors->addError('password', 'Missing password');
         }
-        if ($errors->hasErrors()) {
-            throw new ValidationException($errors, "Login Failed");
-        }
+
+        return !$this->errors->hasErrors();
     }
 
     /**
      * @param $credentials
-     * @return User
-     * @throws AuthenticationException
+     * @return bool
      */
-    private function checkCredentials($credentials): User
+    private function checkCredentials($credentials)
     {
         /** @var EntityRepository $userRepository */
         $userRepository = $this->container->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */
-        $user = $userRepository->findOneBy(['username' => $credentials['username']]);
-        if (!$user || !PasswordEncoder::verifyPassword($credentials['password'], $user->getPassword())) {
-            (new Error())->addError('auth', 'Please enter your login details');
-            throw new AuthenticationException("Invalid credentials, login failed");
+        $this->user = $userRepository->findOneBy(['username' => $credentials['username']]);
+        if (!$this->user || !PasswordEncoder::verifyPassword($credentials['password'], $this->user->getPassword())) {
+            $this->errors->addError('auth', 'Invalid credentials, login failed');
         }
 
-        return $user;
+        return !$this->errors->hasErrors();
     }
 }
