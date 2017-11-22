@@ -12,14 +12,15 @@ use Slim\Http\Request;
 
 class Jwt
 {
-    // ToDo: pull key from env variable
     private static $key = '**06-russia-STAY-dollar-95**';
+    private static $issuer = 'http://slim-jwt-auth.dev';
+    private static $audience = 'http://vue-client.dev';
 
     public static function create($username, $roles)
     {
         $signer = new Sha256();
-        $token = (new Builder())->setIssuer('http://slim-jwt-auth.dev')// Configures the issuer (iss claim)
-        ->setAudience('http://vue-client.dev')// Configures the audience (aud claim)
+        $token = (new Builder())->setIssuer(self::$issuer)// Configures the issuer (iss claim)
+        ->setAudience(self::$audience)// Configures the audience (aud claim)
         ->setId('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
         ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
         ->setNotBefore(time())// Configures the time that the token can be used (nbf claim)
