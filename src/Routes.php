@@ -7,7 +7,6 @@ use Oacc\Controller\UserController;
 use Oacc\Middleware\AuthMiddleware;
 use Psr\Container\ContainerInterface;
 use Slim\App;
-use Slim\Container;
 
 class Routes
 {
