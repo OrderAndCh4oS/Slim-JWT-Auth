@@ -3,10 +3,11 @@
 namespace Oacc\Authentication;
 
 use Doctrine\ORM\EntityRepository;
-use Oacc\Authentication\Password\PasswordEncoder;
+use Oacc\Utility\Jwt;
+use Oacc\Utility\PasswordEncoder;
 use Oacc\Entity\User;
-use Oacc\Error\Error;
-use Oacc\Service\JsonEncoder;
+use Oacc\Utility\Error;
+use Oacc\Utility\JsonEncoder;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;

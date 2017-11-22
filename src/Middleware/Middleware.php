@@ -2,9 +2,7 @@
 
 namespace Oacc\Middleware;
 
-use Doctrine\ORM\EntityManager;
 use Slim\Container;
-use Slim\Router;
 
 /**
  * Class Middleware

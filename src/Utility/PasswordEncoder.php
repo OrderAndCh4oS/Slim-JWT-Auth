@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Authentication\Password;
+namespace Oacc\Utility;
 
 /**
  * Class UserPasswordEncoder

@@ -10,11 +10,9 @@ namespace Oacc\Controller;
 
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
-use Oacc\Entity\User;
-use Oacc\Service\JsonEncoder;
+use Oacc\Utility\JsonEncoder;
 use Oacc\Service\UserService;
 use Oacc\Transformer\UserTransformer;
-use Oacc\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

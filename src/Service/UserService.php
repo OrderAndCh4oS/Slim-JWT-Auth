@@ -3,12 +3,13 @@
 namespace Oacc\Service;
 
 use Doctrine\ORM\EntityRepository;
-use Oacc\Authentication\Jwt;
-use Oacc\Authentication\Password\HashPasswordListener;
 use Oacc\Entity\User;
-use Oacc\Error\Error;
-use Oacc\Validation\Exceptions\ValidationException;
-use Oacc\Validation\UserValidationListener;
+use Oacc\Listener\HashPasswordListener;
+use Oacc\Utility\Error;
+use Oacc\Utility\JsonEncoder;
+use Oacc\Utility\Jwt;
+use Oacc\Listener\Validation\Exceptions\ValidationException;
+use Oacc\Listener\Validation\UserValidationListener;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;

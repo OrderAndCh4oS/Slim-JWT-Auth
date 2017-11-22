@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Service;
+namespace Oacc\Utility;
 
 use Slim\Http\Response;
 

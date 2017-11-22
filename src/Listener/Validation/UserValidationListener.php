@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Listener\Validation;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;

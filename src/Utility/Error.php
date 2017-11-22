@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Error;
+namespace Oacc\Utility;
 
 class Error
 {

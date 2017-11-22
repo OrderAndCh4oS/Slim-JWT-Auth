@@ -1,8 +1,8 @@
 <?php
 
-namespace Oacc\Validation\Exceptions;
+namespace Oacc\Listener\Validation\Exceptions;
 
-use Oacc\Error\Error;
+use Oacc\Utility\Error;
 
 /**
  * Class ValidationException

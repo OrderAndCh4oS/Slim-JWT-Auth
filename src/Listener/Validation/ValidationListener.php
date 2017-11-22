@@ -1,11 +1,11 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Listener\Validation;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Oacc\Error\Error;
-use Oacc\Validation\Exceptions\ValidationException;
+use Oacc\Utility\Error;
+use Oacc\Listener\Validation\Exceptions\ValidationException;
 
 /**
  * Class ValidationListener

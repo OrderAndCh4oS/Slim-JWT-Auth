@@ -1,13 +1,12 @@
 <?php
 
-namespace Oacc\Authentication;
+namespace Oacc\Utility;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
-use Oacc\Error\Error;
-use Oacc\Validation\Exceptions\ValidationException;
+use Oacc\Listener\Validation\Exceptions\ValidationException;
 use Slim\Http\Request;
 
 class Jwt

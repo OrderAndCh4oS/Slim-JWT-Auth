@@ -5,11 +5,12 @@
  * Time: 20:32
  */
 
-namespace Oacc\Authentication\Password;
+namespace Oacc\Listener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
+use Oacc\Utility\PasswordEncoder;
 
 /**
  * Class HashPasswordListener

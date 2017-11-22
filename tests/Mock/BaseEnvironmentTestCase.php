@@ -3,7 +3,7 @@
 namespace Tests\Mock;
 
 use Oacc\App;
-use Oacc\Authentication\Jwt;
+use Oacc\Utility\Jwt;
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
