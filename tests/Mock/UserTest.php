@@ -24,7 +24,7 @@ class UserTest extends BaseEnvironmentTestCase
         $this->errorResponse();
         $this->assertEquals(
             ['No valid data. Post username, email, password and password_confirm as json'],
-            $this->responseData()->errors
+            $this->responseData()->errors->validation
         );
     }
 

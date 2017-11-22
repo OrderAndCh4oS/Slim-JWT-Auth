@@ -51,14 +51,7 @@ class UserController extends Controller
      */
     public function postAction(Request $request, Response $response)
     {
-        try {
-            /** @var User $user */
-            $response = (new UserService($this->container))->create($request, $response);
-        } catch (ValidationException $e) {
-            $response = JsonEncoder::setErrorJson($response, $e->getErrors());
-        }
-
-        return $response;
+        return (new UserService($this->container))->create($request, $response);
     }
 
     /**
@@ -68,13 +61,6 @@ class UserController extends Controller
      */
     public function putAction(Request $request, Response $response)
     {
-        try {
-            /** @var User $user */
-            $response = (new UserService($this->container))->update($request, $response);
-        } catch (ValidationException $e) {
-            $response = JsonEncoder::setErrorJson($response, $e->getErrors());
-        }
-
-        return $response;
+        return (new UserService($this->container))->update($request, $response);
     }
 }

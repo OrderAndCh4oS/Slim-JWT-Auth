@@ -12,6 +12,9 @@ use Slim\Http\Request;
 
 class Jwt
 {
+    // ToDo: pull key from env variable
+    private static $key = '**06-russia-STAY-dollar-95**';
+
     public static function create($username, $roles)
     {
         $signer = new Sha256();
@@ -23,7 +26,7 @@ class Jwt
         ->setExpiration(time() + 3600)// Configures the expiration time of the token (exp claim)
         ->set('username', $username)// Configures a new claim, called "username"
         ->set('roles', $roles)// Configures a new claim, called "roles"
-        ->sign($signer, '**06-russia-STAY-dollar-95**')// creates a signature using key
+        ->sign($signer, self::$key)// creates a signature using key
         ->getToken(); // Retrieves the generated token
 
         return (string)$token;
@@ -49,10 +52,10 @@ class Jwt
     public static function check(Token $token)
     {
         $signer = new Sha256();
-        if (!$token->verify($signer, '**06-russia-STAY-dollar-95**')) {
+        if (!$token->verify($signer, self::$key)) {
             throw new \InvalidArgumentException();
         }
 
-        return $token->verify($signer, '**06-russia-STAY-dollar-95**');
+        return $token->verify($signer, self::$key);
     }
 }

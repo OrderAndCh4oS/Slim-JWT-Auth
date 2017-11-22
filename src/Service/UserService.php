@@ -5,7 +5,6 @@ namespace Oacc\Service;
 use Doctrine\ORM\EntityRepository;
 use Oacc\Authentication\Jwt;
 use Oacc\Authentication\Password\HashPasswordListener;
-use Oacc\Authentication\Password\PasswordEncoder;
 use Oacc\Entity\User;
 use Oacc\Error\Error;
 use Oacc\Validation\Exceptions\ValidationException;
@@ -20,6 +19,7 @@ class UserService
      * @var Container
      */
     protected $container;
+    private $errors;
 
     /**
      * Authentication constructor.
@@ -28,6 +28,7 @@ class UserService
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->errors = new Error();
     }
 
     /**
@@ -53,10 +54,17 @@ class UserService
     public function create(Request $request, Response $response)
     {
         $data = $request->getParsedBody();
-        $this->checkDataIsNotEmpty($data);
+        if (!$this->checkDataIsNotEmpty($data)) {
+            return JsonEncoder::setErrorJson($response, $this->errors->getErrors());
+        }
         $this->addValidationListener($data);
         $this->addPasswordEncoderListener();
-        $user = $this->createUser($data);
+        try {
+            /** @var User $user */
+            $user = $this->createUser($data);
+        } catch (ValidationException $e) {
+            return JsonEncoder::setErrorJson($response, $e->getErrors());
+        }
 
         return JsonEncoder::setSuccessJson($response, [$user->getUsername().' registered successfully']);
     }
@@ -70,25 +78,33 @@ class UserService
     {
         $user = $this->getUserFromTokenClaim($request);
         $data = $request->getParsedBody();
-        $this->checkDataIsNotEmpty($data);
+        if (!$this->checkDataIsNotEmpty($data)) {
+            return JsonEncoder::setErrorJson($response, $this->errors->getErrors());
+        }
         $this->addValidationListener($data);
         $this->addPasswordEncoderListener();
-        $user = $this->updateUser($data, $user);
+        try {
+            /** @var User $user */
+            $user = $this->updateUser($data, $user);
+        } catch (ValidationException $e) {
+            return JsonEncoder::setErrorJson($response, $e->getErrors());
+        }
 
         return JsonEncoder::setSuccessJson($response, [$user->getUsername().' updated successfully']);
     }
 
     /**
      * @param $data
-     * @throws ValidationException
+     * @return bool
      */
     private function checkDataIsNotEmpty($data)
     {
         if (empty($data)) {
-            throw new ValidationException(
-                new Error(['No valid data. Post username, email, password and password_confirm as json'])
-            );
+            $message = 'No valid data. Post username, email, password and password_confirm as json';
+            $this->errors->addError('validation', $message);
         }
+
+        return !$this->errors->hasErrors();
     }
 
     /**
@@ -130,7 +146,7 @@ class UserService
     {
         $this->container->em->getEventManager()->addEventListener(
             ['prePersist', 'preUpdate'],
-            new HashPasswordListener(new PasswordEncoder())
+            new HashPasswordListener()
         );
     }
 
