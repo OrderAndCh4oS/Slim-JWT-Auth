@@ -1,11 +1,9 @@
 <?php
 
-namespace Oacc\Authentication;
+namespace Oacc\Utility;
 
 use Doctrine\ORM\EntityRepository;
 use Oacc\Entity\User;
-use Oacc\Utility\Error;
-use Oacc\Utility\PasswordEncoder;
 use Slim\Container;
 
 class CheckCredentials

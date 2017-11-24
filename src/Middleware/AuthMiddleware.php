@@ -3,10 +3,10 @@
 namespace Oacc\Middleware;
 
 use Lcobucci\JWT\Token;
-use Oacc\Authentication\Exceptions\AuthenticationException;
+use Oacc\Exceptions\AuthenticationException;
 use Oacc\Utility\JsonEncoder;
 use Oacc\Utility\Jwt;
-use Oacc\Listener\Validation\Exceptions\ValidationException;
+use Oacc\Exceptions\ValidationException;
 use Psr\Container\ContainerInterface;
 use Slim\Container;
 use Slim\Http\Request;

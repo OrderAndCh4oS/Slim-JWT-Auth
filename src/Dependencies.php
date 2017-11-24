@@ -8,7 +8,7 @@ use League\Fractal\Manager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
-use Oacc\Authentication\Authenticate;
+use Oacc\Service\AuthenticationService;
 use Oacc\Controller\AuthController;
 use Oacc\Controller\UserController;
 use Oacc\Middleware\AuthMiddleware;
@@ -28,7 +28,7 @@ class Dependencies
             return new Manager();
         };
         $this->container['auth'] = function (Container $container) {
-            return new Authenticate($container);
+            return new AuthenticationService($container);
         };
         $this->container['Oacc\Controller\AuthController'] = function (Container $container) {
             return new AuthController($container);

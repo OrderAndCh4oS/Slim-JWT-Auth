@@ -3,7 +3,7 @@
 namespace Oacc\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Oacc\Authentication\Authenticate;
+use Oacc\Service\AuthenticationService;
 use Slim\Container;
 use Slim\Router;
 

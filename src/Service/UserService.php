@@ -8,7 +8,7 @@ use Oacc\Listener\HashPasswordListener;
 use Oacc\Utility\Error;
 use Oacc\Utility\JsonEncoder;
 use Oacc\Utility\Jwt;
-use Oacc\Listener\Validation\Exceptions\ValidationException;
+use Oacc\Exceptions\ValidationException;
 use Oacc\Listener\Validation\UserValidationListener;
 use Slim\Container;
 use Slim\Http\Request;

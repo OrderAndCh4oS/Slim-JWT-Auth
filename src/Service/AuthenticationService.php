@@ -1,7 +1,8 @@
 <?php
 
-namespace Oacc\Authentication;
+namespace Oacc\Service;
 
+use Oacc\Utility\CheckCredentials;
 use Oacc\Utility\Jwt;
 use Oacc\Utility\JsonEncoder;
 use Slim\Container;
@@ -12,7 +13,7 @@ use Slim\Http\Response;
  * Class Authentication
  * @package Oacc\Authentication
  */
-class Authenticate
+class AuthenticationService
 {
     /**
      * @var Container
@@ -48,6 +49,4 @@ class Authenticate
 
         return JsonEncoder::setSuccessJson($response, ['Logged in'], compact('token'));
     }
-
-
 }

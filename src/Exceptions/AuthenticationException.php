@@ -1,10 +1,10 @@
 <?php
 
-namespace Oacc\Authentication\Exceptions;
+namespace Oacc\Exceptions;
 
 /**
  * Class AuthenticationException
- * @package Oacc\Authentication\Exceptions
+ * @package Oacc\Exceptions
  */
 class AuthenticationException extends \Exception
 {

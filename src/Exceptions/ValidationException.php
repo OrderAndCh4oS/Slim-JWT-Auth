@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Listener\Validation\Exceptions;
+namespace Oacc\Exceptions;
 
 use Oacc\Utility\Error;
 
