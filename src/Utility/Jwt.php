@@ -11,7 +11,7 @@ use Slim\Http\Request;
 
 class Jwt
 {
-    public static function create($username, $roles)
+    public static function create($data)
     {
         $signer = new Sha256();
         $token = (new Builder())->setIssuer(getenv('JWT_ISSUER'))// Configures the issuer (iss claim)
@@ -19,13 +19,12 @@ class Jwt
         ->setId('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
         ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
         ->setNotBefore(time())// Configures the time that the token can be used (nbf claim)
-        ->setExpiration(time() + 3600)// Configures the expiration time of the token (exp claim)
-        ->set('username', $username)// Configures a new claim, called "username"
-        ->set('roles', $roles)// Configures a new claim, called "roles"
-        ->sign($signer, getenv('JWT_KEY'))// creates a signature using key
-        ->getToken(); // Retrieves the generated token
+        ->setExpiration(time() + 3600);// Configures the expiration time of the token (exp claim)
+        foreach ($data as $key => $value) {
+            $token->set($key, $value);
+        }
 
-        return (string)$token;
+        return (string)$token->sign($signer, getenv('JWT_KEY'))->getToken();// creates a signature using key
     }
 
     /**

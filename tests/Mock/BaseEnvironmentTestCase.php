@@ -35,7 +35,7 @@ class BaseEnvironmentTestCase extends TestCase
 
     protected function getAuthHeader($username = 'TestUsername', array $roles = ['ROLE_USER'])
     {
-        $token = Jwt::create($username, $roles);
+        $token = Jwt::create(compact('username', 'roles'));
 
         return ['Authorization' => "Bearer ".$token];
     }

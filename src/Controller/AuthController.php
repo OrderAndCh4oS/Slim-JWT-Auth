@@ -2,6 +2,7 @@
 
 namespace Oacc\Controller;
 
+use Oacc\Authentication\CheckCredentials;
 use Oacc\Authentication\Authenticate;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -19,6 +20,6 @@ class AuthController extends Controller
      */
     public function loginAction(Request $request, Response $response)
     {
-        return (new Authenticate($this->container))->authenticate($request, $response);
+        return (new Authenticate(new CheckCredentials($this->container)))->authenticate($request, $response);
     }
 }
