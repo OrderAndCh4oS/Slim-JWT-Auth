@@ -3,7 +3,7 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';
-$dotEnv = new Dotenv(__DIR__.'/src');
+$dotEnv = new Dotenv(__DIR__);
 $dotEnv->load();
 $dotEnv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
 

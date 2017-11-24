@@ -10,7 +10,7 @@ class App
 
     public function __construct()
     {
-        $dotEnv = new Dotenv(__DIR__);
+        $dotEnv = new Dotenv(realpath(__DIR__.'/..'));
         $dotEnv->load();
         $dotEnv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
         $settings = require __DIR__.'/settings.php';
