@@ -2,9 +2,16 @@
 
 namespace Oacc\Utility;
 
+/**
+ * Class Error
+ * @package Oacc\Utility
+ */
 class Error
 {
 
+    /**
+     * @var array|null
+     */
     private $errors = [];
 
     /**

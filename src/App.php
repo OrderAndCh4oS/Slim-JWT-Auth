@@ -4,10 +4,20 @@ namespace Oacc;
 
 use Dotenv\Dotenv;
 
+/**
+ * Class App
+ * @package Oacc
+ */
 class App
 {
+    /**
+     * @var \Slim\App
+     */
     private $app;
 
+    /**
+     * App constructor.
+     */
     public function __construct()
     {
         $dotEnv = new Dotenv(realpath(__DIR__.'/..'));

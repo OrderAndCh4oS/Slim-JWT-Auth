@@ -8,6 +8,10 @@ use Oacc\Middleware\AuthMiddleware;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 
+/**
+ * Class Routes
+ * @package Oacc
+ */
 class Routes
 {
     /**

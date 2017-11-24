@@ -8,17 +8,28 @@ use League\Fractal\Manager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
-use Oacc\Service\AuthenticationService;
 use Oacc\Controller\AuthController;
 use Oacc\Controller\UserController;
 use Oacc\Middleware\AuthMiddleware;
+use Oacc\Service\AuthenticationService;
 use Psr\Container\ContainerInterface;
 use Slim\Container;
 
+/**
+ * Class Dependencies
+ * @package Oacc
+ */
 class Dependencies
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
+    /**
+     * Dependencies constructor.
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -41,11 +52,18 @@ class Dependencies
         };
     }
 
+    /**
+     * @return ContainerInterface
+     */
     public function getContainer()
     {
         return $this->container;
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @return Logger
+     */
     private function getLogger(ContainerInterface $container): Logger
     {
         $settings = $container->get('settings')['logger'];
@@ -56,6 +74,10 @@ class Dependencies
         return $logger;
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @return EntityManager
+     */
     private function getEntityManager(ContainerInterface $container): EntityManager
     {
         $settings = $container->get('settings')['doctrine'];

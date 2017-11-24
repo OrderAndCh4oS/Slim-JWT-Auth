@@ -4,8 +4,8 @@ namespace Oacc\Listener\Validation;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
-use Oacc\Utility\Error;
 use Oacc\Exceptions\ValidationException;
+use Oacc\Utility\Error;
 
 /**
  * Class ValidationListener
@@ -43,6 +43,12 @@ abstract class ValidationListener implements EventSubscriber
         }
     }
 
+    /**
+     * @param $criteria
+     * @param $entityName
+     * @param null $entityId
+     * @return bool
+     */
     protected function fieldIsAvailable($criteria, $entityName, $entityId = null)
     {
         $entityRepository = $this->entityManager->getRepository($entityName);

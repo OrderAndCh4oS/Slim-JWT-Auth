@@ -2,11 +2,19 @@
 
 namespace Oacc\Transformer;
 
-use Oacc\Entity\User;
 use League\Fractal;
+use Oacc\Entity\User;
 
+/**
+ * Class UserTransformer
+ * @package Oacc\Transformer
+ */
 class UserTransformer extends Fractal\TransformerAbstract
 {
+    /**
+     * @param User $user
+     * @return array
+     */
     public function transform(User $user)
     {
         return [

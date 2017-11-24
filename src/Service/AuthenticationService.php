@@ -3,8 +3,8 @@
 namespace Oacc\Service;
 
 use Oacc\Utility\CheckCredentials;
-use Oacc\Utility\Jwt;
 use Oacc\Utility\JsonEncoder;
+use Oacc\Utility\Jwt;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;

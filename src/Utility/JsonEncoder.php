@@ -4,6 +4,10 @@ namespace Oacc\Utility;
 
 use Slim\Http\Response;
 
+/**
+ * Class JsonEncoder
+ * @package Oacc\Utility
+ */
 class JsonEncoder
 {
     /**

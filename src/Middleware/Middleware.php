@@ -10,6 +10,8 @@ use Slim\Container;
  */
 class Middleware
 {
+    protected $container;
+
     /**
      * Middleware constructor.
      * @param Container $container

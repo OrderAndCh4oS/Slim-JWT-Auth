@@ -2,8 +2,8 @@
 
 namespace Oacc\Controller;
 
-use Oacc\Utility\CheckCredentials;
 use Oacc\Service\AuthenticationService;
+use Oacc\Utility\CheckCredentials;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

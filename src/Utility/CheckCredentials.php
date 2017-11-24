@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityRepository;
 use Oacc\Entity\User;
 use Slim\Container;
 
+/**
+ * Class CheckCredentials
+ * @package Oacc\Utility
+ */
 class CheckCredentials
 {
 
@@ -67,6 +71,9 @@ class CheckCredentials
         return !$this->errors->hasErrors();
     }
 
+    /**
+     * @return array
+     */
     public function getErrors()
     {
         return $this->errors->getErrors();
@@ -82,5 +89,4 @@ class CheckCredentials
             'roles' => $this->user->getRoles(),
         ];
     }
-
 }

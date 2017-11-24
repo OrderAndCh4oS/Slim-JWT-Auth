@@ -4,9 +4,9 @@ namespace Oacc\Middleware;
 
 use Lcobucci\JWT\Token;
 use Oacc\Exceptions\AuthenticationException;
+use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\JsonEncoder;
 use Oacc\Utility\Jwt;
-use Oacc\Exceptions\ValidationException;
 use Psr\Container\ContainerInterface;
 use Slim\Container;
 use Slim\Http\Request;

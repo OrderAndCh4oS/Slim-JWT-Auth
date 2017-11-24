@@ -5,7 +5,7 @@ namespace Oacc\Listener\Validation;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
-use Oacc\Validation\Exceptions\ValidationException;
+use Oacc\Exceptions\ValidationException;
 
 /**
  * Class UserValidationListener
@@ -29,6 +29,9 @@ class UserValidationListener extends ValidationListener
         $this->confirmPassword = $confirmPassword;
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -38,6 +41,9 @@ class UserValidationListener extends ValidationListener
         $this->validation($entity);
     }
 
+    /**
+     * @param LifecycleEventArgs $args
+     */
     public function preUpdate(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -69,6 +75,10 @@ class UserValidationListener extends ValidationListener
         $this->checkErrors();
     }
 
+    /**
+     * @param string $username
+     * @param int $id
+     */
     private function checkUsername($username, $id)
     {
         switch (true) {
@@ -90,6 +100,10 @@ class UserValidationListener extends ValidationListener
         }
     }
 
+    /**
+     * @param string $email
+     * @param int $id
+     */
     private function checkEmail($email, $id)
     {
         switch (true) {
@@ -105,6 +119,9 @@ class UserValidationListener extends ValidationListener
         }
     }
 
+    /**
+     * @param string $password
+     */
     private function checkPassword($password)
     {
         if (empty($password)) {

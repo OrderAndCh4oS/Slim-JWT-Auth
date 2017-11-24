@@ -9,8 +9,16 @@ use Lcobucci\JWT\Token;
 use Oacc\Exceptions\ValidationException;
 use Slim\Http\Request;
 
+/**
+ * Class Jwt
+ * @package Oacc\Utility
+ */
 class Jwt
 {
+    /**
+     * @param $data
+     * @return string
+     */
     public static function create($data)
     {
         $signer = new Sha256();
@@ -44,6 +52,10 @@ class Jwt
         }
     }
 
+    /**
+     * @param Token $token
+     * @return bool
+     */
     public static function check(Token $token)
     {
         $signer = new Sha256();
