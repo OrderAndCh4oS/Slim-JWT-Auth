@@ -2,12 +2,17 @@
 
 namespace Oacc;
 
+use Dotenv\Dotenv;
+
 class App
 {
     private $app;
 
     public function __construct()
     {
+        $dotEnv = new Dotenv(__DIR__);
+        $dotEnv->load();
+        $dotEnv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
         $settings = require __DIR__.'/settings.php';
         $this->app = new \Slim\App($settings);
         $container = (new Dependencies($this->app->getContainer()))->getContainer();
