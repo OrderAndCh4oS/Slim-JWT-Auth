@@ -174,10 +174,14 @@ class UserTest extends BaseEnvironmentTestCase
         $data = [
             "username" => "&*)$#**)(!&%@_*%",
             "email" => "notvalid",
-            "password" => "aaaaaaaa",
+            "password" => "aaaa",
             "password_confirm" => "bbbbbbbb",
         ];
         $this->request('PUT', '/user', $data, $this->getAuthHeader('TestNameTwo'));
         $this->errorResponse();
+        $this->assertEquals(
+            ['Password must contain a minimum of 8 characters'],
+            $this->responseData()->errors->password
+        );
     }
 }

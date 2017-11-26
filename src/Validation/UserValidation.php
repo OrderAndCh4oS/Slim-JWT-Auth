@@ -85,10 +85,16 @@ class UserValidation extends Validation
      */
     private function checkPassword($password)
     {
-        if (empty($password)) {
-            $this->error->addError('password', 'Please enter a password');
-        } elseif ($password != $this->confirmPassword) {
-            $this->error->addError('password_confirm', 'Passwords do not match');
+        switch (true) {
+            case empty($password):
+                $this->error->addError('password', 'Please enter a password');
+                break;
+            case strlen($password) < 8:
+                $this->error->addError('password', 'Password must contain a minimum of 8 characters');
+                break;
+            case $password != $this->confirmPassword:
+                $this->error->addError('password_confirm', 'Passwords do not match');
+                break;
         }
     }
 }
