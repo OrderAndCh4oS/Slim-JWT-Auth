@@ -1,28 +1,21 @@
 <?php
 
-namespace Oacc\Listener\Validation;
+namespace Oacc\Validation;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Entity\User;
-use Oacc\Exceptions\ValidationException;
 
 /**
- * Class UserValidationListener
+ * Class UserValidation
  * @package Oacc\Validation
  */
-class UserValidationListener extends ValidationListener
+class UserValidation extends Validation
 {
     /**
      * @var string $confirmPassword
      */
     private $confirmPassword;
 
-    /**
-     * UserValidationListener constructor.
-     * @param string $confirmPassword
-     * @param EntityManager $entityManager
-     */
     public function __construct($confirmPassword, EntityManager $entityManager)
     {
         parent::__construct($entityManager);
@@ -30,49 +23,17 @@ class UserValidationListener extends ValidationListener
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param $entity
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function validate($entity)
     {
-        $entity = $args->getEntity();
         if (!$entity instanceof User) {
             return;
         }
-        $this->validation($entity);
-    }
-
-    /**
-     * @param LifecycleEventArgs $args
-     */
-    public function preUpdate(LifecycleEventArgs $args)
-    {
-        $entity = $args->getEntity();
-        if (!$entity instanceof User) {
-            return;
-        }
-        $this->validation($entity);
-    }
-
-    /**
-     * Returns an array of events this subscriber wants to listen to.
-     *
-     * @return array
-     */
-    public function getSubscribedEvents()
-    {
-        return ['prePersist', 'preUpdate'];
-    }
-
-    /**
-     * @param User $user
-     * @throws ValidationException
-     */
-    public function validation(User $user)
-    {
+        $user = $entity;
         $this->checkUsername($user->getUsername(), $user->getId());
         $this->checkEmail($user->getEmailAddress(), $user->getId());
         $this->checkPassword($user->getPlainPassword());
-        $this->checkErrors();
     }
 
     /**

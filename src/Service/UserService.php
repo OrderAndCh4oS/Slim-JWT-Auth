@@ -6,10 +6,11 @@ use Doctrine\ORM\EntityRepository;
 use Oacc\Entity\User;
 use Oacc\Exceptions\ValidationException;
 use Oacc\Listener\HashPasswordListener;
-use Oacc\Listener\Validation\UserValidationListener;
+use Oacc\Listener\ValidationListener;
 use Oacc\Utility\Error;
 use Oacc\Utility\JsonEncoder;
 use Oacc\Utility\Jwt;
+use Oacc\Validation\UserValidation;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -139,7 +140,7 @@ class UserService
     {
         $this->container->em->getEventManager()->addEventListener(
             ['prePersist', 'preUpdate'],
-            new UserValidationListener($data['password_confirm'], $this->container->em)
+            new ValidationListener(new UserValidation($data['password_confirm'], $this->container->em))
         );
     }
 

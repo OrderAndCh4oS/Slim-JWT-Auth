@@ -1,37 +1,27 @@
 <?php
 
-namespace Oacc\Listener\Validation;
+namespace Oacc\Validation;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\Error;
 
-/**
- * Class ValidationListener
- * @package Oacc\Validation
- */
-abstract class ValidationListener implements EventSubscriber
+abstract class Validation
 {
 
-    /**
-     * @var Error
-     */
     protected $error;
     /**
      * @var EntityManager
      */
-    private $entityManager;
+    protected $entityManager;
 
-    /**
-     * UserValidationListener constructor.
-     * @param EntityManager $entityManager
-     */
     public function __construct(EntityManager $entityManager)
     {
         $this->error = new Error();
         $this->entityManager = $entityManager;
     }
+
+    abstract public function validate($entity);
 
     /**
      * @throws ValidationException
