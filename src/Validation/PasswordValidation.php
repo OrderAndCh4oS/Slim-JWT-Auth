@@ -4,6 +4,7 @@ namespace Oacc\Validation;
 
 use Oacc\Entity\User;
 use Oacc\Utility\Error;
+use Oacc\Validation\Field\FieldValidation;
 
 class PasswordValidation extends FieldValidation
 {

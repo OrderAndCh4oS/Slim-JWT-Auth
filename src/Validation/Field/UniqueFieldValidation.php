@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Validation\Field;
 
 use Doctrine\ORM\EntityManager;
 

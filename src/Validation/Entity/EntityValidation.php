@@ -1,12 +1,12 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Validation\Entity;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\Error;
 
-abstract class Validation
+abstract class EntityValidation
 {
 
     protected $error;

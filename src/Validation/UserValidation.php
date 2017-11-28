@@ -4,12 +4,14 @@ namespace Oacc\Validation;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
+use Oacc\Validation\Entity\EntityValidation;
+use Oacc\Validation\Field\ValidateFields;
 
 /**
  * Class UserValidation
  * @package Oacc\Validation
  */
-class UserValidation extends Validation
+class UserValidation extends EntityValidation
 {
     /**
      * @var string $confirmPassword

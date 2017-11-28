@@ -5,6 +5,8 @@ namespace Oacc\Validation;
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
 use Oacc\Utility\Error;
+use Oacc\Validation\Field\FieldValidation;
+use Oacc\Validation\Field\UniqueFieldValidation;
 
 class EmailValidation extends FieldValidation
 {

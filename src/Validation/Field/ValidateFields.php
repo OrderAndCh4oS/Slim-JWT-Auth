@@ -1,14 +1,10 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Validation\Field;
 
 use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\Error;
 
-/**
- * Class Validate
- * @package Validation
- */
 class ValidateFields
 {
     /**
