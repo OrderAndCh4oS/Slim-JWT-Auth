@@ -15,10 +15,9 @@ abstract class Validation
      */
     protected $entityManager;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct()
     {
         $this->error = new Error();
-        $this->entityManager = $entityManager;
     }
 
     abstract public function validate($entity);
@@ -30,26 +29,6 @@ abstract class Validation
     {
         if ($this->error->hasErrors()) {
             throw new ValidationException($this->error);
-        }
-    }
-
-    /**
-     * @param $criteria
-     * @param $entityName
-     * @param null $entityId
-     * @return bool
-     */
-    protected function fieldIsAvailable($criteria, $entityName, $entityId = null)
-    {
-        $entityRepository = $this->entityManager->getRepository($entityName);
-        $entity = $entityRepository->findOneBy($criteria);
-        switch ($entity) {
-            case null:
-                return true;
-            case $entity->getId() === $entityId:
-                return true;
-            default:
-                return !$entity;
         }
     }
 }
