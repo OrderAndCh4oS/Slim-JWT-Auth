@@ -13,6 +13,7 @@ class Error
      * @var array|null
      */
     private $errors = [];
+    private $name;
 
     /**
      * Error constructor.
@@ -23,14 +24,18 @@ class Error
         if ($errors) {
             $this->errors = $errors;
         }
+        $this->name = 'hello';
     }
 
     /**
-     * @param $name
      * @param $message
+     * @param string $name
      */
-    public function addError($name, $message)
+    public function addError($message, $name = null)
     {
+        if (!$name) {
+            $name = $this->name;
+        }
         $this->errors[$name][] = $message;
     }
 
@@ -48,5 +53,15 @@ class Error
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }

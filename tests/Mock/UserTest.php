@@ -54,7 +54,7 @@ class UserTest extends BaseEnvironmentTestCase
         ];
         $this->request('POST', '/user', $data);
         $this->errorResponse();
-        $this->assertEquals(['Username is too long'], $this->responseData()->errors->username);
+        $this->assertEquals(['Username is too long, maximum 80 characters'], $this->responseData()->errors->username);
         $this->assertEquals(['Please enter a valid email address'], $this->responseData()->errors->email);
         $this->assertEquals(['Passwords do not match'], $this->responseData()->errors->password_confirm);
     }
@@ -70,7 +70,7 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('POST', '/user', $data);
         $this->errorResponse();
         $this->assertEquals(
-            ['An account has already been registered for this address'],
+            ['Email is not available'],
             $this->responseData()->errors->email
         );
     }
@@ -180,7 +180,7 @@ class UserTest extends BaseEnvironmentTestCase
         $this->request('PUT', '/user', $data, $this->getAuthHeader('TestNameTwo'));
         $this->errorResponse();
         $this->assertEquals(
-            ['Password must contain a minimum of 8 characters'],
+            ['Password is too short, minimum 8 characters'],
             $this->responseData()->errors->password
         );
     }

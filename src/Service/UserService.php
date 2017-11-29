@@ -36,6 +36,7 @@ class UserService
     /**
      * @param Request $request
      * @return User
+     * @throws ValidationException
      */
     public function getUserFromTokenClaim(Request $request)
     {
@@ -75,6 +76,7 @@ class UserService
      * @param Request $request
      * @param Response $response
      * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, Response $response)
     {
@@ -103,7 +105,7 @@ class UserService
     {
         if (empty($data)) {
             $message = 'No valid data. Post username, email, password and password_confirm as json';
-            $this->errors->addError('validation', $message);
+            $this->errors->addError($message, 'validation');
         }
 
         return !$this->errors->hasErrors();
@@ -159,7 +161,7 @@ class UserService
     private function persistUserData($data, User $user)
     {
         $user->setUsername($data['username']);
-        $user->setEmailAddress($data['email']);
+        $user->setEmail($data['email']);
         $user->setPlainPassword($data['password']);
         $this->container->em->persist($user);
         $this->container->em->flush();

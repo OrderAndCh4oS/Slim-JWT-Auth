@@ -31,9 +31,9 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="email_address", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
-    private $emailAddress;
+    private $email;
 
     /**
      * @var \DateTime
@@ -93,17 +93,17 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getEmailAddress()
+    public function getEmail()
     {
-        return $this->emailAddress;
+        return $this->email;
     }
 
     /**
-     * @param string $emailAddress
+     * @param string $email
      */
-    public function setEmailAddress($emailAddress)
+    public function setEmail($email)
     {
-        $this->emailAddress = $emailAddress;
+        $this->email = $email;
     }
 
     /**

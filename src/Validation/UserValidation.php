@@ -4,6 +4,7 @@ namespace Oacc\Validation;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
+use Oacc\Exceptions\ValidationException;
 use Oacc\Validation\Entity\EntityValidation;
 use Oacc\Validation\Field\ValidateFields;
 
@@ -25,16 +26,21 @@ class UserValidation extends EntityValidation
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param $entity
+     * @throws ValidationException
+     */
     public function validate($entity)
     {
         if (!($entity instanceof User)) {
             return;
         }
         $user = $entity;
-        $validation = new ValidateFields($this->error);
-        $validation->addCheck(new UsernameValidation($user, $this->entityManager));
-        $validation->addCheck(new EmailValidation($user, $this->entityManager));
-        $validation->addCheck(new PasswordValidation($user, $this->confirmPassword));
-        $validation->check();
+        $validate = new ValidateFields($this->error);
+        $validate->addCheck(new UsernameValidation($user, $this->entityManager));
+        $validate->addCheck(new EmailValidation($user, $this->entityManager));
+        $validate->addCheck(new PasswordValidation($user, $this->confirmPassword));
+        $validate->validate();
+        $validate->checkValidation();
     }
 }

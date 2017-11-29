@@ -6,7 +6,11 @@ use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
 use Oacc\Utility\Error;
 use Oacc\Validation\Field\FieldValidation;
-use Oacc\Validation\Field\UniqueFieldValidation;
+use Oacc\Validation\Field\Length;
+use Oacc\Validation\Field\NotEmpty;
+use Oacc\Validation\Field\Regex;
+use Oacc\Validation\Field\Unique;
+use Oacc\Validation\Field\ValidateFields;
 
 class UsernameValidation extends FieldValidation
 {
@@ -25,28 +29,25 @@ class UsernameValidation extends FieldValidation
         $this->user = $user;
     }
 
+    /**
+     * @param Error $error
+     */
     public function validate(Error $error)
     {
         $username = $this->user->getUsername();
-        switch (true) {
-            case empty($username):
-                $error->addError('username', 'Please enter a username');
-                break;
-            case strlen($username) > 80:
-                $error->addError('username', 'Username is too long');
-                break;
-            case preg_match('/[^A-Za-z0-9_-]/', $username):
-                $error->addError(
-                    'username',
-                    'Username can only contain letters, numbers, underscores and hyphens'
-                );
-                break;
-            case !(new UniqueFieldValidation($this->entityManager))
-                ->isUnique(compact('username'), 'Oacc\Entity\User', $this->user->getId()):
-                $error->addError('username', 'Username is not available');
-                break;
-        }
-
-        return $error;
+        $error->setName('username');
+        $validate = new ValidateFields($error);
+        $validate->addCheck(new NotEmpty($username));
+        $validate->addCheck(new Length($username, 80));
+        $validate->addCheck(new Regex($username, '/[^A-Za-z0-9_-]/'));
+        $validate->addCheck(
+            new Unique(
+                'Oacc\Entity\User',
+                compact('username'),
+                $this->user->getId(),
+                $this->entityManager
+            )
+        );
+        $validate->validate();
     }
 }

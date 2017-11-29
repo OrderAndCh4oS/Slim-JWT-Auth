@@ -26,16 +26,10 @@ class ValidateFields
         $this->error = $error;
     }
 
-    /**
-     * @throws ValidationException
-     */
-    public function check()
+    public function validate()
     {
         foreach ($this->checks as $check) {
             $check->validate($this->error);
-        }
-        if ($this->error->hasErrors()) {
-            throw new ValidationException($this->error);
         }
     }
 
@@ -45,5 +39,15 @@ class ValidateFields
     public function addCheck(FieldValidation $check)
     {
         $this->checks[] = $check;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function checkValidation()
+    {
+        if ($this->error->hasErrors()) {
+            throw new ValidationException($this->error);
+        }
     }
 }

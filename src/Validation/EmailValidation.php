@@ -5,8 +5,11 @@ namespace Oacc\Validation;
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
 use Oacc\Utility\Error;
+use Oacc\Validation\Field\Email;
 use Oacc\Validation\Field\FieldValidation;
-use Oacc\Validation\Field\UniqueFieldValidation;
+use Oacc\Validation\Field\NotEmpty;
+use Oacc\Validation\Field\Unique;
+use Oacc\Validation\Field\ValidateFields;
 
 class EmailValidation extends FieldValidation
 {
@@ -28,18 +31,19 @@ class EmailValidation extends FieldValidation
 
     public function validate(Error $error)
     {
-        $email = $this->user->getEmailAddress();
-        switch (true) {
-            case empty($email):
-                $error->addError('email', 'Please enter an email address');
-                break;
-            case !filter_var($email, FILTER_VALIDATE_EMAIL):
-                $error->addError('email', 'Please enter a valid email address');
-                break;
-            case !(new UniqueFieldValidation($this->entityManager))
-                ->isUnique(['emailAddress' => $email], 'Oacc\Entity\User', $this->user->getId()):
-                $error->addError('email', 'An account has already been registered for this address');
-                break;
-        }
+        $email = $this->user->getEmail();
+        $error->setName('email');
+        $validate = new ValidateFields($error);
+        $validate->addCheck(new NotEmpty($email));
+        $validate->addCheck(new Email($email));
+        $validate->addCheck(
+            new Unique(
+                'Oacc\Entity\User',
+                compact('email'),
+                $this->user->getId(),
+                $this->entityManager
+            )
+        );
+        $validate->validate();
     }
 }

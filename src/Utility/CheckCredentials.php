@@ -45,10 +45,10 @@ class CheckCredentials
     public function areNotEmpty($credentials)
     {
         if (empty($credentials['username'])) {
-            $this->errors->addError('username', 'Missing username');
+            $this->errors->addError('Missing username', 'username');
         }
         if (empty($credentials['password'])) {
-            $this->errors->addError('password', 'Missing password');
+            $this->errors->addError('Missing password', 'password');
         }
 
         return !$this->errors->hasErrors();
@@ -65,7 +65,7 @@ class CheckCredentials
         /** @var User $user */
         $this->user = $userRepository->findOneBy(['username' => $credentials['username']]);
         if (!$this->user || !PasswordEncoder::verifyPassword($credentials['password'], $this->user->getPassword())) {
-            $this->errors->addError('auth', 'Invalid credentials, login failed');
+            $this->errors->addError('Invalid credentials, login failed', 'auth');
         }
 
         return !$this->errors->hasErrors();

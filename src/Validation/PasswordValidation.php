@@ -5,6 +5,10 @@ namespace Oacc\Validation;
 use Oacc\Entity\User;
 use Oacc\Utility\Error;
 use Oacc\Validation\Field\FieldValidation;
+use Oacc\Validation\Field\Length;
+use Oacc\Validation\Field\NotEmpty;
+use Oacc\Validation\Field\PasswordConfirm;
+use Oacc\Validation\Field\ValidateFields;
 
 class PasswordValidation extends FieldValidation
 {
@@ -24,16 +28,11 @@ class PasswordValidation extends FieldValidation
     public function validate(Error $error)
     {
         $password = $this->user->getPlainPassword();
-        switch (true) {
-            case empty($password):
-                $error->addError('password', 'Please enter a password');
-                break;
-            case strlen($password) < 8:
-                $error->addError('password', 'Password must contain a minimum of 8 characters');
-                break;
-            case $password != $this->confirmPassword:
-                $error->addError('password_confirm', 'Passwords do not match');
-                break;
-        }
+        $error->setName('password');
+        $validate = new ValidateFields($error);
+        $validate->addCheck(new NotEmpty($password));
+        $validate->addCheck(new Length($password, 255, 8));
+        $validate->addCheck(new PasswordConfirm($password, $this->confirmPassword));
+        $validate->validate();
     }
 }
