@@ -6,6 +6,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class BaseTestCase
+ * @package Tests
+ */
 class BaseTestCase extends TestCase
 {
 
@@ -14,6 +18,13 @@ class BaseTestCase extends TestCase
      */
     protected $entityManager;
 
+    /**
+     * BaseTestCase constructor.
+     * @param null $name
+     * @param array $data
+     * @param string $dataName
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);

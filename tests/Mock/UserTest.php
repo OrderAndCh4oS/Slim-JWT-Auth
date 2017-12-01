@@ -2,8 +2,16 @@
 
 namespace Tests\Mock;
 
+/**
+ * Class UserTest
+ * @package Tests\Mock
+ */
 class UserTest extends BaseEnvironmentTestCase
 {
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testUserPostWithValidData()
     {
         $data = [
@@ -17,6 +25,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['TestName registered successfully'], $this->responseData()->messages);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostUserWithNoData()
     {
         $data = [];
@@ -28,6 +40,10 @@ class UserTest extends BaseEnvironmentTestCase
         );
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostRegisterWithEmptyData()
     {
         $data = [
@@ -40,6 +56,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->errorResponse();
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostRegisterWithInvalidData()
     {
         $username = "";
@@ -59,6 +79,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['Passwords do not match'], $this->responseData()->errors->password_confirm);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostRegisterWithUsedData()
     {
         $data = [
@@ -75,6 +99,10 @@ class UserTest extends BaseEnvironmentTestCase
         );
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostLoginWithValidData()
     {
         $data = [
@@ -88,6 +116,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertObjectHasAttribute('token', $this->responseData()->data);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostLoginWithEmptyData()
     {
         $data = [
@@ -100,6 +132,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['Missing password'], $this->responseData()->errors->password);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testPostLoginWithInvalidData()
     {
         $data = [
@@ -111,6 +147,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['Invalid credentials, login failed'], $this->responseData()->errors->auth);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testGetUserWithValidData()
     {
         $this->request('get', '/user', [], $this->getAuthHeader('TestName'));
@@ -123,6 +163,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertObjectHasAttribute('email', $this->responseData()->data->user->data);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testGetAdminWithNoToken()
     {
         $this->request('get', '/user', []);
@@ -133,6 +177,10 @@ class UserTest extends BaseEnvironmentTestCase
         );
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testGetAdminWithInvalidTokenData()
     {
         $this->request('get', '/user', [], $this->getAuthHeader('bad_username', ['ROLE_NONE']));
@@ -143,6 +191,10 @@ class UserTest extends BaseEnvironmentTestCase
         );
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testUserPutWithValidData()
     {
         $data = [
@@ -156,6 +208,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['TestNameTwo updated successfully'], $this->responseData()->messages);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testUserPutWithUnchangedUsernameAndPassword()
     {
         $data = [
@@ -169,6 +225,10 @@ class UserTest extends BaseEnvironmentTestCase
         $this->assertEquals(['TestNameTwo updated successfully'], $this->responseData()->messages);
     }
 
+    /**
+     * @throws \Slim\Exception\MethodNotAllowedException
+     * @throws \Slim\Exception\NotFoundException
+     */
     public function testUserPutWithInvalidData()
     {
         $data = [

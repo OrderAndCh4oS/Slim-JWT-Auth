@@ -36,7 +36,6 @@ class UserService
     /**
      * @param Request $request
      * @return User
-     * @throws ValidationException
      */
     public function getUserFromTokenClaim(Request $request)
     {
