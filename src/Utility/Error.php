@@ -24,7 +24,7 @@ class Error
         if ($errors) {
             $this->errors = $errors;
         }
-        $this->name = 'hello';
+        $this->name = 'default';
     }
 
     /**

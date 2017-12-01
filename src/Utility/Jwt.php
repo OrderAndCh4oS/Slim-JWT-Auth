@@ -6,8 +6,6 @@ use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Token;
-use Oacc\Exceptions\ValidationException;
-use Slim\Http\Request;
 
 /**
  * Class Jwt
@@ -36,19 +34,17 @@ class Jwt
     }
 
     /**
-     * @param Request $request
+     * @param $authorizationHeader
      * @return Token
-     * @throws ValidationException
      */
-    public static function get(Request $request)
+    public static function get($authorizationHeader)
     {
-        $bearer = $request->getHeader('Authorization');
         $regex = '/^Bearer\s/';
-        $tokenHash = preg_replace($regex, '', $bearer);
+        $tokenHash = preg_replace($regex, '', $authorizationHeader);
         if (!empty($tokenHash)) {
             return (new Parser())->parse($tokenHash[0]);
         } else {
-            throw new ValidationException(new Error(['auth' => 'Token not found']));
+            throw new \InvalidArgumentException('Token not found');
         }
     }
 
@@ -60,7 +56,7 @@ class Jwt
     {
         $signer = new Sha256();
         if (!$token->verify($signer, getenv('JWT_KEY'))) {
-            throw new \InvalidArgumentException();
+            throw new \InvalidArgumentException('Token Invalid');
         }
 
         return $token->verify($signer, getenv('JWT_KEY'));

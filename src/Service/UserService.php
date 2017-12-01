@@ -40,7 +40,7 @@ class UserService
      */
     public function getUserFromTokenClaim(Request $request)
     {
-        $token = Jwt::get($request);
+        $token = Jwt::get($request->getHeader('Authorization'));
         /** @var EntityRepository $userRepo */
         $userRepo = $this->container->em->getRepository('\Oacc\Entity\User');
         /** @var User $user */

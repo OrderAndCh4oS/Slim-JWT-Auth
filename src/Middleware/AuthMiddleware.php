@@ -43,11 +43,11 @@ class AuthMiddleware extends Middleware
     public function __invoke(Request $request, Response $response, $next)
     {
         try {
-            $token = Jwt::get($request);
+            $token = Jwt::get($request->getHeader('Authorization'));
             Jwt::check($token);
             $this->hasAllowedRoles($token);
-        } catch (ValidationException $e) {
-            return JsonEncoder::setErrorJson($response, $e->getErrors(), 400);
+        } catch (\InvalidArgumentException $e) {
+            return JsonEncoder::setErrorJson($response, ['auth' => $e->getMessage()], 400);
         } catch (AuthenticationException $e) {
             return JsonEncoder::setErrorJson($response, $e->getMessage(), 401);
         }
