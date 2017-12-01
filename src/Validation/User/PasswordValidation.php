@@ -10,21 +10,37 @@ use Oacc\Validation\Field\NotEmpty;
 use Oacc\Validation\Field\PasswordConfirm;
 use Oacc\Validation\Field\ValidateFields;
 
+/**
+ * Class PasswordValidation
+ * @package Oacc\Validation\User
+ */
 class PasswordValidation extends FieldValidation
 {
 
+    /**
+     * @var User
+     */
     private $user;
     /**
      * @var
      */
     private $confirmPassword;
 
+    /**
+     * PasswordValidation constructor.
+     * @param User $user
+     * @param $confirmPassword
+     */
     public function __construct(User $user, $confirmPassword)
     {
         $this->user = $user;
         $this->confirmPassword = $confirmPassword;
     }
 
+    /**
+     * @param Error $error
+     * @return mixed|void
+     */
     public function validate(Error $error)
     {
         $password = $this->user->getPlainPassword();

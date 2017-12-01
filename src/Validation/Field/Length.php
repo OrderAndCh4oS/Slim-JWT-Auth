@@ -25,6 +25,12 @@ class Length extends FieldValidation
      */
     private $min;
 
+    /**
+     * Length constructor.
+     * @param $string
+     * @param $max
+     * @param int $min
+     */
     public function __construct($string, $max, $min = 0)
     {
         $this->string = $string;
@@ -32,6 +38,10 @@ class Length extends FieldValidation
         $this->min = $min;
     }
 
+    /**
+     * @param Error $error
+     * @return mixed|void
+     */
     public function validate(Error $error)
     {
         if (strlen($this->string) < $this->min) {

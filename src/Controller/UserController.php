@@ -27,7 +27,6 @@ class UserController extends Controller
      * @param Request $request
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Oacc\Exceptions\ValidationException
      */
     public function getAction(Request $request, Response $response)
     {
@@ -57,7 +56,6 @@ class UserController extends Controller
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws \Oacc\Exceptions\ValidationException
      */
     public function putAction(Request $request, Response $response)
     {

@@ -6,6 +6,10 @@ namespace Oacc\Utility;
  * Class Error
  * @package Oacc\Utility
  */
+/**
+ * Class Error
+ * @package Oacc\Utility
+ */
 class Error
 {
 
@@ -13,6 +17,9 @@ class Error
      * @var array|null
      */
     private $errors = [];
+    /**
+     * @var string
+     */
     private $name;
 
     /**
@@ -55,11 +62,17 @@ class Error
         return $this->errors;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @param $name
+     */
     public function setName($name)
     {
         $this->name = $name;

@@ -12,6 +12,10 @@ use Oacc\Validation\Field\Regex;
 use Oacc\Validation\Field\Unique;
 use Oacc\Validation\Field\ValidateFields;
 
+/**
+ * Class UsernameValidation
+ * @package Oacc\Validation\User
+ */
 class UsernameValidation extends FieldValidation
 {
     /**
@@ -23,6 +27,11 @@ class UsernameValidation extends FieldValidation
      */
     private $user;
 
+    /**
+     * UsernameValidation constructor.
+     * @param User $user
+     * @param EntityManager $entityManager
+     */
     public function __construct(User $user, EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;

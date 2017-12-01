@@ -10,6 +10,9 @@ use Oacc\Utility\Error;
  */
 class NotEmpty extends FieldValidation
 {
+    /**
+     * @var
+     */
     private $value;
 
     /**
@@ -21,6 +24,10 @@ class NotEmpty extends FieldValidation
         $this->value = $value;
     }
 
+    /**
+     * @param Error $error
+     * @return mixed|void
+     */
     public function validate(Error $error)
     {
         if (empty($this->value)) {

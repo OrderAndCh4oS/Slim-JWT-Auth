@@ -5,6 +5,10 @@ namespace Oacc\Utility;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 
+/**
+ * Class BuildJwt
+ * @package Oacc\Utility
+ */
 class BuildJwt
 {
     /**
@@ -12,6 +16,9 @@ class BuildJwt
      */
     private $builder;
 
+    /**
+     * BuildJwt constructor.
+     */
     public function __construct()
     {
         $this->builder = (new Builder())->setIssuer(getenv('JWT_ISSUER'))
@@ -22,6 +29,10 @@ class BuildJwt
             ->setExpiration(time() + 3600);
     }
 
+    /**
+     * @param array $data
+     * @return $this
+     */
     public function addClaims(array $data)
     {
         foreach ($data as $key => $value) {
@@ -31,6 +42,9 @@ class BuildJwt
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function sign()
     {
         $signer = new Sha256();

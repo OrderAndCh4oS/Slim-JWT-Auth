@@ -10,15 +10,30 @@ use Oacc\Utility\Error;
  */
 class Regex extends FieldValidation
 {
+    /**
+     * @var
+     */
     private $string;
+    /**
+     * @var
+     */
     private $regex;
 
+    /**
+     * Regex constructor.
+     * @param $string
+     * @param $regex
+     */
     public function __construct($string, $regex)
     {
         $this->string = $string;
         $this->regex = $regex;
     }
 
+    /**
+     * @param Error $error
+     * @return mixed|void
+     */
     public function validate(Error $error)
     {
         if (preg_match($this->regex, $this->string)) {

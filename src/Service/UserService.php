@@ -75,7 +75,6 @@ class UserService
      * @param Request $request
      * @param Response $response
      * @return Response
-     * @throws ValidationException
      */
     public function update(Request $request, Response $response)
     {

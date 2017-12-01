@@ -10,6 +10,9 @@ use Oacc\Utility\Error;
  */
 class Email extends FieldValidation
 {
+    /**
+     * @var
+     */
     private $email;
 
     /**
@@ -21,6 +24,9 @@ class Email extends FieldValidation
         $this->email = $email;
     }
 
+    /**
+     * @param Error $error
+     */
     public function validate(Error $error)
     {
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {

@@ -18,6 +18,11 @@ class UserValidation extends EntityValidation
      */
     private $confirmPassword;
 
+    /**
+     * UserValidation constructor.
+     * @param $confirmPassword
+     * @param EntityManager $entityManager
+     */
     public function __construct($confirmPassword, EntityManager $entityManager)
     {
         parent::__construct();

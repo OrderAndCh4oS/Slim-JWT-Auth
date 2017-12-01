@@ -11,6 +11,10 @@ use Oacc\Validation\Field\NotEmpty;
 use Oacc\Validation\Field\Unique;
 use Oacc\Validation\Field\ValidateFields;
 
+/**
+ * Class EmailValidation
+ * @package Oacc\Validation\User
+ */
 class EmailValidation extends FieldValidation
 {
     /**
@@ -23,12 +27,21 @@ class EmailValidation extends FieldValidation
      */
     private $user;
 
+    /**
+     * EmailValidation constructor.
+     * @param User $user
+     * @param EntityManager $entityManager
+     */
     public function __construct(User $user, EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->user = $user;
     }
 
+    /**
+     * @param Error $error
+     * @return mixed|void
+     */
     public function validate(Error $error)
     {
         $email = $this->user->getEmail();

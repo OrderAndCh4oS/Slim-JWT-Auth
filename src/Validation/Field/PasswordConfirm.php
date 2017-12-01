@@ -10,7 +10,13 @@ use Oacc\Utility\Error;
  */
 class PasswordConfirm extends FieldValidation
 {
+    /**
+     * @var
+     */
     private $password;
+    /**
+     * @var
+     */
     private $confirmPassword;
 
     /**
@@ -24,6 +30,10 @@ class PasswordConfirm extends FieldValidation
         $this->confirmPassword = $confirmPassword;
     }
 
+    /**
+     * @param Error $error
+     * @return mixed|void
+     */
     public function validate(Error $error)
     {
         if ($this->password != $this->confirmPassword) {
