@@ -10,7 +10,7 @@ use Oacc\Listener\ValidationListener;
 use Oacc\Utility\Error;
 use Oacc\Utility\JsonEncoder;
 use Oacc\Utility\Jwt;
-use Oacc\Validation\UserValidation;
+use Oacc\Validation\User\UserValidation;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;

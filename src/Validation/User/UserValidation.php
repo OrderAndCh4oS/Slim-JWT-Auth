@@ -1,10 +1,9 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Validation\User;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
-use Oacc\Exceptions\ValidationException;
 use Oacc\Validation\Entity\EntityValidation;
 use Oacc\Validation\Field\ValidateFields;
 

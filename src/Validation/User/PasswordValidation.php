@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Validation\User;
 
 use Oacc\Entity\User;
 use Oacc\Utility\Error;

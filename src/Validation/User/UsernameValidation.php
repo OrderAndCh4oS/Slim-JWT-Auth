@@ -1,6 +1,6 @@
 <?php
 
-namespace Oacc\Validation;
+namespace Oacc\Validation\User;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
