@@ -28,7 +28,6 @@ class UserValidation extends EntityValidation
 
     /**
      * @param $entity
-     * @throws ValidationException
      */
     public function validate($entity)
     {
@@ -41,6 +40,5 @@ class UserValidation extends EntityValidation
         $validate->addCheck(new EmailValidation($user, $this->entityManager));
         $validate->addCheck(new PasswordValidation($user, $this->confirmPassword));
         $validate->validate();
-        $validate->checkValidation();
     }
 }

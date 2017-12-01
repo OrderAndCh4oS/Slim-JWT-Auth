@@ -34,16 +34,15 @@ class EmailValidation extends FieldValidation
         $email = $this->user->getEmail();
         $error->setName('email');
         $validate = new ValidateFields($error);
-        $validate->addCheck(new NotEmpty($email));
-        $validate->addCheck(new Email($email));
-        $validate->addCheck(
-            new Unique(
-                'Oacc\Entity\User',
-                compact('email'),
-                $this->user->getId(),
-                $this->entityManager
-            )
-        );
-        $validate->validate();
+        $validate->addCheck(new NotEmpty($email))
+            ->addCheck(new Email($email))
+            ->addCheck(
+                new Unique(
+                    'Oacc\Entity\User',
+                    compact('email'),
+                    $this->user->getId(),
+                    $this->entityManager
+                )
+            )->validate();
     }
 }

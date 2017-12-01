@@ -34,6 +34,7 @@ class ValidationListener implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
+     * @throws \Oacc\Exceptions\ValidationException
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -43,6 +44,7 @@ class ValidationListener implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
+     * @throws \Oacc\Exceptions\ValidationException
      */
     public function preUpdate(LifecycleEventArgs $args)
     {

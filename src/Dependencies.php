@@ -38,17 +38,11 @@ class Dependencies
         $this->container['fractal'] = function () {
             return new Manager();
         };
-        $this->container['auth'] = function (Container $container) {
-            return new AuthenticationService($container);
-        };
         $this->container['Oacc\Controller\AuthController'] = function (Container $container) {
             return new AuthController($container);
         };
         $this->container['Oacc\Controller\UserController'] = function (Container $container) {
             return new UserController($container);
-        };
-        $this->container['Oacc\Middleware\AuthMiddleware'] = function (Container $container) {
-            return new AuthMiddleware($container);
         };
     }
 

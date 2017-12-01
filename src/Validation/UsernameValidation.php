@@ -37,17 +37,16 @@ class UsernameValidation extends FieldValidation
         $username = $this->user->getUsername();
         $error->setName('username');
         $validate = new ValidateFields($error);
-        $validate->addCheck(new NotEmpty($username));
-        $validate->addCheck(new Length($username, 80));
-        $validate->addCheck(new Regex($username, '/[^A-Za-z0-9_-]/'));
-        $validate->addCheck(
-            new Unique(
-                'Oacc\Entity\User',
-                compact('username'),
-                $this->user->getId(),
-                $this->entityManager
-            )
-        );
-        $validate->validate();
+        $validate->addCheck(new NotEmpty($username))
+            ->addCheck(new Length($username, 80))
+            ->addCheck(new Regex($username, '/[^A-Za-z0-9_-]/'))
+            ->addCheck(
+                new Unique(
+                    'Oacc\Entity\User',
+                    compact('username'),
+                    $this->user->getId(),
+                    $this->entityManager
+                )
+            )->validate();
     }
 }

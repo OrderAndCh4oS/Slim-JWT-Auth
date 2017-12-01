@@ -5,6 +5,10 @@ namespace Oacc\Validation\Field;
 use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\Error;
 
+/**
+ * Class ValidateFields
+ * @package Oacc\Validation\Field
+ */
 class ValidateFields
 {
     /**
@@ -26,6 +30,9 @@ class ValidateFields
         $this->error = $error;
     }
 
+    /**
+     *
+     */
     public function validate()
     {
         foreach ($this->checks as $check) {
@@ -35,19 +42,12 @@ class ValidateFields
 
     /**
      * @param FieldValidation $check
+     * @return ValidateFields
      */
     public function addCheck(FieldValidation $check)
     {
         $this->checks[] = $check;
-    }
 
-    /**
-     * @throws ValidationException
-     */
-    public function checkValidation()
-    {
-        if ($this->error->hasErrors()) {
-            throw new ValidationException($this->error);
-        }
+        return $this;
     }
 }

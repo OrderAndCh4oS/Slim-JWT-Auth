@@ -30,9 +30,9 @@ class PasswordValidation extends FieldValidation
         $password = $this->user->getPlainPassword();
         $error->setName('password');
         $validate = new ValidateFields($error);
-        $validate->addCheck(new NotEmpty($password));
-        $validate->addCheck(new Length($password, 255, 8));
-        $validate->addCheck(new PasswordConfirm($password, $this->confirmPassword));
-        $validate->validate();
+        $validate->addCheck(new NotEmpty($password))
+            ->addCheck(new Length($password, 255, 8))
+            ->addCheck(new PasswordConfirm($password, $this->confirmPassword))
+            ->validate();
     }
 }
