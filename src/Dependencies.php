@@ -10,8 +10,6 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Oacc\Controller\AuthController;
 use Oacc\Controller\UserController;
-use Oacc\Middleware\AuthMiddleware;
-use Oacc\Service\AuthenticationService;
 use Psr\Container\ContainerInterface;
 use Slim\Container;
 
@@ -29,6 +27,9 @@ class Dependencies
     /**
      * Dependencies constructor.
      * @param ContainerInterface $container
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function __construct(ContainerInterface $container)
     {
@@ -57,6 +58,8 @@ class Dependencies
     /**
      * @param ContainerInterface $container
      * @return Logger
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     private function getLogger(ContainerInterface $container): Logger
     {
@@ -71,6 +74,9 @@ class Dependencies
     /**
      * @param ContainerInterface $container
      * @return EntityManager
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     private function getEntityManager(ContainerInterface $container): EntityManager
     {
