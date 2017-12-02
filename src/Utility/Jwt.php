@@ -17,7 +17,7 @@ class Jwt
      * @param Token $token
      * @return bool
      */
-    public static function check(Token $token)
+    public static function check(Token $token): bool
     {
         $signer = new Sha256();
         if (!$token->verify($signer, getenv('JWT_KEY'))) {
@@ -31,7 +31,7 @@ class Jwt
      * @param $authorizationHeader
      * @return Token
      */
-    public static function get($authorizationHeader)
+    public static function get($authorizationHeader): Token
     {
         $regex = '/^Bearer\s/';
         $tokenHash = preg_replace($regex, '', $authorizationHeader);

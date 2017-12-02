@@ -42,7 +42,7 @@ class CheckCredentials
      * @param $credentials
      * @return bool
      */
-    public function areNotEmpty($credentials)
+    public function areNotEmpty($credentials): bool
     {
         if (empty($credentials['username'])) {
             $this->errors->addError('Missing username', 'username');
@@ -58,7 +58,7 @@ class CheckCredentials
      * @param $credentials
      * @return bool
      */
-    public function areValid($credentials)
+    public function areValid($credentials): bool
     {
         /** @var EntityRepository $userRepository */
         $userRepository = $this->container->em->getRepository('\Oacc\Entity\User');
@@ -74,7 +74,7 @@ class CheckCredentials
     /**
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors->getErrors();
     }
@@ -82,7 +82,7 @@ class CheckCredentials
     /**
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return [
             'username' => $this->user->getUsername(),

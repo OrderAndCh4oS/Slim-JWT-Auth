@@ -8,7 +8,7 @@ use Slim\Http\Response;
  * Class JsonEncoder
  * @package Oacc\Utility
  */
-class JsonEncoder
+class JsonResponse
 {
     /**
      * @param Response $response
@@ -17,7 +17,7 @@ class JsonEncoder
      * @param int $status_code
      * @return Response
      */
-    public static function setErrorJson(Response $response, $error_messages, $status_code = 400)
+    public static function setErrorJson(Response $response, $error_messages, $status_code = 400): Response
     {
         $data = [
             'status' => 'error',
@@ -34,8 +34,12 @@ class JsonEncoder
      * @param int $status_code
      * @return Response
      */
-    public static function setSuccessJson(Response $response, $messages = null, $data = null, $status_code = 200)
-    {
+    public static function setSuccessJson(
+        Response $response,
+        $messages = null,
+        $data = null,
+        $status_code = 200
+    ): Response {
         $jsonData = ['status' => 'success'];
         if ($data) {
             $jsonData['data'] = $data;

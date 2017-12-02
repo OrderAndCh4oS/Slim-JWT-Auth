@@ -33,7 +33,7 @@ class BuildJwt
      * @param array $data
      * @return $this
      */
-    public function addClaims(array $data)
+    public function addClaims(array $data): BuildJwt
     {
         foreach ($data as $key => $value) {
             $this->builder->set($key, $value);
@@ -45,7 +45,7 @@ class BuildJwt
     /**
      * @return string
      */
-    public function sign()
+    public function sign(): string
     {
         $signer = new Sha256();
 

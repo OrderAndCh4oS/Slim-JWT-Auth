@@ -2,12 +2,12 @@
 
 namespace Oacc\Service;
 
+use Oacc\Utility\BuildJwt;
 use Oacc\Utility\CheckCredentials;
-use Oacc\Utility\JsonEncoder;
+use Oacc\Utility\JsonResponse;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Oacc\Utility\BuildJwt;
 
 /**
  * Class Authentication
@@ -43,12 +43,12 @@ class AuthenticationService
     {
         $credentials = $request->getParsedBody();
         if (!$this->checkCredentials->areNotEmpty($credentials) || !$this->checkCredentials->areValid($credentials)) {
-            return JsonEncoder::setErrorJson($response, $this->checkCredentials->getErrors());
+            return JsonResponse::setErrorJson($response, $this->checkCredentials->getErrors());
         }
         $token = (new BuildJwt())
             ->addClaims($this->checkCredentials->getData())
             ->sign();
 
-        return JsonEncoder::setSuccessJson($response, ['Logged in'], compact('token'));
+        return JsonResponse::setSuccessJson($response, ['Logged in'], compact('token'));
     }
 }

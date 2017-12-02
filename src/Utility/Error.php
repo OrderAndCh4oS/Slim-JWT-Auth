@@ -6,10 +6,6 @@ namespace Oacc\Utility;
  * Class Error
  * @package Oacc\Utility
  */
-/**
- * Class Error
- * @package Oacc\Utility
- */
 class Error
 {
 

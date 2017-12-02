@@ -4,8 +4,7 @@ namespace Oacc\Middleware;
 
 use Lcobucci\JWT\Token;
 use Oacc\Exceptions\AuthenticationException;
-use Oacc\Exceptions\ValidationException;
-use Oacc\Utility\JsonEncoder;
+use Oacc\Utility\JsonResponse;
 use Oacc\Utility\Jwt;
 use Psr\Container\ContainerInterface;
 use Slim\Container;
@@ -47,9 +46,9 @@ class AuthMiddleware extends Middleware
             Jwt::check($token);
             $this->hasAllowedRoles($token);
         } catch (\InvalidArgumentException $e) {
-            return JsonEncoder::setErrorJson($response, ['auth' => $e->getMessage()], 400);
+            return JsonResponse::setErrorJson($response, ['auth' => $e->getMessage()], 400);
         } catch (AuthenticationException $e) {
-            return JsonEncoder::setErrorJson($response, $e->getMessage(), 401);
+            return JsonResponse::setErrorJson($response, $e->getMessage(), 401);
         }
         $response = $next($request, $response);
 

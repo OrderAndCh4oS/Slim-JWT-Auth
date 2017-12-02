@@ -12,7 +12,7 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use Oacc\Service\UserService;
 use Oacc\Transformer\UserTransformer;
-use Oacc\Utility\JsonEncoder;
+use Oacc\Utility\JsonResponse;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -35,7 +35,7 @@ class UserController extends Controller
         /** @var Manager $fractal */
         $fractal = $this->container->fractal;
 
-        return JsonEncoder::setSuccessJson(
+        return JsonResponse::setSuccessJson(
             $response,
             null,
             ['user' => $fractal->createData($userItem)->toArray()]

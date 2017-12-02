@@ -22,7 +22,7 @@ class PasswordEncoder
      * @param $hash
      * @return bool
      */
-    public static function verifyPassword($plainPassword, $hash)
+    public static function verifyPassword($plainPassword, $hash): bool
     {
         return password_verify($plainPassword, $hash);
     }

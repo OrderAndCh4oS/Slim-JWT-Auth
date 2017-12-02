@@ -8,7 +8,7 @@ use Oacc\Exceptions\ValidationException;
 use Oacc\Listener\HashPasswordListener;
 use Oacc\Listener\ValidationListener;
 use Oacc\Utility\Error;
-use Oacc\Utility\JsonEncoder;
+use Oacc\Utility\JsonResponse;
 use Oacc\Utility\Jwt;
 use Oacc\Validation\User\UserValidation;
 use Slim\Container;
@@ -57,7 +57,7 @@ class UserService
     {
         $data = $request->getParsedBody();
         if (!$this->checkDataIsNotEmpty($data)) {
-            return JsonEncoder::setErrorJson($response, $this->errors->getErrors());
+            return JsonResponse::setErrorJson($response, $this->errors->getErrors());
         }
         $this->addValidationListener($data);
         $this->addPasswordEncoderListener();
@@ -65,10 +65,10 @@ class UserService
             /** @var User $user */
             $user = $this->createUser($data);
         } catch (ValidationException $e) {
-            return JsonEncoder::setErrorJson($response, $e->getErrors());
+            return JsonResponse::setErrorJson($response, $e->getErrors());
         }
 
-        return JsonEncoder::setSuccessJson($response, [$user->getUsername().' registered successfully']);
+        return JsonResponse::setSuccessJson($response, [$user->getUsername().' registered successfully']);
     }
 
     /**
@@ -81,7 +81,7 @@ class UserService
         $user = $this->getUserFromTokenClaim($request);
         $data = $request->getParsedBody();
         if (!$this->checkDataIsNotEmpty($data)) {
-            return JsonEncoder::setErrorJson($response, $this->errors->getErrors());
+            return JsonResponse::setErrorJson($response, $this->errors->getErrors());
         }
         $this->addValidationListener($data);
         $this->addPasswordEncoderListener();
@@ -89,10 +89,10 @@ class UserService
             /** @var User $user */
             $user = $this->updateUser($data, $user);
         } catch (ValidationException $e) {
-            return JsonEncoder::setErrorJson($response, $e->getErrors());
+            return JsonResponse::setErrorJson($response, $e->getErrors());
         }
 
-        return JsonEncoder::setSuccessJson($response, [$user->getUsername().' updated successfully']);
+        return JsonResponse::setSuccessJson($response, [$user->getUsername().' updated successfully']);
     }
 
     /**
