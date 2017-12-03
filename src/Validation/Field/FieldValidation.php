@@ -14,5 +14,5 @@ abstract class FieldValidation
      * @param Error $error
      * @return mixed
      */
-    abstract public function validate(Error $error);
+    abstract public function runCheck(Error $error);
 }

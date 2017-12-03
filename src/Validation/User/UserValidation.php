@@ -4,14 +4,14 @@ namespace Oacc\Validation\User;
 
 use Doctrine\ORM\EntityManager;
 use Oacc\Entity\User;
-use Oacc\Validation\Entity\EntityValidation;
 use Oacc\Validation\Field\ValidateFields;
+use Oacc\Validation\Validation;
 
 /**
  * Class UserValidation
  * @package Oacc\Validation
  */
-class UserValidation extends EntityValidation
+class UserValidation extends Validation
 {
     /**
      * @var string $confirmPassword
@@ -43,6 +43,6 @@ class UserValidation extends EntityValidation
         $validate->addCheck(new UsernameValidation($user, $this->entityManager));
         $validate->addCheck(new EmailValidation($user, $this->entityManager));
         $validate->addCheck(new PasswordValidation($user, $this->confirmPassword));
-        $validate->validate();
+        $validate->runChecks();
     }
 }

@@ -42,7 +42,7 @@ class EmailValidation extends FieldValidation
      * @param Error $error
      * @return mixed|void
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         $email = $this->user->getEmail();
         $error->setName('email');
@@ -56,6 +56,6 @@ class EmailValidation extends FieldValidation
                     $this->user->getId(),
                     $this->entityManager
                 )
-            )->validate();
+            )->runChecks();
     }
 }

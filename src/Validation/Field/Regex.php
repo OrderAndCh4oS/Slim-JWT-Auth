@@ -34,7 +34,7 @@ class Regex extends FieldValidation
      * @param Error $error
      * @return mixed|void
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         if (preg_match($this->regex, $this->string)) {
             $error->addError(ucfirst($error->getName()).' can only contain letters, numbers, underscores and hyphens');

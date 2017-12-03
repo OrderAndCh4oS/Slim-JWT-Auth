@@ -27,7 +27,7 @@ class Email extends FieldValidation
     /**
      * @param Error $error
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             $error->addError('Please enter a valid email address');

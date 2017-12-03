@@ -5,7 +5,7 @@ namespace Oacc\Listener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Oacc\Utility\Error;
-use Oacc\Validation\Entity\EntityValidation;
+use Oacc\Validation\Validation;
 
 /**
  * Class ValidationListener
@@ -25,9 +25,9 @@ class ValidationListener implements EventSubscriber
 
     /**
      * UserValidationListener constructor.
-     * @param EntityValidation $validation
+     * @param Validation $validation
      */
-    public function __construct(EntityValidation $validation)
+    public function __construct(Validation $validation)
     {
         $this->validation = $validation;
     }

@@ -41,7 +41,7 @@ class PasswordValidation extends FieldValidation
      * @param Error $error
      * @return mixed|void
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         $password = $this->user->getPlainPassword();
         $error->setName('password');
@@ -49,6 +49,6 @@ class PasswordValidation extends FieldValidation
         $validate->addCheck(new NotEmpty($password))
             ->addCheck(new Length($password, 255, 8))
             ->addCheck(new PasswordConfirm($password, $this->confirmPassword))
-            ->validate();
+            ->runChecks();
     }
 }

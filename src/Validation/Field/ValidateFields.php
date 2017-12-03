@@ -2,7 +2,6 @@
 
 namespace Oacc\Validation\Field;
 
-use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\Error;
 
 /**
@@ -33,10 +32,10 @@ class ValidateFields
     /**
      *
      */
-    public function validate()
+    public function runChecks()
     {
         foreach ($this->checks as $check) {
-            $check->validate($this->error);
+            $check->runCheck($this->error);
         }
     }
 

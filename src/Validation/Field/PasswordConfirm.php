@@ -34,7 +34,7 @@ class PasswordConfirm extends FieldValidation
      * @param Error $error
      * @return mixed|void
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         if ($this->password != $this->confirmPassword) {
             $error->addError('Passwords do not match', 'password_confirm');

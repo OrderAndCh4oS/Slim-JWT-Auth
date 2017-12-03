@@ -1,8 +1,7 @@
 <?php
 
-namespace Oacc\Validation\Entity;
+namespace Oacc\Validation;
 
-use Doctrine\ORM\EntityManager;
 use Oacc\Exceptions\ValidationException;
 use Oacc\Utility\Error;
 
@@ -10,17 +9,13 @@ use Oacc\Utility\Error;
  * Class EntityValidation
  * @package Oacc\Validation\Entity
  */
-abstract class EntityValidation
+abstract class Validation
 {
 
     /**
      * @var Error
      */
     protected $error;
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
      * EntityValidation constructor.
@@ -31,10 +26,10 @@ abstract class EntityValidation
     }
 
     /**
-     * @param $entity
+     * @param $property
      * @return mixed
      */
-    abstract public function validate($entity);
+    abstract public function validate($property);
 
     /**
      * @throws ValidationException

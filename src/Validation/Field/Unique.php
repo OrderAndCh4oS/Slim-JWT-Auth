@@ -34,7 +34,7 @@ class Unique extends FieldValidation
         $this->entityId = $entityId;
     }
 
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         if (!$this->isUnique()) {
             $error->addError(ucfirst($error->getName()).' is not available');

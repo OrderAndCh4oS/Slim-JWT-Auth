@@ -42,7 +42,7 @@ class Length extends FieldValidation
      * @param Error $error
      * @return mixed|void
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         if (strlen($this->string) < $this->min) {
             $error->addError(ucfirst($error->getName()).' is too short, minimum '.$this->min.' characters');

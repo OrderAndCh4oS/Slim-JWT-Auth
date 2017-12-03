@@ -41,7 +41,7 @@ class UsernameValidation extends FieldValidation
     /**
      * @param Error $error
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         $username = $this->user->getUsername();
         $error->setName('username');
@@ -56,6 +56,6 @@ class UsernameValidation extends FieldValidation
                     $this->user->getId(),
                     $this->entityManager
                 )
-            )->validate();
+            )->runChecks();
     }
 }

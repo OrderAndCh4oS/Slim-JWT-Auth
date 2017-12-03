@@ -28,7 +28,7 @@ class NotEmpty extends FieldValidation
      * @param Error $error
      * @return mixed|void
      */
-    public function validate(Error $error)
+    public function runCheck(Error $error)
     {
         if (empty($this->value)) {
             $error->addError('Please enter '.ucfirst($error->getName()));
