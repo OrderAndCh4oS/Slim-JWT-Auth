@@ -19,6 +19,11 @@ class UserValidation extends Validation
     private $confirmPassword;
 
     /**
+     * @var EntityManager
+     */
+    private $entityManager;
+
+    /**
      * UserValidation constructor.
      * @param $confirmPassword
      * @param EntityManager $entityManager
